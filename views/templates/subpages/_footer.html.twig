@@ -1,0 +1,81 @@
+<footer id="footer" class="container"> 
+    <h2>footer</h2>
+    
+    <div class="foot-box">
+        <div class="timer" role="timer" aria-live="polite">
+            <p>Temps écoulé: <span id="time">00:00:00</span></p>
+            <div class="catCSS" aria-hidden="true">
+                {% include "subpages/_catcss.html.twig" %}
+            </div>
+        </div>
+        
+        <div class="retour-haut">
+            <img id="backToTopButton" class="topButton" src="assets/img/Miaou/retourHautPage.png" alt="image de flèche de retour haut">
+        </div>
+    </div>
+    
+    <div class="foot-content">
+        <div class="footer-flex-container">
+            <div class="footer-top">
+                <a href="index.php?route=accueil"><img src="assets/img/Miaou/JouerAvecMiaouLogo.png" alt="Logo chat"></a>
+                <div class="footer-address">
+                    <p></p>
+                    <p>9 La Guermonnais</p>
+                    <p>35720 Mesnil-Roc'h</p>
+                    <div class="footer-tel-container">
+                        <p><i class="fa-sharp fa-solid fa-phone"></i>06.21.03.27.13</p>
+                    </div>
+                    <div class="footer-mail-container">
+                        <p><i class="fa-solid fa-envelope"><a href="{{ 'mailto:apprendreavecmiaou@gmail.com' | escape('html') }}"></a></i><a href="?route=contact">Contact</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-separation">
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-nav">
+                    <p>Vous êtes sur la page {{titre}}</p>
+                    <ul>
+                        <li>
+                            <a href="?route=homepage">Accueil</a>
+                        </li>
+                        <li>
+                            <a href="?route=drawing">Coloriages</a>
+                        </li>
+                        <li>
+                            <a href="?route=games">Jeux</a>
+                        </li>
+                        <li>
+                            <a href="?route=stories">Histoires</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="footer-rs-legal">
+                    <ul>
+                        <li>
+                            <a href="">Politique de confidentialité</a>
+                        </li>
+                        <li>
+                            <a href="">Conditions générales de vente</a>
+                        </li>
+                        <li>
+                            <a href="">Mentions légales</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="copyright" id="copyright">
+        <div>
+            <p>&copy; 2024 Apprendre avec Miaou - Laure Bonnevalle</p>
+        </div>
+    </div>
+</footer>
+{% block javascript %}
+    {% if scripts is defined %}
+          {% for script in scripts %}
+              <script src="{{ script }}"></script>
+          {% endfor %}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}
+        |Page Accueil 
+{% endblock %}
+
+
+
+{% block body %}
+
+        {% block header %}
+            {{ parent() }}
+        {% endblock %}
+
+        
+    
+    {% block content %}
+    
+    {% block error %}
+    {% endblock %}
+       <section id="homepage" class="homepage-content">
+        <header>
+            <h1>Page Accueil</h1>
+            <p class="subtitle">Bonjour et Bienvenue sur le site Apprendre avec Miaou !</p>
+            <p class="description">Le site de jeux et activités pour les enfants de 3/5 ans</p>
+        </header>
+        
+        <article class="auth">
+            <h2 class="sr-only">Connexion et inscription</h2>
+            
+            <figure class="auth-images" aria-hidden="true">
+                <a href="?route=login" aria-label="Se connecter">
+                    <img src="public/assets/img/Miaou/CadenasCoeur.png" alt="Cadenas en forme de cœur">
+                </a>
+                <a href="?route=login" aria-label="Se connecter">
+                    <img src="public/assets/img/Miaou/ClefCoeur.png" alt="Clef en forme de cœur">
+                </a>
+            </figure>
+            
+            <div class="auth-text">
+                <p>Vous devez vous connecter pour accéder aux jeux et activités</p>
+                <p>
+                    Vous n'avez pas encore de compte ?
+                    <a href="?route=register">Inscrivez-vous ici</a>
+                </p>
+            </div>
+        </article>
+    </section>
+        
+    {% endblock %}
+
+    {% block footer %}
+        {{ parent() }}
+    {% endblock %}
+
+    {% block java %}
+        {{ parent() }}
+    {% endblock %}
+{% endblock %}
+   
+

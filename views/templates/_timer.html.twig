@@ -1,0 +1,31 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}
+{{ parent() }}
+{% endblock %}
+{% block header %}
+{{ parent() }}
+{% endblock %}
+{% block nav%}
+{{ parent() }}
+{% endblock %}
+{% block content %}
+
+
+
+<h1>Timer</h1>
+
+
+{% if success_message is defined %}
+        <p>{{ success_message }}</p>
+    {% endif %}
+    {% if error_message is defined %}
+        <p>{{ error_message }}</p>
+{% endif %}
+
+
+{% endblock %}
+
+{% block timer %}
+    <p>Temps écoulé: <span id="time">00:00:00</span></p>  
+{% endblock %}

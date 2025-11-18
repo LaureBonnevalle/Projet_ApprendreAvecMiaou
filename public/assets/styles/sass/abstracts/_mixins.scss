@@ -1,0 +1,103 @@
+
+body {
+
+}
+
+@mixin button-styles($type) {
+    background-color: #d998fa;
+    color: white;
+    padding: 15px 70px;
+    border-radius: 20px;
+    font-family: 'Inter';
+    font-size: 50px;
+    border: none;
+    border-bottom: 12px solid #B239ED;
+    border-left: 5px solid #B239ED;
+    text-shadow: 0px -2px #B239ED;
+    transition: all 0.1s;
+    -webkit-transition: all 0.1s;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+// Define the mixin separately from the rules where it’s applied
+@mixin action-button-styles {
+    background-color: #d998fa;
+    color: white;
+    padding: 10px 25px;
+    margin: 1rem 0;
+    border-radius: 8px;
+    font-family: 'Jua', sans-serif;
+    font-size: 1.1em;
+    border: none;
+    border-bottom: 12px solid #B239ED;
+    border-left: 5px solid #B239ED;
+    text-shadow: 0px -2px #B239ED;
+    transition: all 0.3s ease;
+     -webkit-transition: all 0.3s;
+    text-align: center;
+
+    a {
+        display: block;
+        width: 100%;
+        height: 100%;
+        line-height: 40px;
+        text-decoration: none;
+        color: #fff;
+        border-radius: 30px;
+    }
+    
+    &:hover {
+        cursor: pointer;
+        //transform: scale(1.1); // Augmenter la taille sans déplacer les autres éléments
+    }
+    
+    &:active {
+        transform: translate(0, 12px);
+        border-bottom: 1px solid #B239ED;
+        border-left: 1px;
+        margin-bottom: 1.8rem;
+    }
+    
+
+// Conditional mixin usage
+    @if $type == 'action' {
+    .action-button {
+        background-color: $chi_Gong;
+        color: $white;
+        border: 1px solid $chi_Gong;
+
+        &:hover {
+            background-color: $white;
+            color: $chi_Gong;
+        }
+
+        &:active {
+            // Add any active state styles here
+        }
+    }
+}
+
+    /*
+
+    @media #{$small} {
+        // Petits appareils (téléphones en mode paysage, 576px et plus)
+        font-size: 1.6rem;
+    }
+    
+    @media #{$medium} {
+        // Appareils moyens (tablettes, 768px et plus)
+        font-size: 1.8rem;
+    }
+
+    @media #{$large} {
+        // Grands appareils (ordinateurs de bureau, 992px et plus)
+        font-size: 2rem;
+    }
+
+    */
+}
+
+// Apply the mixin separately

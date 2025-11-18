@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Site de jeux et d'activités pour jeune enfants">
+    
+    <title>
+        {% block title %}
+        Miaou | Apprendre Avec Miaou
+        {% endblock %}
+    </title>
+    
+    <link rel="stylesheet" href="public/assets/styles/css/normalize.css">
+    <link rel="stylesheet" href="public/assets/styles/css/style.css" type="text/css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/3c515cc4da.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    {% block header %}
+        {% include "subpages/_header.html.twig" %}
+    {% endblock %}
+    
+    <main>
+        {% block messages %}
+            {% if success_message is defined %}
+                <div class="alert alert-success" role="alert">
+                    <p>{{ success_message }}</p>
+                </div>
+            {% endif %}
+            
+            {% if error_message is defined %}
+                <div class="alert alert-error" role="alert">
+                    <p>{{ error_message }}</p>
+                </div>
+            {% endif %}
+            
+            {% if app.session.get('error_message') %}
+                <div class="alert alert-error" role="alert">
+                    <p>{{ app.session.get('error_message') }}</p>
+                </div>
+            {% endif %}
+            
+            {% if app.session.get('success_message') %}
+                <div class="alert alert-success" role="alert">
+                    <p>{{ app.session.get('success_message') }}</p>
+                </div>
+            {% endif %}
+        {% endblock %}
+        
+        {% block content %}
+            {# Le contenu spécifique de chaque page ira ici #}
+        {% endblock %}
+    </main>
+
+    {% block footer %}
+        {% include "subpages/_footer.html.twig" %}
+    {% endblock %}
+    
+    {% block scripts %}
+        {% if scripts is defined %}
+            {% for script in scripts %}
+                <script src="{{ script }}"></script>
+            {% endfor %}
+        {% endif %}
+    {% endblock %}
+</body>
+</html>

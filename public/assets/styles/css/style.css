@@ -1,0 +1,18 @@
+/* Error: Undefined variable.
+ *   ,
+ * 3 | @media #{$mobile} {
+ *   |          ^^^^^^^
+ *   '
+ *   public\assets\styles\sass\components\_footer.scss 3:10  @use
+ *   public\assets\styles\sass\style.scss 2:1                root stylesheet */
+
+body::before {
+  font-family: "Source Code Pro", "SF Mono", Monaco, Inconsolata, "Fira Mono",
+      "Droid Sans Mono", monospace, monospace;
+  white-space: pre;
+  display: block;
+  padding: 1em;
+  margin-bottom: 1em;
+  border-bottom: 2px solid black;
+  content: "Error: Undefined variable.\a   \2577 \a 3 \2502  @media #{$mobile} {\d\a   \2502           ^^^^^^^\a   \2575 \a   public\\assets\\styles\\sass\\components\\_footer.scss 3:10  @use\a   public\\assets\\styles\\sass\\style.scss 2:1                root stylesheet";
+}
