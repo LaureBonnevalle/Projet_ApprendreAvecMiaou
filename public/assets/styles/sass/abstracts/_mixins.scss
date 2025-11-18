@@ -1,7 +1,57 @@
-
+@use 'varcolors';
 body {
 
 }
+
+
+
+// Mixin pour les media queries
+@mixin breakpoint($size) {
+    @if $size == mobile {
+        @media #{varcolors.$mobile} {
+            @content;
+        }
+    } @else if $size == small {
+        @media #{varcolors.$small} {
+            @content;
+        }
+    } @else if $size == medium {
+        @media #{varcolors.$medium} {
+            @content;
+        }
+    } @else if $size == medium-large {
+        @media #{varcolors.$mediumLarge} {
+            @content;
+        }
+    } @else if $size == large {
+        @media #{varcolors.$large} {
+            @content;
+        }
+    } @else if $size == larger {
+        @media #{varcolors.$larger} {
+            @content;
+        }
+    } @else if $size == extra {
+        @media #{varcolors.$extra} {
+            @content;
+        }
+    } @else if $size == extra-large {
+        @media #{varcolors.$extraLarge} {
+            @content;
+        }
+    } @else if $size == ultra {
+        @media #{varcolors.$ultra} {
+            @content;
+        }
+    }
+}
+
+// Mixin alternatif si tu préfères passer directement la valeur
+//@mixin media-query($mq) {
+ //   @media #{$mq} {
+ //       @content;
+  //  }
+//}
 
 @mixin button-styles($type) {
     background-color: #d998fa;

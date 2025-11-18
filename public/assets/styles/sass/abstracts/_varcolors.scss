@@ -1,7 +1,10 @@
+// COLORS
 $color-black: #161616;
 $color-white: #fff;
 
-// RESPONSIVE
+// RESPONSIVE BREAKPOINTS
+// Styles par défaut pour les mobiles
+$mobile: "only screen and (max-width: 575px)";
 
 // Petits appareils (téléphones en mode paysage, 576px et plus)
 $small: "only screen and (min-width: 576px)";
@@ -10,7 +13,7 @@ $small: "only screen and (min-width: 576px)";
 $medium: "only screen and (min-width: 768px)";
 
 // Appareils intermédiaires (entre tablettes et ordinateurs portables, 850px et plus)
-$medium-large: "only screen and (min-width: 850px)";
+$mediumLarge: "only screen and (min-width: 850px)";
 
 // Grands appareils (ordinateurs de bureau, 992px et plus)
 $large: "only screen and (min-width: 992px)";
@@ -22,7 +25,7 @@ $larger: "only screen and (min-width: 1100px)";
 $extra: "only screen and (min-width: 1200px)";
 
 // Super grands écrans (1400px et plus)
-$extra-large: "only screen and (min-width: 1400px)";
+$extraLarge: "only screen and (min-width: 1400px)";
 
 // Ultra grands écrans (1600px et plus)
 $ultra: "only screen and (min-width: 1600px)";

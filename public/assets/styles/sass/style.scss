@@ -1,2 +1,4 @@
-@use "abstracts/responsive";
+@use "abstracts/varcolors.scss";
+@use "abstracts/mixins";
+@use "components/catcss"; 
 @use "components/footer";

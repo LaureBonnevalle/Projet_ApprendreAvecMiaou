@@ -1,46 +1,37 @@
-// Styles par défaut pour les mobiles
-$mobile: "only screen and (max-width: 575px)";
-
-// Petits appareils (téléphones en mode paysage, 576px et plus)
-$small: "only screen and (min-width: 576px)";
-
-// Appareils moyens (tablettes, 768px et plus)
-$medium: "only screen and (min-width: 768px)";
+@use 'varcolors';
 
 
-$medium-large: "only screen and (min-width: 850px)";
 
 
-// Grands appareils (ordinateurs de bureau, 992px et plus)
-$large: "only screen and (min-width: 992px)";
-
-// Très grands appareils (grands écrans d'ordinateurs, 1200px et plus)
-$extra: "only screen and (min-width: 1200px)";
-
-/*
-
-@media #{$mobile} {
+@media #{$varcolors.mobile} {
 // Styles par défaut pour les mobiles
 }
 
-@media #{$small} {
+@media #{$varcolors.small} {
 // Petits appareils (téléphones en mode paysage, 576px et plus)
 }
 
-@media #{$medium} {
+@media #{$varcolors.medium} {
 // Appareils moyens (tablettes, 768px et plus)
 }
 
-@media #{$medium-large} {
+@media #{$varcolors.medium-large} {
 // Appareils moyens (tablettes, 850px et plus)
 }
 
-@media #{$large} {
+@media #{$varcolors.large} {
 // Grands appareils (ordinateurs de bureau, 992px et plus)
 }
 
-@media #{$extra} {
+@media #{$varcolors.extra} {
 // Très grands appareils (grands écrans d'ordinateurs, 1200px et plus) 
 }
 
-*/
+@media #{$varcolors.extraLarge} {
+// Super grands écrans (1400px et plus)
+}
+
+@media #{$varcolors.ultra} {
+// Ultra grands écrans (1600px et plus)
+}
+
