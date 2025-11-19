@@ -14,7 +14,7 @@ class DefaultController extends AbstractController {
         $_SESSION['start_time'] = time(); // Initialiser le timer lors de l'affichage de la page d'accueil
         $timesModels = new TimesModels();
         $elapsedTime = $timesModels->getElapsedTime();
-        $scripts = $this->addScripts(['assets/js/global.js','public/assets/js/common.js', 'public/assets/js/home.js']);
+        $scripts = $this->getDefaultScripts();
         $this->render("homepage.html.twig", ['titre' => 'Accueil', 'elapsed_time' =>$elapsedTime, 'avatar' => $avatar, 'start_time' => $_SESSION['start_time']], $scripts);
     }
 

@@ -34,20 +34,23 @@
             </div>
             <div class="footer-bottom">
                 <div class="footer-nav">
-                    <p>Vous êtes sur la page {{titre}}</p>
+                    <p>Vous êtes sur la page <strong>{{ titre }}</strong></p>
                     <ul>
-                        <li>
-                            <a href="?route=homepage">Accueil</a>
-                        </li>
-                        <li>
-                            <a href="?route=drawing">Coloriages</a>
-                        </li>
-                        <li>
-                            <a href="?route=games">Jeux</a>
-                        </li>
-                        <li>
-                            <a href="?route=stories">Histoires</a>
-                        </li>
+                        {% if titre != 'Accueil' %}
+                            <li><a href="?route=homepage">Accueil</a></li>
+                        {% endif %}
+
+                        {% if titre != 'Coloriages' %}
+                            <li><a href="?route=drawing">Coloriages</a></li>
+                        {% endif %}
+
+                        {% if titre != 'Jeux' %}
+                            <li><a href="?route=games">Jeux</a></li>
+                        {% endif %}
+
+                        {% if titre != 'Histoires' %}
+                            <li><a href="?route=stories">Histoires</a></li>
+                        {% endif %}
                     </ul>
                 </div>
                 <div class="footer-rs-legal">
@@ -68,14 +71,7 @@
     </div>
     <div class="copyright" id="copyright">
         <div>
-            <p>&copy; 2024 Apprendre avec Miaou - Laure Bonnevalle</p>
+            <p>&copy;Apprendre avec Miaou - Laure Bonnevalle, 2025. Tous droits réservés.</p>
         </div>
     </div>
 </footer>
-{% block javascript %}
-    {% if scripts is defined %}
-          {% for script in scripts %}
-              <script src="{{ script }}"></script>
-          {% endfor %}
-    {% endif %}
-{% endblock %}
