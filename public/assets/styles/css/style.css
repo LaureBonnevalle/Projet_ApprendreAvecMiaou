@@ -1,13 +1,16 @@
-#catCSS {
-  width: 100%;
+.catCSS {
+  width: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 }
 
 .cat {
   position: relative;
-  height: 10vh;
-  width: 13vh;
-  margin-top: 2em;
-  margin-left: 1em;
+  height: 70%;
+  aspect-ratio: 1.3/1;
+  width: auto;
 }
 
 .ear {
@@ -185,10 +188,50 @@
   border-radius: 50% 50% 50% 50%/30% 30% 70% 70%;
 }
 
+@media only screen and (max-width: 575px) {
+  .cat {
+    height: 60%;
+  }
+}
+@media only screen and (min-width: 576px) {
+  .cat {
+    height: 65%;
+  }
+}
+@media only screen and (min-width: 768px) {
+  .cat {
+    height: 70%;
+  }
+}
+@media only screen and (min-width: 992px) {
+  .cat {
+    height: 72%;
+  }
+}
+@media only screen and (min-width: 1200px) {
+  .cat {
+    height: 75%;
+  }
+}
+@media only screen and (min-width: 1400px) {
+  .cat {
+    height: 77%;
+  }
+}
+@media only screen and (min-width: 1600px) {
+  .cat {
+    height: 78%;
+  }
+}
+@media (min-width: 2000px) {
+  .cat {
+    height: 80%;
+  }
+}
 #footer {
   position: fixed;
   left: 0;
-  bottom: -100vh;
+  bottom: 0;
   display: flex;
   flex-direction: column;
   background-color: black;
@@ -196,17 +239,12 @@
   color: white;
   text-align: center;
   width: 100%;
-  margin-left: 0;
-  margin-right: 0;
-  transition: bottom 1s;
   z-index: 1000;
-}
-#footer:hover {
-  bottom: 10;
-  transition: bottom 1s;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 #footer .container {
   margin: 0 auto;
+  width: 100%;
 }
 #footer h2 {
   display: none;
@@ -227,63 +265,82 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding-top: 1.5vh;
-  padding-bottom: 3.5vh;
+  justify-content: space-between;
+  padding: 0 2vh;
+  height: 10vh;
+  min-height: 80px;
   max-height: 10vh;
+  cursor: pointer;
+  position: relative;
+  z-index: 10;
+  background-color: black;
+}
+#footer .foot-box:hover {
+  background-color: #1a1a1a;
 }
 #footer .foot-box .timer {
   display: flex;
-  justify-content: flex-start;
   align-items: center;
-  width: 100%;
-  font-size: 2.5vh;
+  gap: clamp(1vh, 2vw, 2vh);
+  flex: 1;
+  font-size: clamp(14px, 2vh, 24px);
+  padding-left: 1vh;
+  height: 100%;
 }
-#footer .foot-box .timer p:first-of-type {
+#footer .foot-box .timer .catCSS {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+#footer .foot-box .timer p {
   color: white;
   font-weight: bold;
   font-size: 1em;
-  margin-top: 2vh;
-  padding: 0.8vh;
-  margin-left: 1vh;
-  box-shadow: 6px 8px 0px #37474f;
+  margin: 0;
+  padding: 0.6vh 1.2vh;
+  box-shadow: 4px 6px 0px #37474f;
   border: white 2px solid;
   border-radius: 500px;
   text-align: center;
+  white-space: nowrap;
+  line-height: 1.2;
 }
-#footer .foot-box .timer span {
-  margin-right: 0.2px;
-}
-#footer .foot-box .timer:nth-of-type(2) {
-  width: 50%;
-  margin-top: 4em;
-  padding-top: 2.5em;
-  margin-right: auto;
+#footer .foot-box .timer p span {
+  margin-left: 0.5vh;
 }
 #footer .foot-box .retour-haut {
   display: flex;
-  justify-content: flex-end;
   align-items: center;
-  width: 100%;
-  padding-top: 2vh;
-  padding-right: 3vh;
+  justify-content: center;
+  padding-right: 2vh;
+  height: 100%;
+  flex-shrink: 0;
 }
-#footer .foot-box .retour-haut .topButton {
-  background: none;
-  border: none;
-  padding: 0;
+#footer .foot-box .retour-haut #backToTopButton {
+  height: clamp(30px, 4vh, 50px);
+  width: auto;
   cursor: pointer;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  opacity: 0.8;
 }
-#footer .foot-box .retour-haut .topButton img {
-  width: 8vh;
-  height: 8vh;
-  display: block;
+#footer .foot-box .retour-haut #backToTopButton:hover {
+  transform: translateY(-3px);
+  opacity: 1;
+}
+#footer .foot-box .retour-haut #backToTopButton:active {
+  transform: translateY(-1px);
 }
 #footer .foot-content {
   border: 2px solid white;
-  border-radius: 60px;
-  margin: 0 1.1em 0;
-  padding: 0.5rem;
-  height: 5%;
+  border-radius: 60px 60px 0 0;
+  margin: 0 1.1em;
+  padding: 0;
+  background-color: black;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s ease, padding 0.6s ease;
 }
 #footer .foot-content > div {
   color: white;
@@ -359,7 +416,12 @@
   color: white !important;
   font-size: 10px;
   z-index: 2000;
-  padding: 1rem 0;
+  padding: 0;
+  background-color: black;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s ease, padding 0.6s ease;
 }
 #footer .copyright p {
   color: white !important;
@@ -369,8 +431,35 @@
 #footer .copyright p small {
   font-size: 10px;
 }
+#footer.open .foot-content {
+  max-height: 2000px;
+  opacity: 1;
+  padding: 2rem 0.5rem;
+}
+#footer.open .copyright {
+  max-height: 200px;
+  opacity: 1;
+  padding: 1rem 0;
+}
 
 @media only screen and (min-width: 576px) {
+  #footer .foot-box {
+    padding: 0 1.5vh;
+    min-height: 85px;
+  }
+  #footer .foot-box .timer {
+    font-size: clamp(15px, 2.2vh, 26px);
+    gap: clamp(1.2vh, 2.2vw, 2.5vh);
+  }
+  #footer .foot-box .timer p {
+    padding: 0.7vh 1.3vh;
+  }
+  #footer .foot-box .retour-haut {
+    padding-right: 2vh;
+  }
+  #footer .foot-box .retour-haut #backToTopButton {
+    height: clamp(32px, 4.5vh, 55px);
+  }
   #footer .footer-top i,
   #footer .footer-bottom i {
     font-size: 1.6rem;
@@ -389,10 +478,6 @@
     height: 2px;
     width: 85%;
     margin: 0 auto calc(1rem + 2.5vw) auto;
-  }
-  #footer .footer-bottom {
-    text-align: left;
-    border-bottom: 1px solid white;
   }
   #footer .footer-bottom .footer-nav,
   #footer .footer-bottom .footer-rs-legal {
@@ -412,176 +497,188 @@
   }
 }
 @media only screen and (min-width: 768px) {
-  #footer .footer-top i,
-  #footer .footer-bottom i {
-    font-size: 1.6rem;
+  #footer .foot-box {
+    height: 11vh;
+    min-height: 90px;
+  }
+  #footer .foot-box .timer {
+    font-size: clamp(16px, 2.4vh, 28px);
+    gap: 2vh;
+  }
+  #footer .foot-box .retour-haut #backToTopButton {
+    height: clamp(35px, 5vh, 60px);
   }
   #footer .footer-top {
-    margin: auto;
+    flex-direction: row;
+    gap: 2rem;
   }
   #footer .footer-top > a > img {
-    margin-right: 5vw;
-    width: 12.5rem;
-  }
-  #footer .footer-top address p {
-    font-size: 1.6rem;
-  }
-  #footer .footer-separation {
-    height: 2px;
-    width: 85%;
-    margin: 0 auto calc(1rem + 2.5vw) auto;
-  }
-  #footer .footer-bottom {
-    text-align: left;
-    border-bottom: 1px solid white;
-  }
-  #footer .footer-bottom .footer-nav,
-  #footer .footer-bottom .footer-rs-legal {
-    font-size: 1rem;
-    margin: 0 10vw;
-  }
-  #footer .footer-bottom .footer-nav i,
-  #footer .footer-bottom .footer-rs-legal i {
-    font-size: 3.7rem;
-    margin: 0 2.8rem 2.8rem 0;
-  }
-  #footer .footer-bottom li {
-    padding: 0.5rem 0;
-  }
-  #footer .copyright p small {
-    font-size: 15px;
+    width: 14rem;
   }
 }
 @media only screen and (min-width: 850px) {
-  #footer {
-    bottom: -70vh;
+  #footer .foot-box {
+    height: 12vh;
+    min-height: 95px;
+    padding: 0 2.5vh;
   }
-  #footer .footer-top i,
-  #footer .footer-bottom i {
-    font-size: 1.6rem;
+  #footer .foot-box .timer {
+    font-size: clamp(17px, 2.6vh, 30px);
+    gap: 2.2vh;
   }
-  #footer .footer-top {
-    margin: auto;
+  #footer .foot-box .timer p {
+    padding: 1vh 2vh;
   }
-  #footer .footer-top > a > img {
-    margin-right: 5vw;
-    width: 12.5rem;
+  #footer .foot-box .retour-haut {
+    padding-right: 3vh;
   }
-  #footer .footer-top address p {
-    font-size: 1.6rem;
-  }
-  #footer .footer-separation {
-    height: 2px;
-    width: 85%;
-    margin: 0 auto calc(1rem + 2.5vw) auto;
+  #footer .foot-box .retour-haut #backToTopButton {
+    height: clamp(38px, 5.5vh, 65px);
   }
   #footer .footer-bottom {
-    text-align: left;
-    border-bottom: 1px solid white;
-  }
-  #footer .footer-bottom .footer-nav,
-  #footer .footer-bottom .footer-rs-legal {
-    font-size: 1rem;
-    margin: 0 10vw;
-  }
-  #footer .footer-bottom .footer-nav i,
-  #footer .footer-bottom .footer-rs-legal i {
-    font-size: 3.7rem;
-    margin: 0 2.8rem 2.8rem 0;
-  }
-  #footer .footer-bottom li {
-    padding: 0.5rem 0;
-  }
-  #footer .copyright p small {
-    font-size: 15px;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 2rem 4rem;
   }
 }
 @media only screen and (min-width: 992px) {
-  #footer {
-    bottom: -60vh;
+  #footer .foot-box {
+    height: 13vh;
+    min-height: 100px;
   }
-  #footer .footer-top i,
-  #footer .footer-bottom i {
-    font-size: 1.6rem;
+  #footer .foot-box .timer {
+    font-size: clamp(18px, 2.8vh, 32px);
+    padding-left: 3vh;
+    gap: 2.5vh;
   }
-  #footer .footer-top {
-    margin: auto;
+  #footer .foot-box .retour-haut #backToTopButton {
+    height: clamp(40px, 6vh, 70px);
+  }
+  #footer .foot-content {
+    margin: 0 2em;
   }
   #footer .footer-top > a > img {
-    margin-right: 5vw;
-    width: 12.5rem;
-  }
-  #footer .footer-top address p {
-    font-size: 1.6rem;
-  }
-  #footer .footer-separation {
-    height: 2px;
-    width: 85%;
-    margin: 0 auto calc(1rem + 2.5vw) auto;
-  }
-  #footer .footer-bottom {
-    text-align: left;
-    border-bottom: 1px solid white;
-  }
-  #footer .footer-bottom .footer-nav,
-  #footer .footer-bottom .footer-rs-legal {
-    font-size: 1rem;
-    margin: 0 10vw;
-  }
-  #footer .footer-bottom .footer-nav i,
-  #footer .footer-bottom .footer-rs-legal i {
-    font-size: 3.7rem;
-    margin: 0 2.8rem 2.8rem 0;
-  }
-  #footer .footer-bottom li {
-    padding: 0.5rem 0;
-  }
-  #footer .copyright p small {
-    font-size: 15px;
+    width: 15rem;
   }
 }
 @media only screen and (min-width: 1200px) {
-  #footer {
-    bottom: -60vh;
+  #footer .foot-box {
+    height: 14vh;
+    min-height: 110px;
   }
-  #footer .footer-top i,
-  #footer .footer-bottom i {
-    font-size: 1.6rem;
+  #footer .foot-box .timer {
+    font-size: clamp(20px, 3vh, 35px);
+    gap: 3vh;
+    padding-left: 4vh;
   }
-  #footer .footer-top {
-    margin: auto;
+  #footer .foot-box .timer p {
+    padding: 1.2vh 2.5vh;
+  }
+  #footer .foot-box .retour-haut {
+    padding-right: 4vh;
+  }
+  #footer .foot-box .retour-haut #backToTopButton {
+    height: clamp(45px, 6.5vh, 75px);
   }
   #footer .footer-top > a > img {
-    margin-right: 5vw;
-    width: 12.5rem;
+    width: 16rem;
   }
   #footer .footer-top address p {
-    font-size: 1.6rem;
-  }
-  #footer .footer-separation {
-    height: 2px;
-    width: 85%;
-    margin: 0 auto calc(1rem + 2.5vw) auto;
+    font-size: 1.8rem;
   }
   #footer .footer-bottom {
-    text-align: left;
-    border-bottom: 1px solid white;
+    padding: 2rem 6rem;
   }
   #footer .footer-bottom .footer-nav,
   #footer .footer-bottom .footer-rs-legal {
-    font-size: 1rem;
-    margin: 0 10vw;
+    font-size: 1.1rem;
+  }
+}
+@media only screen and (min-width: 1400px) {
+  #footer .foot-box {
+    height: 15vh;
+    min-height: 120px;
+  }
+  #footer .foot-box .timer {
+    font-size: clamp(22px, 3.2vh, 38px);
+    gap: 3.5vh;
+  }
+  #footer .foot-box .retour-haut #backToTopButton {
+    height: clamp(50px, 7vh, 80px);
+  }
+}
+@media only screen and (min-width: 1600px) {
+  #footer .foot-box {
+    height: 16vh;
+    min-height: 130px;
+  }
+  #footer .foot-box .timer {
+    font-size: clamp(24px, 3.5vh, 42px);
+    gap: 4vh;
+  }
+  #footer .foot-box .retour-haut #backToTopButton {
+    height: clamp(55px, 8vh, 90px);
+  }
+  #footer .footer-top > a > img {
+    width: 18rem;
+  }
+}
+@media (min-width: 2000px) {
+  #footer .foot-box {
+    height: 18vh;
+    min-height: 150px;
+    padding: 0 4vh;
+  }
+  #footer .foot-box .timer {
+    font-size: clamp(26px, 4vh, 48px);
+    gap: 5vh;
+    padding-left: 6vh;
+  }
+  #footer .foot-box .timer p {
+    padding: 1.5vh 3vh;
+    box-shadow: 8px 10px 0px #37474f;
+    border: white 3px solid;
+  }
+  #footer .foot-box .retour-haut {
+    padding-right: 6vh;
+  }
+  #footer .foot-box .retour-haut #backToTopButton {
+    height: clamp(60px, 9vh, 100px);
+  }
+  #footer .foot-content {
+    margin: 0 3em;
+    border-radius: 80px 80px 0 0;
+    border: 3px solid white;
+  }
+  #footer .footer-top {
+    padding: 3rem 2rem;
+  }
+  #footer .footer-top > a > img {
+    width: 20rem;
+  }
+  #footer .footer-top address p {
+    font-size: 2rem;
+  }
+  #footer .footer-separation {
+    height: 3px;
+    width: 80%;
+  }
+  #footer .footer-bottom {
+    padding: 3rem 8rem;
+  }
+  #footer .footer-bottom .footer-nav,
+  #footer .footer-bottom .footer-rs-legal {
+    font-size: 1.3rem;
   }
   #footer .footer-bottom .footer-nav i,
   #footer .footer-bottom .footer-rs-legal i {
-    font-size: 3.7rem;
-    margin: 0 2.8rem 2.8rem 0;
+    font-size: 4.5rem;
   }
   #footer .footer-bottom li {
-    padding: 0.5rem 0;
+    padding: 0.8rem 0;
   }
   #footer .copyright p small {
-    font-size: 15px;
+    font-size: 18px;
   }
 }
 

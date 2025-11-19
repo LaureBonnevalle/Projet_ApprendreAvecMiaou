@@ -44,6 +44,11 @@ body {
             @content;
         }
     }
+     @else if $size == huge {
+        @media #{varcolors.$huge} {
+            @content;
+        }
+    }
 }
 
 // Mixin alternatif si tu préfères passer directement la valeur
