@@ -1,10 +1,6 @@
 
 <?php
 
-require_once("models/Users.php");
-require_once("services/Functionality.php");
-require_once("services/CSRFTokenManager.php");
-
 class UserManager extends AbstractManager
 {
     public function __construct()

@@ -58,101 +58,119 @@ body {
   //  }
 //}
 
-@mixin button-styles($type) {
-    background-color: #d998fa;
-    color: white;
-    padding: 15px 70px;
-    border-radius: 20px;
-    font-family: 'Inter';
-    font-size: 50px;
-    border: none;
-    border-bottom: 12px solid #B239ED;
-    border-left: 5px solid #B239ED;
-    text-shadow: 0px -2px #B239ED;
-    transition: all 0.1s;
-    -webkit-transition: all 0.1s;
-
-    &:hover {
-        cursor: pointer;
-    }
-}
-
-// Define the mixin separately from the rules where it’s applied
-@mixin action-button-styles {
-    background-color: #d998fa;
-    color: white;
-    padding: 10px 25px;
-    margin: 1rem 0;
-    border-radius: 8px;
-    font-family: 'Jua', sans-serif;
-    font-size: 1.1em;
-    border: none;
-    border-bottom: 12px solid #B239ED;
-    border-left: 5px solid #B239ED;
-    text-shadow: 0px -2px #B239ED;
-    transition: all 0.3s ease;
-     -webkit-transition: all 0.3s;
-    text-align: center;
-
-    a {
-        display: block;
-        width: 100%;
-        height: 100%;
-        line-height: 40px;
-        text-decoration: none;
-        color: #fff;
-        border-radius: 30px;
-    }
+// ====================================
+// MIXIN BOUTONS 3D
+// ====================================
+@mixin button-3d($bg-color, $shadow-color, $border-color: null) {
+    background-color: $bg-color;
+    border: 1px solid if($border-color, $border-color, darken($bg-color, 10%));
+    box-shadow: 6px 6px 0px if($shadow-color, $shadow-color, darken($bg-color, 15%));
+    border-radius: varcolors.$radius-round;
+    padding: 0.8rem 1rem;
+    font-weight: bold;
+    text-decoration: none;
+    color: varcolors.$blanc;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all varcolors.$transition-normal;
+    cursor: pointer;
     
     &:hover {
-        cursor: pointer;
-        //transform: scale(1.1); // Augmenter la taille sans déplacer les autres éléments
+        transform: translate(2px, 2px);
+        box-shadow: 4px 6px 0px if($shadow-color, $shadow-color, darken($bg-color, 10%));
     }
     
     &:active {
-        transform: translate(0, 12px);
-        border-bottom: 1px solid #B239ED;
-        border-left: 1px;
-        margin-bottom: 1.8rem;
-    }
-    
-
-// Conditional mixin usage
-    @if $type == 'action' {
-    .action-button {
-        background-color: $chi_Gong;
-        color: $white;
-        border: 1px solid $chi_Gong;
-
-        &:hover {
-            background-color: $white;
-            color: $chi_Gong;
-        }
-
-        &:active {
-            // Add any active state styles here
-        }
+        transform: translate(4px, 4px);
+        box-shadow: 2px 4px 0px if($shadow-color, $shadow-color, darken($bg-color, 15%));
     }
 }
 
-    /*
-
-    @media #{$small} {
-        // Petits appareils (téléphones en mode paysage, 576px et plus)
-        font-size: 1.6rem;
-    }
-    
-    @media #{$medium} {
-        // Appareils moyens (tablettes, 768px et plus)
-        font-size: 1.8rem;
-    }
-
-    @media #{$large} {
-        // Grands appareils (ordinateurs de bureau, 992px et plus)
-        font-size: 2rem;
-    }
-
-    */
+// ====================================
+// BOUTONS PAR SECTION
+// ====================================
+@mixin button-accueil {
+    @include button-3d(varcolors.$violet-main, varcolors.$violet-dark);
 }
 
-// Apply the mixin separately
+@mixin button-histoires {
+    @include button-3d(varcolors.$bleu-main, varcolors.$bleu-dark);
+}
+
+@mixin button-coloriages {
+    @include button-3d(varcolors.$vert-main, darken(varcolors.$vert-main, 15%));
+}
+
+@mixin button-jeux {
+    @include button-3d(varcolors.$jaune-main, darken(varcolors.$jaune-main, 15%), varcolors.$noir);
+    color: varcolors.$noir; // Texte noir sur jaune
+}
+@mixin button-contact {
+    @include button-3d(varcolors.$deppblue-main, darken(varcolors.$deepblue-dark, 15%));
+}
+
+@mixin button-pink {
+    @include button-3d(varcolors.$pink-main, darken(varcolors.$pink-dark, 15%))
+}
+
+@mixin button-orange {
+    @include button-3d(varcolors.$orange-main, varcolors.$orange-border);
+}
+
+@mixin button-rouge {
+    @include button-3d(varcolors.$rouge-main, varcolors.$rouge-dark);
+}
+
+// ====================================
+// MIXIN BORDURES SECTION
+// ====================================
+@mixin section-border($color, $width: 3px) {
+    border-left: $width solid $color;
+}
+
+// ====================================
+// MIXIN OVERLAY
+// ====================================
+@mixin overlay($bg-color: rgba(0, 0, 0, 0.7)) {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: $bg-color;
+    z-index: varcolors.$z-overlay;
+    transition: opacity varcolors.$transition-normal;
+}
+
+// ====================================
+// MIXIN CENTRAGE
+// ====================================
+@mixin center-flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@mixin center-absolute {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+// ====================================
+// MIXIN TEXTE TRONQUÉ
+// ====================================
+@mixin text-ellipsis($lines: 1) {
+    @if $lines == 1 {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    } @else {
+        display: -webkit-box;
+        -webkit-line-clamp: $lines;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+}

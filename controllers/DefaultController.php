@@ -23,14 +23,39 @@ class DefaultController extends AbstractController {
         if (isset($_SESSION["user"])) {
             $am = new AvatarManager();
             $avatar = $am->getById($_SESSION['user']['avatar']);
+            $role = $am->getById($_SESSION['user']['role']);
             $_SESSION["user"];
             $timesModels = new TimesModels();
             $elapsedTime = $timesModels->getElapsedTime();
-            $scripts = $this->addScripts(['public/assets/js/home.js',
-                'public/assets/js/formController.js', 'public/assets/js/common.js'
-            ]);
+            $scripts = $this->getDefaultScripts();
+            $scripts = $this->addScripts(['public/assets/js/formController.js']);
             $this->render("homepageUser.html.twig", [
                 'user' => $_SESSION['user'] ?? null,
+                'elapsed_time' =>$elapsedTime,
+                'session' => $_SESSION,
+                'connected' => $_SESSION['user'],
+                'success_message' => $_SESSION['success_message'] ?? null,
+                'avatar' => [$avatar]
+            ], [$scripts]);
+        } else {
+            $this->redirectTo('login');
+        }
+    }
+
+    public function homepageAdmin() : void
+    {
+        if (isset($_SESSION["user"])and $_SESSION['user']['role'] == 2) {
+            $am = new AvatarManager();
+            $avatar = $am->getById($_SESSION['user']['avatar']);
+            $role = $am->getById($_SESSION['user']['role']);
+            $_SESSION["user"];
+            $timesModels = new TimesModels();
+            $elapsedTime = $timesModels->getElapsedTime();
+             $scripts = $this->getDefaultScripts();
+            $scripts = $this->addScripts(['public/assets/js/formController.js']);
+            $this->render("homepageAdmin.html.twig", [
+                'user' => $_SESSION['user'] ?? null,
+                'role' => $_SESSION['user']['role'],
                 'elapsed_time' =>$elapsedTime,
                 'session' => $_SESSION,
                 'connected' => $_SESSION['user'],
@@ -57,7 +82,9 @@ class DefaultController extends AbstractController {
         $_SESSION['error_message'] = "Déconnexion effectuée !";
 
         // Redirect to the default 'home' route if the 'route' parameter is not set
-        $this->redirectTo('homepage');
+        //$this->redirectTo('homepage');
+
+       $this->homepage();
     }
         
         

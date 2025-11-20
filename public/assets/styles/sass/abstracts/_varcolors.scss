@@ -1,34 +1,117 @@
-// COLORS
-$color-black: #161616;
-$color-white: #fff;
+// ====================================
+// BREAKPOINTS
+// ====================================
+$mobile: '(max-width: 575px)';
+$small: '(min-width: 576px)';
+$medium: '(min-width: 768px)';
+$mediumLarge: '(min-width: 850px)';
+$large: '(min-width: 992px)';
+$larger: '(min-width: 1100px)';
+$extra: '(min-width: 1200px)';
+$extraLarge: '(min-width: 1400px)';
+$ultra: '(min-width: 1600px)';
+$huge: '(min-width: 2000px)';
 
-// RESPONSIVE BREAKPOINTS
-// Styles par défaut pour les mobiles
-$mobile: "only screen and (max-width: 575px)";
+// ====================================
+// COULEURS PRINCIPALES
+// ====================================
 
-// Petits appareils (téléphones en mode paysage, 576px et plus)
-$small: "only screen and (min-width: 576px)";
+// Violet (Accueil)
+$violet-dark: #9220CB;
+$violet-main: #B239ED;
+$violet-light: #D998FA;
+$violet-bright: #FF33FF;
 
-// Appareils moyens (tablettes, 768px et plus)
-$medium: "only screen and (min-width: 768px)";
+// Orange
+$orange-main: #FF7438;
+$orange-border: #D8561E;
 
-// Appareils intermédiaires (entre tablettes et ordinateurs portables, 850px et plus)
-$mediumLarge: "only screen and (min-width: 850px)";
+// Rouge
+$rouge-main: #FD1616;
+$rouge-dark: #B71B10;
 
-// Grands appareils (ordinateurs de bureau, 992px et plus)
-$large: "only screen and (min-width: 992px)";
+// Bleu (Histoires)
+$bleu-main: #758BFF;
+$bleu-dark: #5AA1CA;
+$bleu-light: #77CDFF;
 
-// Appareils larges (ordinateurs de bureau plus grands, 1100px et plus)
-$larger: "only screen and (min-width: 1100px)";
+// 
+$bleu1-main: #758BFF;
+$bleu1-dark: #777CDF;
+$deepblue-main: #758CFF;
+$deepblue-dark: #5669CC;
 
-// Très grands appareils (grands écrans d'ordinateurs, 1200px et plus)
-$extra: "only screen and (min-width: 1200px)";
+// Contact
+$pink-main: #DB6385;
+$pink-dark: #c44f70; 
 
-// Super grands écrans (1400px et plus)
-$extraLarge: "only screen and (min-width: 1400px)";
+// Vert (Coloriages)
+$vert-main: #3FEB79;
 
-// Ultra grands écrans (1600px et plus)
-$ultra: "only screen and (min-width: 1600px)";
+// Jaune (Jeux)
+$jaune-main: #F2E554;
 
-// Ultra ultra grand ecran
-$huge: "(min-width: 2000px)";
+// Rose
+$rose-main: #ec407a;
+
+// Neutres
+$noir: #000000;
+$noir-light: #161616;
+$noir-menu: #1a1a1a;
+$blanc: #ffffff;
+$gris-dark: #37474f;
+
+// ====================================
+// COULEURS PAR SECTION
+// ====================================
+$color-accueil: $violet-main;
+$color-accueil-light: $violet-light;
+$color-accueil-dark: $violet-dark;
+$color-histoires: $bleu-main;
+$color-histoires: $bleu-light;
+$color-histoires-dark: $bleu-dark;
+$color-coloriages: $vert-main;
+$color-jeux: $jaune-main;
+$color-contact: $deepblue-main;
+$color-pink: $pink-main;
+
+// ====================================
+// OMBRES ET EFFETS 3D
+// ====================================
+$shadow-3d-violet: 6px 8px 0px $violet-light;
+$shadow-3d-purple: 6px 8px 0px $violet-dark;
+$shadow-3d-orange: 6px 8px 0px $orange-border;
+$shadow-3d-rouge: 6px 8px 0px $rouge-dark;
+$shadow-3d-bleu: 6px 8px 0px $bleu-dark;
+$shadow-3d-dark: 6px 8px 0px $gris-dark;
+$shadow-3d-deepblue: 6px 8px 0px $deepblue-dark;
+$shadow-3d-pink: 6px 8px 0px $pink-dark; 
+
+$shadow-soft: 0 4px 6px rgba(0, 0, 0, 0.1);
+$shadow-medium: 0 5px 15px rgba(0, 0, 0, 0.3);
+$shadow-hard: 0 8px 20px rgba(0, 0, 0, 0.4);
+
+// ====================================
+// TRANSITIONS
+// ====================================
+$transition-fast: 0.2s ease;
+$transition-normal: 0.3s ease;
+$transition-slow: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+
+// ====================================
+// BORDER RADIUS
+// ====================================
+$radius-small: 10px;
+$radius-medium: 20px;
+$radius-large: 30px;
+$radius-xlarge: 60px;
+$radius-round: 500px;
+
+// ====================================
+// Z-INDEX
+// ====================================
+$z-header: 1000;
+$z-nav: 999;
+$z-overlay: 998;
+$z-modal: 1001;
+$z-footer: 1000;

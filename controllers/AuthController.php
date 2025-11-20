@@ -137,14 +137,14 @@ $_SESSION["login_data"] = [
         $avatar = $am->getById($result['avatar']);
         
         if ($result['role'] == 1 || $result['role'] == 2) {
-            
+            $scripts=$this->getDefaultScripts();
             $this->render("homepageUser.html.twig", [
                 'user' =>$_SESSION['user'] ?? null,
                 'elapsed_time' => $elapsedTime, 
                 'session' => $_SESSION,
                 'success_message' => $_SESSION["login_data"]['success_message'] ?? null, 
                 "avatar" => $avatar
-            ], [$this->getDefaultScripts()]);
+            ], $scripts);
         } /*else {
             $adminAvatar = $am->getById(7);
             $this->render("dashboard.html.twig", [

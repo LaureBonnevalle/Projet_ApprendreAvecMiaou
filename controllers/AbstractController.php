@@ -62,7 +62,8 @@ abstract class AbstractController
         return [
             'public/assets/js/common.js',
             'public/assets/js/home.js',
-            'assets/js/global.js',
+            'assets/js/header.js',
+            'assets/js/footer.js'
         ];
         
     }

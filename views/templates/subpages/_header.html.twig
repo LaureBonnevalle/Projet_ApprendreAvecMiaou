@@ -1,56 +1,80 @@
-<header id="header" class="container">
-    <div class="rect">  
-        {# Avatar section #}
-        <figure class="avatar-container">
-            {% if user is not defined or not user %}
-                {# Utilisateur non connecté #}
-                <img class="avatar" src="assets/img/avatars/chatFiligranne.png" alt="Logo Miaou, mascotte du site">
+<header id="header">
+    <div class="rect">
+        {# Section gauche : Avatar + Titre #}
+        <div class="header-left">
+            {# Avatar #}
+            <figure class="avatar-container">
+                {% if user is not defined or not user %}
+                    {# Utilisateur non connecté #}
+                    <img class="avatar" src="assets/img/avatars/chatFiligranne.svg" alt="Logo Miaou, mascotte du site">
+                {% elseif user.role ==2 %}
+                    {# utilisateur connecté et admin #}
+                    <img class="avatar" src="assets/img/avatars/admin.svg" alt="Logo Miaou, mascotte du site">
+                {% else %}
+                    {# Utilisateur connecté #}
+                    <img class="avatar" src="{{ avatar.url }}" alt="{{ avatar.description }}">
+
+                {% endif %}
+            </figure>
+            
+            {# Titre #}
+            {% if user is defined and user and user.firstname is defined and user.firstname %}
+                <h1 class="site-title">{{ user.firstname }} joue avec Miaou</h1>
             {% else %}
-                {# Utilisateur connecté #}
-                <img class="avatar" src="{{ avatar.url }}" alt="{{ avatar.description }}">
+                <h1 class="site-title">Apprendre avec Miaou</h1>
             {% endif %}
-        </figure>
+        </div>
         
-        {# Titre principal - sera un h1 seulement sur la page d'accueil publique #}
-        {% if user is defined and user and user.firstname is defined and user.firstname %}
-            <p class="site-title">{{ user.firstname }} joue avec Miaou</p>
-        {% else %}
-            <p class="site-title">Apprendre avec Miaou</p>
-        {% endif %}
-        
-        {# Actions utilisateur #}
+        {# Section droite : Boutons d'action #}
         <div class="header-actions" role="group" aria-label="Actions utilisateur">
             {% if user is not defined or not user %}
                 {# Utilisateur non connecté #}
-                <a href="?route=login" class="action-button">
-                    <i class="fas fa-sign-in-alt icon-only" aria-hidden="true"></i>
-                    <span class="text-button">Se connecter</span>
+                <a href="?route=login" class="action-button" aria-label="Se connecter">
+                    <i class="fas fa-sign-in-alt" aria-hidden="true"></i>
+                    <span>Se connecter</span>
                 </a>
-                <a href="?route=register" class="action-button">
-                    <i class="fas fa-user-plus icon-only" aria-hidden="true"></i>
-                    <span class="text-button">S'inscrire</span>
+                <a href="?route=register" class="action-button btn-register" aria-label="S'inscrire">
+                    <i class="fas fa-user-plus" aria-hidden="true"></i>
+                    <span>S'inscrire</span>
                 </a>
             {% elseif user.role == 2 %}
                 {# Utilisateur admin #}
-                <a href="?route=logout" class="action-button">Se déconnecter</a>
-                <a href="?route=dashboard" class="action-button">Admin</a>
+                <a href="?route=logout" class="action-button" aria-label="Se déconnecter">
+                    <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
+                    <span>Déconnexion</span>
+                </a>
+                <a href="?route=dashboard" class="action-button btn-register" aria-label="Accéder au tableau de bord">
+                    <i class="fas fa-cog" aria-hidden="true"></i>
+                    <span>Admin</span>
+                </a>
             {% elseif user.role == 1 and user.statut == 1 %}
                 {# Utilisateur connecté et validé #}
-                <a href="?route=logout" class="action-button" id="logout">Se déconnecter</a>
-                <a href="?route=profile" class="action-button">Profil</a>
+                <a href="?route=logout" class="action-button" id="logout" aria-label="Se déconnecter">
+                    <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
+                    <span>Déconnexion</span>
+                </a>
+                <a href="?route=profile" class="action-button btn-register" aria-label="Voir mon profil">
+                    <i class="fas fa-user" aria-hidden="true"></i>
+                    <span>Profil</span>
+                </a>
             {% else %}
                 {# Utilisateur connecté mais non validé #}
-                <a href="?route=logout" class="action-button">Se déconnecter</a>
+                <a href="?route=logout" class="action-button" aria-label="Se déconnecter">
+                    <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
+                    <span>Déconnexion</span>
+                </a>
             {% endif %}
         </div>
     </div>
     
-    <div class="cache" aria-hidden="true"></div>
-    
-    {# Menu burger #}
-    <button id="openBtn" class="burger-btn" aria-label="Ouvrir le menu" aria-expanded="false">
-        <img class="burger-icon" src="assets/img/Miaou/menuBurger2.png" alt="" aria-hidden="true">
+    {# Menu burger (hors de la box, à gauche sur le fond noir) #}
+    <button id="openBtn" class="burger-btn" aria-label="Ouvrir le menu de navigation" aria-expanded="false">
+        {# <i class="fas fa-bars burger-icon" aria-hidden="true"></i> #}
+         <img src="assets/img/Miaou/burgerMenu.svg" alt="Menu" class="burger-icon" aria-hidden="true">
     </button>
+    
+    {# Overlay désactivé pour garder les couleurs éclatantes #}
+    <div class="cache" aria-hidden="true"></div>
 </header>
 
 {# Navigation principale #}
@@ -59,66 +83,66 @@
         {# Navigation publique #}
         <ul class="nav-links-container">
             <li>
-                <a href="?route=homepage" class="action-button">Page accueil</a>
+                <a href="?route=homepage">Page accueil</a>
             </li>
             <li>
-                <a href="?route=contact" class="action-button">Contact</a>
+                <a href="?route=contact">Contact</a>
             </li>
         </ul>
     {% elseif user.role == 2 %}
         {# Navigation Admin #}
         <ul id="nav-links-container">
-            <li id="homepageTime">
-                <a href="index.php?route=homepageUser" class="action-button">Accueil</a>
+            <li>
+                <a href="index.php?route=homepageUser">Accueil</a>
             </li>
             <li>
-                <a href="index.php?route=displayGame" class="action-button">Jeux</a>
+                <a href="index.php?route=contact">Contact</a>
             </li>
             <li>
-                <a href="index.php?route=stories" class="action-button">Histoires</a>
+                <a href="index.php?route=stories">Histoires</a>
             </li>
             <li>
-                <a href="index.php?route=coloriages" class="action-button">Coloriages</a>
+                <a href="index.php?route=coloriages">Coloriages</a>
             </li>
             <li>
-                <a href="index.php?route=dashboard" class="action-button">Dashboard</a>
+                <a href="index.php?route=displayGame">Jeux</a>
             </li>
         </ul>
     {% elseif user.role == 1 and user.statut == 1 %}
         {# Navigation Utilisateur validé #}
         <ul id="navUser-links-container">
-            <li id="homepageUserTime">
-                <a href="index.php?route=homepage" class="action-button">Ma Page</a>
+            <li>
+                <a href="index.php?route=homepage">Ma Page</a>
             </li>
             <li>
-                <a href="index.php?route=contact" class="action-button">Contact</a>
+                <a href="index.php?route=contact">Contact</a>
             </li>   
             <li>
-                <a href="index.php?route=stories" class="action-button">Histoires</a>
+                <a href="index.php?route=stories">Histoires</a>
             </li>
             <li>
-                <a href="index.php?route=coloriages" class="action-button">Coloriages</a>
+                <a href="index.php?route=coloriages">Coloriages</a>
             </li>  
             <li>
-                <a href="index.php?route=games" class="action-button">Jeux</a>
+                <a href="index.php?route=games">Jeux</a>
             </li>
         </ul>
     {% else %}
         {# Navigation limitée #}
         <ul id="nav-links-container">
             <li>
-                <a href="index.php?route=homepage" class="action-button">Accueil</a>
+                <a href="index.php?route=homepage">Accueil</a>
             </li>
             <li>
-                <a href="index.php?route=contact" class="action-button">Contact</a>
+                <a href="index.php?route=contact">Contact</a>
             </li>
             {% if user.statut == 0 %}
                 <li>
-                    <span class="action-button disabled" role="status">Compte en attente de validation</span>
+                    <span class="disabled" role="status" aria-live="polite">Compte en attente de validation</span>
                 </li>
             {% elseif user.statut == 3 %}
                 <li>
-                    <span class="action-button disabled" role="status">Compte suspendu</span>
+                    <span class="disabled" role="status" aria-live="polite">Compte suspendu</span>
                 </li>
             {% endif %}
         </ul>

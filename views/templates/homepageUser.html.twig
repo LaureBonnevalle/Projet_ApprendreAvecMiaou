@@ -1,0 +1,41 @@
+{% extends "layout.html.twig" %}
+
+{# Titre de la page #}
+{% block title %}
+Miaou | Accueil Utilisateur
+{% endblock %}
+
+{# Contenu spécifique à la page login #}
+{% block content %}
+{% block error %}
+    {% endblock %}
+<main>
+        
+        <section id="homepageUser" class ="homepageUser-content">
+                <h2>Bonjour {{ session.user.firstname }}!</h2>  
+                    <p>Tu es connecté au site Apprendre Avec Miaou</p>
+                    <p>Tu peux maintenant accéder aux jeux et activités du site.</p>
+                    <p>Que veux-tu faire maintenant?</p>
+                    
+                    <section class="cards">
+                        <article></article>
+                    </section>  
+            </section>
+        {#{% block error %}
+            {{ parent() }}
+            {% endblock %}#}
+        {#{% if success_message is defined %}
+            <p>{{ success_message }}</p>
+        {% endif %}
+        {% if error_message is defined %}
+            <p>{{ error_message }}</p>
+        {% endif %}#}
+        </main>
+        {% endblock %}
+        
+            
+           
+        
+       
+
+
