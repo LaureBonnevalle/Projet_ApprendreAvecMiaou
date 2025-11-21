@@ -366,6 +366,7 @@
 // ESPACEMENT ET FOND DU BODY
 // ====================================
 body {
+    max-width: 100vw;
     // 🎯 Mobile-first (par défaut) : image répétée verticalement
   background: 
     url('../../img/Miaou/backgroundMain.png') repeat-y center top,
@@ -410,12 +411,38 @@ body {
 }
 
 main {
-    padding-top:-24vh;
-    margin-top:-10vh;
-    background: transparent;
-    min-height: calc(100vh - 200px);
+   height: 150vh;
+  /* Réserve l’espace du header fixe */
+  padding-top: 13vh; /* hauteur du header en mobile */
+  margin-top: 0;
+
+  /* Réserve l’espace du footer fixe */
+  margin-bottom: 25vh; /* hauteur du footer */
+
+  background: transparent;
+  font-family: 'Comic Sans MS', 'Raleway', cursive;
+  min-height: 200vh; /* occupe toute la hauteur visible */
+  box-sizing: border-box;
 }
 
-/*@include mixins.breakpoint(medium-large) {
-        padding-top: clamp(280px, 38vh, 340px); // ✅ Augmenté pour compenser nav fixe
-    }*/
+@include mixins.breakpoint(small) {
+    main {
+    padding-top: calc(0vh + 15vh);              /* header + nav */
+    padding-bottom: 25vh;           /* footer */  
+    }
+}
+
+/* Tablette paysage et au-dessus : header + nav */
+@include mixins.breakpoint(medium) {
+  main {
+    padding-top: calc(0vh + 15vh); /* header + nav */
+    padding-bottom: 25vh;           /* footer */
+  }
+}
+
+@include mixins.breakpoint(medium-large) {
+  main {
+    padding-top: calc(10vh + 15vh); /* header + nav */
+    padding-bottom: 25vh;           /* footer */
+  }
+}
