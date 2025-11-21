@@ -1,5 +1,6 @@
 @use '../abstracts/varcolors';
 @use '../abstracts/mixins';
+@use 'sass:color'; // ✅ Import du module color pour les fonctions modernes
 
 // ====================================
 // HEADER PRINCIPAL
@@ -9,32 +10,29 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 21vh;
-    background-color: varcolors.$noir; // Fond noir
+    height: 18vh;
+    background-color: varcolors.$noir;
     z-index: varcolors.$z-header;
     padding: 1rem clamp(1rem, 3vw, 2rem);
 
     .rect {
         position: relative;
-        background-image: url('../../img/Miaou/backgroundHeader.jpg'); // Image chat dans l'herbe
+        background-image: url('../../img/Miaou/backgroundHeader.jpg');
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
         border: 5px solid transparent;
         border-image: linear-gradient(135deg, #FFC0CB 0%, #FF1493 30%, #B239ED 70%, #8B00FF 100%) 1;
-        border-radius: 20px; // Angles arrondis
+        border-radius: 20px;
         padding: clamp(1rem, 2vw, 1.5rem);
         display: flex;
         align-items: center;
         gap: clamp(0.5rem, 2vw, 1vw);
-        //min-height: clamp(120px, 18vw, 160px);
         height: 10vh;
         width: 87vw;
         overflow: hidden;
-        margin-bottom: 1rem; // Espace pour le burger
+        margin-bottom: 1rem;
         
-        
-        // Overlay léger pour améliorer la lisibilité
         &::before {
             content: '';
             position: absolute;
@@ -46,14 +44,12 @@
             pointer-events: none;
         }
 
-        // Contenu au-dessus de l'overlay
         > * {
             position: relative;
             z-index: 1;
         }
     }
 
-    // SECTION GAUCHE : Avatar + Titre
     .header-left {
         display: flex;
         align-items: center;
@@ -69,13 +65,7 @@
                 width: clamp(70px, 15vw, 100px);
                 height: clamp(70px, 14vw, 100px);
                 border-radius: 50%;
-                //border: 1px solid varcolors.$blanc;
-                /*box-shadow: 
-                    0 0 20px rgba(178, 57, 237, 0.6),
-                    0 0 40px rgba(255, 20, 147, 0.4),
-                    0 5px 15px rgba(0, 0, 0, 0.3);*/
                 object-fit: cover;
-                //background: varcolors.$blanc;
             }
         }
 
@@ -95,7 +85,6 @@
         }
     }
 
-    // SECTION DROITE : Boutons d'action
     .header-actions {
         display: flex;
         flex-direction: column;
@@ -106,7 +95,6 @@
         margin-right: 30px;
         margin-bottom: 1vh;
 
-
         .action-button {
             @include mixins.button-3d(varcolors.$rouge-main, varcolors.$rouge-dark, varcolors.$noir);
             font-family: 'Comic Sans MS', 'Raleway', cursive;
@@ -116,11 +104,10 @@
             text-align: center;
             white-space: nowrap;
             border-width: 1px;
-            box-shadow: 4px 6px 0px varcolors.$rouge-dark; // Ombre réduite
-
-            width: auto;       // ✅ largeur auto selon contenu
-    min-width: unset;  // ✅ supprime la contrainte min-width
-    max-width: unset;  // ✅ supprime la contrainte max-width
+            box-shadow: 4px 6px 0px varcolors.$rouge-dark;
+            width: auto;
+            min-width: unset;
+            max-width: unset;
 
             &:hover {
                 box-shadow: 3px 4px 0px varcolors.$rouge-dark;
@@ -134,7 +121,6 @@
                 font-size: 1.1em;
             }
 
-            // Bouton inscription (orange)
             &.btn-register {
                 background-color: varcolors.$orange-main;
                 border-color: varcolors.$noir;
@@ -151,87 +137,57 @@
         }
     }
 
-    // Bouton burger (HORS de la box, tout à gauche sur le fond noir)
-    
     .burger-btn {
         position: absolute;
-        bottom: 5vh;
-        left: 1vh; // Tout à gauche
-        //background: varcolors.$blanc;
-        
-        //border: 1px solid varcolors.$violet-main;
-        //border-radius: 50%;
+        bottom: 3vh;
+        left: 1vh;
         width: 0;
         height: 0;
-        //@include mixins.center-flex;
         cursor: pointer;
-        //box-shadow: 
-          //  0 0 10px rgba(178, 57, 237, 0.6),
-           // 0 0 10px rgba(255, 20, 147, 0.4),
-          //  4px 6px 0px varcolors.$violet-light;
-        //transition: all varcolors.$transition-normal;
         z-index: 10;
 
-       &:hover {
+        &:hover {
             transform: translate(2px, 2px);
-            //background-color: rgba(100, 93, 93, 0.3);
-            /*box-shadow: 
-                0 0 20px rgba(178, 57, 237, 0.8),
-                0 0 40px rgba(255, 20, 147, 0.5),
-                3px 4px 0px varcolors.$violet-light;*/
         }
 
         &:active {
             transform: translate(3px, 3px);
-            /*box-shadow: 
-                0 0 15px rgba(178, 57, 237, 0.6),
-                1px 2px 0px varcolors.$violet-light;*/
         }
 
-        /*.burger-icon {
-            width: 30px;
-            height: 30px;
-            color: varcolors.$violet-main;
-            font-size: 1.5rem;
-        }*/
-
-        // Masquer sur tablette paysage et plus
         @include mixins.breakpoint(medium-large) {
             display: none;
         }
     }
 
-    // Overlay cache - SUPPRIMÉ (plus d'assombrissement)
     .cache {
         display: none;
         pointer-events: none;
         
         &.active {
-            display: none; // Complètement désactivé
+            display: none;
             pointer-events: none;
         }
     }
 }
 
- @include mixins.breakpoint(mobile) {
+@include mixins.breakpoint(mobile) {
     .header-actions .action-button span {
-    display: none;   /* masque le texte */
-  }
+        display: none;
+    }
 
-  .header-actions .action-button {
-    padding: 0.6rem; /* réduit le padding pour centrer l’icône */
-    min-width: auto; /* évite largeur forcée */
-  }
- }
-
+    .header-actions .action-button {
+        padding: 0.6rem;
+        min-width: auto;
+    }
+}
 
 // ====================================
-// NAVIGATION (MENU BURGER MOBILE/TABLETTE PORTRAIT)
+// NAVIGATION
 // ====================================
 #nav {
     position: fixed;
     top: 0;
-    left: -100%; // Caché à gauche
+    left: -100%;
     width: auto;
     max-width: 320px;
     height: auto;
@@ -241,13 +197,11 @@
     transition: left varcolors.$transition-slow;
     overflow-y: auto;
     padding-top: clamp(140px, 25vh, 180px);
-    
 
     &.open {
-        left: 0; // Glisse depuis la gauche
+        left: 0;
     }
 
-    // Container des liens
     .nav-links-container,
     #nav-links-container,
     #navUser-links-container {
@@ -266,11 +220,9 @@
                 color: varcolors.$blanc;
                 text-decoration: none;
                 font-size: 1.1rem;
-                //font-weight: bold;
                 transition: all varcolors.$transition-normal;
                 position: relative;
 
-                // Bordure colorée en bas
                 &::after {
                     content: '';
                     position: absolute;
@@ -293,14 +245,12 @@
                 }
             }
 
-            // Couleurs par section (bordure en bas)
             &:nth-child(1) a::after { background-color: varcolors.$color-accueil; }
             &:nth-child(2) a::after { background-color: varcolors.$color-contact; }
             &:nth-child(3) a::after { background-color: varcolors.$color-histoires; }
             &:nth-child(4) a::after { background-color: varcolors.$color-coloriages; }
             &:nth-child(5) a::after { background-color: varcolors.$color-jeux; }
 
-            // État désactivé
             span.disabled {
                 opacity: 0.5;
                 cursor: not-allowed;
@@ -313,22 +263,23 @@
         }
     }
 
-    // Navigation desktop (horizontal avec boutons 3D)
+    // ✅ Navigation desktop COLLÉE au header
     @include mixins.breakpoint(medium-large) {
-        position: static;
+        position: fixed; // ✅ Fixed au lieu de static
+        top: 23vh; // ✅ Collé juste sous le header
+        left: 0;
         width: 100%;
         max-width: none;
         height: auto;
-        //background-color: varcolors.$noir;
+        background-color: varcolors.$noir; // ✅ Fond noir restauré
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
         padding-top: 0;
         padding-bottom: 1rem;
-
+        z-index: calc(varcolors.$z-header - 1); // ✅ Juste en dessous du header
 
         .nav-links-container,
         #nav-links-container,
         #navUser-links-container {
-           
             display: flex;
             flex-direction: row;
             justify-content: center;
@@ -339,7 +290,6 @@
             flex-wrap: wrap;
             font-family: 'Comic Sans MS', 'Raleway', cursive;
             font-weight: bold;
-            //color: varcolors.$noir;
             text-shadow: 
                 2px 2px 0 varcolors.$blanc,
                 -1px -1px 0 varcolors.$blanc,
@@ -352,7 +302,7 @@
                     padding: 0.8rem 2rem;
                     border-radius: varcolors.$radius-round;
                     border: 1px solid varcolors.$noir;
-                    box-shadow: 4px 6px 0px; // Ombre réduite
+                    box-shadow: 4px 6px 0px;
                     font-size: clamp(0.9rem, 1.5vw, 1.1rem);
                     color: varcolors.$noir;
 
@@ -370,7 +320,7 @@
                     }
                 }
 
-                // Couleurs des boutons par section
+                // ✅ Utilisation de color.adjust() au lieu de darken()
                 &:nth-child(1) a {
                     background-color: varcolors.$color-accueil;
                     box-shadow: 4px 6px 0px varcolors.$color-accueil-dark;
@@ -394,22 +344,21 @@
 
                 &:nth-child(4) a {
                     background-color: varcolors.$color-coloriages;
-                    box-shadow: 4px 6px 0px darken(varcolors.$color-coloriages, 15%);
+                    box-shadow: 4px 6px 0px color.adjust(varcolors.$color-coloriages, $lightness: -15%);
                     color: varcolors.$noir;
-                    &:hover { box-shadow: 3px 4px 0px darken(varcolors.$color-coloriages, 15%); }
-                    &:active { box-shadow: 1px 2px 0px darken(varcolors.$color-coloriages, 15%); }
+                    &:hover { box-shadow: 3px 4px 0px color.adjust(varcolors.$color-coloriages, $lightness: -15%); }
+                    &:active { box-shadow: 1px 2px 0px color.adjust(varcolors.$color-coloriages, $lightness: -15%); }
                 }
 
                 &:nth-child(5) a {
                     background-color: varcolors.$color-jeux;
-                    box-shadow: 4px 6px 0px darken(varcolors.$color-jeux, 15%);
+                    box-shadow: 4px 6px 0px color.adjust(varcolors.$color-jeux, $lightness: -15%);
                     color: varcolors.$noir;
-                    &:hover { box-shadow: 3px 4px 0px darken(varcolors.$color-jeux, 15%); }
-                    &:active { box-shadow: 1px 2px 0px darken(varcolors.$color-jeux, 15%); }
+                    &:hover { box-shadow: 3px 4px 0px color.adjust(varcolors.$color-jeux, $lightness: -15%); }
+                    &:active { box-shadow: 1px 2px 0px color.adjust(varcolors.$color-jeux, $lightness: -15%); }
                 }
             }
         }
-
     }
 }
 
@@ -417,7 +366,7 @@
 // ESPACEMENT ET FOND DU BODY
 // ====================================
 body {
-    padding-top: clamp(150px, 24vh, 200px);
+    padding-top: clamp(150px, 20vh, 200px);
     background: 
         url('../img/Miaou/nuages.png') repeat-x center top,
         linear-gradient(180deg, #87CEEB 0%, #E0F6FF 50%, #87CEEB 100%);
@@ -425,14 +374,13 @@ body {
     min-height: 100vh;
 
     @include mixins.breakpoint(medium-large) {
-        padding-top: clamp(220px, 32vh, 280px);
+        padding-top: clamp(280px, 38vh, 340px); // ✅ Augmenté pour compenser nav fixe
     }
 }
 
-// ====================================
-// MAIN CONTENT
-// ====================================
 main {
+    padding-top:-24vh;
+    margin-top:-10vh;
     background: transparent;
     min-height: calc(100vh - 200px);
 }

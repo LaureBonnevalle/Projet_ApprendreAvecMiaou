@@ -1,10 +1,9 @@
-@charset "UTF-8";
 #header {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  height: 21vh;
+  height: 18vh;
   background-color: #000000;
   z-index: 1000;
   padding: 1rem clamp(1rem, 3vw, 2rem);
@@ -56,10 +55,6 @@
   width: clamp(70px, 15vw, 100px);
   height: clamp(70px, 14vw, 100px);
   border-radius: 50%;
-  /*box-shadow: 
-      0 0 20px rgba(178, 57, 237, 0.6),
-      0 0 40px rgba(255, 20, 147, 0.4),
-      0 5px 15px rgba(0, 0, 0, 0.3);*/
   object-fit: cover;
 }
 #header .header-left .site-title {
@@ -139,7 +134,7 @@
 }
 #header .burger-btn {
   position: absolute;
-  bottom: 5vh;
+  bottom: 3vh;
   left: 1vh;
   width: 0;
   height: 0;
@@ -148,24 +143,9 @@
 }
 #header .burger-btn:hover {
   transform: translate(2px, 2px);
-  /*box-shadow: 
-      0 0 20px rgba(178, 57, 237, 0.8),
-      0 0 40px rgba(255, 20, 147, 0.5),
-      3px 4px 0px varcolors.$violet-light;*/
 }
 #header .burger-btn:active {
   transform: translate(3px, 3px);
-  /*box-shadow: 
-      0 0 15px rgba(178, 57, 237, 0.6),
-      1px 2px 0px varcolors.$violet-light;*/
-}
-#header .burger-btn {
-  /*.burger-icon {
-      width: 30px;
-      height: 30px;
-      color: varcolors.$violet-main;
-      font-size: 1.5rem;
-  }*/
 }
 @media (min-width: 850px) {
   #header .burger-btn {
@@ -183,11 +163,11 @@
 
 @media (max-width: 575px) {
   .header-actions .action-button span {
-    display: none; /* masque le texte */
+    display: none;
   }
   .header-actions .action-button {
-    padding: 0.6rem; /* réduit le padding pour centrer l’icône */
-    min-width: auto; /* évite largeur forcée */
+    padding: 0.6rem;
+    min-width: auto;
   }
 }
 #nav {
@@ -303,13 +283,17 @@
 }
 @media (min-width: 850px) {
   #nav {
-    position: static;
+    position: fixed;
+    top: 23vh;
+    left: 0;
     width: 100%;
     max-width: none;
     height: auto;
+    background-color: #000000;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     padding-top: 0;
     padding-bottom: 1rem;
+    z-index: 999;
   }
   #nav .nav-links-container,
   #nav #nav-links-container,
@@ -445,18 +429,20 @@
 }
 
 body {
-  padding-top: clamp(150px, 24vh, 200px);
+  padding-top: clamp(150px, 20vh, 200px);
   background: url("../img/Miaou/nuages.png") repeat-x center top, linear-gradient(180deg, #87CEEB 0%, #E0F6FF 50%, #87CEEB 100%);
   background-size: auto 100%, 100% 100%;
   min-height: 100vh;
 }
 @media (min-width: 850px) {
   body {
-    padding-top: clamp(220px, 32vh, 280px);
+    padding-top: clamp(280px, 38vh, 340px);
   }
 }
 
 main {
+  padding-top: -24vh;
+  margin-top: -10vh;
   background: transparent;
   min-height: calc(100vh - 200px);
 }
