@@ -1,11 +1,9 @@
 @use 'varcolors';
-body {
+@use 'sass:color'; // ✅ Module moderne pour les couleurs
 
-}
-
-
-
-// Mixin pour les media queries
+// ====================================
+// MIXINS MEDIA QUERIES
+// ====================================
 @mixin breakpoint($size) {
     @if $size == mobile {
         @media #{varcolors.$mobile} {
@@ -43,28 +41,33 @@ body {
         @media #{varcolors.$ultra} {
             @content;
         }
-    }
-     @else if $size == huge {
+    } @else if $size == huge {
         @media #{varcolors.$huge} {
             @content;
         }
     }
 }
 
-// Mixin alternatif si tu préfères passer directement la valeur
-//@mixin media-query($mq) {
- //   @media #{$mq} {
- //       @content;
-  //  }
-//}
+// ✅ Mixin pour range personnalisé
+@mixin custom-breakpoint($min, $max: null) {
+    @if $max {
+        @media (min-width: $min) and (max-width: $max) {
+            @content;
+        }
+    } @else {
+        @media (min-width: $min) {
+            @content;
+        }
+    }
+}
 
 // ====================================
-// MIXIN BOUTONS 3D
+// MIXIN BOUTONS 3D (VERSION MODERNE)
 // ====================================
 @mixin button-3d($bg-color, $shadow-color, $border-color: null) {
     background-color: $bg-color;
-    border: 1px solid if($border-color, $border-color, darken($bg-color, 10%));
-    box-shadow: 6px 6px 0px if($shadow-color, $shadow-color, darken($bg-color, 15%));
+    border: 1px solid if($border-color, $border-color, color.adjust($bg-color, $lightness: -10%));
+    box-shadow: 6px 6px 0px if($shadow-color, $shadow-color, color.adjust($bg-color, $lightness: -15%));
     border-radius: varcolors.$radius-round;
     padding: 0.8rem 1rem;
     font-weight: bold;
@@ -72,23 +75,61 @@ body {
     color: varcolors.$blanc;
     display: inline-flex;
     align-items: center;
+    justify-content: center; // ✅ Centre le contenu
     gap: 0.5rem;
     transition: all varcolors.$transition-normal;
     cursor: pointer;
+    box-sizing: border-box; // ✅ Inclut padding et border
+    
+    // ✅ Focus visible pour accessibilité
+    &:focus-visible {
+        outline: 3px solid varcolors.$violet-main;
+        outline-offset: 2px;
+    }
     
     &:hover {
         transform: translate(2px, 2px);
-        box-shadow: 4px 6px 0px if($shadow-color, $shadow-color, darken($bg-color, 10%));
+        box-shadow: 4px 4px 0px if($shadow-color, $shadow-color, color.adjust($bg-color, $lightness: -10%));
     }
     
     &:active {
         transform: translate(4px, 4px);
-        box-shadow: 2px 4px 0px if($shadow-color, $shadow-color, darken($bg-color, 15%));
+        box-shadow: 2px 2px 0px if($shadow-color, $shadow-color, color.adjust($bg-color, $lightness: -15%));
+    }
+
+    // ✅ État désactivé
+    &:disabled,
+    &[aria-disabled="true"] {
+        opacity: 0.6;
+        cursor: not-allowed;
+        
+        &:hover,
+        &:active {
+            transform: none;
+            box-shadow: 6px 6px 0px if($shadow-color, $shadow-color, color.adjust($bg-color, $lightness: -15%));
+        }
+    }
+}
+
+// ✅ Version responsive du bouton 3D
+@mixin button-3d-responsive($bg-color, $shadow-color, $border-color: null) {
+    @include button-3d($bg-color, $shadow-color, $border-color);
+    
+    padding: clamp(0.5rem, 1.5vw, 0.8rem) clamp(0.8rem, 2vw, 1.2rem);
+    font-size: clamp(0.85rem, 1.5vw, 1rem);
+    box-shadow: clamp(3px, 0.5vw, 6px) clamp(3px, 0.5vw, 6px) 0px if($shadow-color, $shadow-color, color.adjust($bg-color, $lightness: -15%));
+    
+    &:hover {
+        box-shadow: clamp(2px, 0.4vw, 4px) clamp(2px, 0.4vw, 4px) 0px if($shadow-color, $shadow-color, color.adjust($bg-color, $lightness: -10%));
+    }
+    
+    &:active {
+        box-shadow: clamp(1px, 0.2vw, 2px) clamp(1px, 0.2vw, 2px) 0px if($shadow-color, $shadow-color, color.adjust($bg-color, $lightness: -15%));
     }
 }
 
 // ====================================
-// BOUTONS PAR SECTION
+// BOUTONS PAR SECTION (VERSION MODERNE)
 // ====================================
 @mixin button-accueil {
     @include button-3d(varcolors.$violet-main, varcolors.$violet-dark);
@@ -99,19 +140,20 @@ body {
 }
 
 @mixin button-coloriages {
-    @include button-3d(varcolors.$vert-main, darken(varcolors.$vert-main, 15%));
+    @include button-3d(varcolors.$vert-main, color.adjust(varcolors.$vert-main, $lightness: -15%));
 }
 
 @mixin button-jeux {
-    @include button-3d(varcolors.$jaune-main, darken(varcolors.$jaune-main, 15%), varcolors.$noir);
-    color: varcolors.$noir; // Texte noir sur jaune
+    @include button-3d(varcolors.$jaune-main, color.adjust(varcolors.$jaune-main, $lightness: -15%), varcolors.$noir);
+    color: varcolors.$noir;
 }
+
 @mixin button-contact {
-    @include button-3d(varcolors.$deppblue-main, darken(varcolors.$deepblue-dark, 15%));
+    @include button-3d(varcolors.$deepblue-main, varcolors.$deepblue-dark);
 }
 
 @mixin button-pink {
-    @include button-3d(varcolors.$pink-main, darken(varcolors.$pink-dark, 15%))
+    @include button-3d(varcolors.$pink-main, varcolors.$pink-dark);
 }
 
 @mixin button-orange {
@@ -127,6 +169,11 @@ body {
 // ====================================
 @mixin section-border($color, $width: 3px) {
     border-left: $width solid $color;
+    
+    // ✅ Version responsive
+    @include breakpoint(mobile) {
+        border-left-width: clamp(2px, 0.5vw, $width);
+    }
 }
 
 // ====================================
@@ -141,6 +188,12 @@ body {
     background-color: $bg-color;
     z-index: varcolors.$z-overlay;
     transition: opacity varcolors.$transition-normal;
+    
+    // ✅ Accessibilité
+    &[aria-hidden="true"] {
+        pointer-events: none;
+        opacity: 0;
+    }
 }
 
 // ====================================
@@ -159,6 +212,12 @@ body {
     transform: translate(-50%, -50%);
 }
 
+// ✅ Centrage avec grid
+@mixin center-grid {
+    display: grid;
+    place-items: center;
+}
+
 // ====================================
 // MIXIN TEXTE TRONQUÉ
 // ====================================
@@ -172,5 +231,130 @@ body {
         -webkit-line-clamp: $lines;
         -webkit-box-orient: vertical;
         overflow: hidden;
+        text-overflow: ellipsis; // ✅ Fallback
     }
+}
+
+// ====================================
+// MIXINS RESPONSIVE
+// ====================================
+
+// ✅ Taille de police responsive
+@mixin fluid-font($min-size, $max-size, $min-vw: 320px, $max-vw: 1200px) {
+    font-size: clamp(#{$min-size}, calc(#{$min-size} + (#{$max-size} - #{$min-size}) * ((100vw - #{$min-vw}) / (#{$max-vw} - #{$min-vw}))), #{$max-size});
+}
+
+// ✅ Espacement responsive
+@mixin fluid-spacing($property, $min-size, $max-size) {
+    #{$property}: clamp(#{$min-size}, calc(#{$min-size} + (#{$max-size} - #{$min-size}) * ((100vw - 320px) / (1200 - 320))), #{$max-size});
+}
+
+// ✅ Container responsive avec marges égales
+@mixin responsive-container($max-width: 1200px, $padding: 1rem) {
+    max-width: $max-width;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: clamp(#{$padding}, 3vw, calc(#{$padding} * 2));
+    padding-right: clamp(#{$padding}, 3vw, calc(#{$padding} * 2));
+    box-sizing: border-box;
+    width: 100%;
+}
+
+// ====================================
+// MIXINS ACCESSIBILITÉ
+// ====================================
+
+// ✅ Masquer visuellement mais accessible aux lecteurs d'écran
+@mixin sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+// ✅ Annuler sr-only
+@mixin sr-only-focusable {
+    &:active,
+    &:focus {
+        position: static;
+        width: auto;
+        height: auto;
+        overflow: visible;
+        clip: auto;
+        white-space: normal;
+    }
+}
+
+// ✅ Focus visible amélioré
+@mixin focus-visible($color: varcolors.$violet-main, $width: 3px, $offset: 2px) {
+    &:focus-visible {
+        outline: $width solid $color;
+        outline-offset: $offset;
+        border-radius: varcolors.$radius-round;
+    }
+    
+    // Supprime l'outline par défaut sur focus non-clavier
+    &:focus:not(:focus-visible) {
+        outline: none;
+    }
+}
+
+// ✅ Animations respectueuses
+@mixin respect-motion {
+    @media (prefers-reduced-motion: reduce) {
+        animation: none !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+// ✅ Contraste élevé
+@mixin high-contrast {
+    @media (prefers-contrast: high) {
+        @content;
+    }
+}
+
+// ====================================
+// MIXINS UTILITAIRES
+// ====================================
+
+// ✅ Ratio d'aspect
+@mixin aspect-ratio($width, $height) {
+    aspect-ratio: #{$width} / #{$height};
+    
+    // Fallback pour anciens navigateurs
+    @supports not (aspect-ratio: 1 / 1) {
+        &::before {
+            content: '';
+            display: block;
+            padding-top: calc(#{$height} / #{$width} * 100%);
+        }
+    }
+}
+
+// ✅ Dégradé avec fallback
+@mixin gradient-background($start-color, $end-color, $direction: 135deg) {
+    background-color: $start-color; // Fallback
+    background-image: linear-gradient($direction, $start-color, $end-color);
+}
+
+// ✅ Ombre portée douce
+@mixin soft-shadow($color: rgba(0, 0, 0, 0.1)) {
+    box-shadow: 
+        0 2px 4px $color,
+        0 4px 8px color.adjust($color, $alpha: -0.05);
+}
+
+// ✅ Transition avec timing personnalisé
+@mixin smooth-transition($properties...) {
+    transition-property: $properties;
+    transition-duration: varcolors.$transition-normal;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    
+    @include respect-motion;
 }

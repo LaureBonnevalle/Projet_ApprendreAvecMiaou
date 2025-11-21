@@ -366,16 +366,47 @@
 // ESPACEMENT ET FOND DU BODY
 // ====================================
 body {
-    padding-top: clamp(150px, 20vh, 200px);
-    background: 
-        url('../img/Miaou/nuages.png') repeat-x center top,
-        linear-gradient(180deg, #87CEEB 0%, #E0F6FF 50%, #87CEEB 100%);
-    background-size: auto 100%, 100% 100%;
-    min-height: 100vh;
+    // 🎯 Mobile-first (par défaut) : image répétée verticalement
+  background: 
+    url('../../img/Miaou/backgroundMain.png') repeat-y center top,
+    linear-gradient(180deg, #87CEEB 0%, #E0F6FF 50%, #87CEEB 100%);
+  background-size: 100% auto, 100% 100%;
+  background-position: center top;
+  min-height: 100vh;
 
-    @include mixins.breakpoint(medium-large) {
-        padding-top: clamp(280px, 38vh, 340px); // ✅ Augmenté pour compenser nav fixe
-    }
+  // 📱 Small et Medium (tablette portrait) : toujours repeat-y
+  @include mixins.breakpoint(small) {
+    background-repeat: repeat-y, no-repeat;
+    background-size: 100% auto, 100% 100%;
+  }
+
+  @include mixins.breakpoint(medium) {
+    background-repeat: repeat-y, no-repeat;
+    background-size: 100% auto, 100% 100%;
+  }
+
+  // 💻 Large écrans classiques : cover
+  @include mixins.breakpoint(large) {
+    background-repeat: no-repeat, no-repeat;
+    background-size: cover, 100% 100%;
+    background-position: center top;
+  }
+
+  // 🖥️ Ultra grands écrans : repeat-x
+  @include mixins.breakpoint(ultra) {
+    background-repeat: repeat-x, no-repeat;
+    background-size: auto 100%, 100% 100%;
+    background-position: center top;
+  }
+
+  // 🖥️ Huge écrans : repeat-x
+  @include mixins.breakpoint(huge) {
+    background-repeat: repeat-x, no-repeat;
+    background-size: auto 100%, 100% 100%;
+    background-position: center top;
+  }
+
+   
 }
 
 main {
@@ -384,3 +415,7 @@ main {
     background: transparent;
     min-height: calc(100vh - 200px);
 }
+
+/*@include mixins.breakpoint(medium-large) {
+        padding-top: clamp(280px, 38vh, 340px); // ✅ Augmenté pour compenser nav fixe
+    }*/

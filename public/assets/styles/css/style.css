@@ -1,3 +1,4 @@
+@charset "UTF-8";
 #header {
   position: fixed;
   top: 0;
@@ -87,17 +88,31 @@
   color: #ffffff;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
   transition: all 0.3s ease;
   cursor: pointer;
+  box-sizing: border-box;
+}
+#header .header-actions .action-button:focus-visible {
+  outline: 3px solid #B239ED;
+  outline-offset: 2px;
 }
 #header .header-actions .action-button:hover {
   transform: translate(2px, 2px);
-  box-shadow: 4px 6px 0px #B71B10;
+  box-shadow: 4px 4px 0px #B71B10;
 }
 #header .header-actions .action-button:active {
   transform: translate(4px, 4px);
-  box-shadow: 2px 4px 0px #B71B10;
+  box-shadow: 2px 2px 0px #B71B10;
+}
+#header .header-actions .action-button:disabled, #header .header-actions .action-button[aria-disabled=true] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+#header .header-actions .action-button:disabled:hover, #header .header-actions .action-button:disabled:active, #header .header-actions .action-button[aria-disabled=true]:hover, #header .header-actions .action-button[aria-disabled=true]:active {
+  transform: none;
+  box-shadow: 6px 6px 0px #B71B10;
 }
 #header .header-actions .action-button {
   font-family: "Comic Sans MS", "Raleway", cursive;
@@ -429,14 +444,42 @@
 }
 
 body {
-  padding-top: clamp(150px, 20vh, 200px);
-  background: url("../img/Miaou/nuages.png") repeat-x center top, linear-gradient(180deg, #87CEEB 0%, #E0F6FF 50%, #87CEEB 100%);
-  background-size: auto 100%, 100% 100%;
+  background: url("../../img/Miaou/backgroundMain.png") repeat-y center top, linear-gradient(180deg, #87CEEB 0%, #E0F6FF 50%, #87CEEB 100%);
+  background-size: 100% auto, 100% 100%;
+  background-position: center top;
   min-height: 100vh;
 }
-@media (min-width: 850px) {
+@media (min-width: 576px) {
   body {
-    padding-top: clamp(280px, 38vh, 340px);
+    background-repeat: repeat-y, no-repeat;
+    background-size: 100% auto, 100% 100%;
+  }
+}
+@media (min-width: 768px) {
+  body {
+    background-repeat: repeat-y, no-repeat;
+    background-size: 100% auto, 100% 100%;
+  }
+}
+@media (min-width: 992px) {
+  body {
+    background-repeat: no-repeat, no-repeat;
+    background-size: cover, 100% 100%;
+    background-position: center top;
+  }
+}
+@media (min-width: 1600px) {
+  body {
+    background-repeat: repeat-x, no-repeat;
+    background-size: auto 100%, 100% 100%;
+    background-position: center top;
+  }
+}
+@media (min-width: 2000px) {
+  body {
+    background-repeat: repeat-x, no-repeat;
+    background-size: auto 100%, 100% 100%;
+    background-position: center top;
   }
 }
 
@@ -447,6 +490,9 @@ main {
   min-height: calc(100vh - 200px);
 }
 
+/*@include mixins.breakpoint(medium-large) {
+        padding-top: clamp(280px, 38vh, 340px); // ✅ Augmenté pour compenser nav fixe
+    }*/
 .catCSS {
   width: auto;
   display: flex;
