@@ -1,0 +1,234 @@
+@use '../abstracts/mixins';
+@use '../components/header';
+@use '../components/footer';
+
+// =================================
+// LOGIN CONTENT
+// =================================
+.login-content {
+  margin: 0 auto;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  flex: 1;
+  position: relative;
+
+  // 📱 Mobile & tablette portrait
+  min-height: calc(100vh - 50vh);
+
+  // 📲 Tablette paysage et au-dessus
+  @include mixins.breakpoint(medium)       { min-height: calc(100vh - 60vh); }
+  @include mixins.breakpoint(medium-large) { min-height: calc(100vh - 60vh); }
+  @include mixins.breakpoint(large)        { min-height: calc(100vh - 60vh); }
+  @include mixins.breakpoint(larger)       { min-height: calc(100vh - 60vh); }
+  @include mixins.breakpoint(extra)        { min-height: calc(100vh - 60vh); }
+  @include mixins.breakpoint(extra-large)  { min-height: calc(100vh - 60vh); }
+  @include mixins.breakpoint(ultra)        { min-height: calc(100vh - 60vh); }
+  @include mixins.breakpoint(huge)         { min-height: calc(100vh - 60vh); }
+
+  // Pseudo-élément pour l'image de fond
+  &::before {
+    content: "";
+    background-image: url("../../img/Miaou/backgroundMain.png");
+    background-size: cover;
+    opacity: 0.6;
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: -1;
+  }
+}
+
+// =================================
+// LOGIN (mobile first)
+// =================================
+@include mixins.breakpoint(custom) {
+  #login {
+    padding-top: 0vh;
+    margin-top: 0;
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    padding-inline: 1rem;
+    box-sizing: border-box;
+    z-index: 980;
+    background-color: transparent;
+
+    &::before {
+      content: "";
+      //background-image: url("../../img/Miaou/backgroundMain.png");
+      background-size: cover;
+      //opacity: 0.6;
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      max-width: 400px;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px; height: 1px;
+      padding: 0; margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    margin: 0 auto;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    // 📱 Mobile & tablette portrait
+    min-height: calc(100vh - 50vh);
+
+    // 📲 Tablette paysage et au-dessus
+    @include mixins.breakpoint(medium)       { min-height: calc(100vh - 60vh); }
+    @include mixins.breakpoint(medium-large) { min-height: calc(100vh - 60vh); }
+    @include mixins.breakpoint(large)        { min-height: calc(100vh - 60vh); }
+    @include mixins.breakpoint(larger)       { min-height: calc(100vh - 60vh); }
+    @include mixins.breakpoint(extra)        { min-height: calc(100vh - 60vh); }
+    @include mixins.breakpoint(extra-large)  { min-height: calc(100vh - 60vh); }
+    @include mixins.breakpoint(ultra)        { min-height: calc(100vh - 60vh); }
+    @include mixins.breakpoint(huge)         { min-height: calc(100vh - 60vh); }
+  }
+}
+
+// =================================
+// LOGIN FORM
+// =================================
+#login-form {
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  h3 {
+    background-color: #5C5454;
+    color: white;
+    text-align: center;
+    border-radius: 15px 15px 0 0;
+    font-size: clamp(1rem, 3vw, 1.2rem);
+    width: 100%;
+    max-width: 90vw;
+    min-height: 40px;
+    margin: 0 auto;
+    padding: 1vh 1vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+
+  .container-login {
+    background-image: url('../../img/Miaou/chatAuth.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100%;
+    max-width: 90vw;
+    min-height: 50vh;
+    max-height: 400px;
+    margin: 0 auto;
+    padding: 2vh 1vw;
+    border: 2px solid #5C5454;
+    border-radius: 0 0 15px 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+  }
+
+  label {
+    margin-bottom: 0.3rem;
+    font-size: 0.9rem;
+  }
+
+  input[type="email"],
+  input[type="password"], 
+  input[type="text"] {
+    width: 98%;
+    max-width: 300px;
+    height: 5vh;
+    min-height: 35px;
+    border-radius: 25px;
+    background-color: rgba(255, 255, 255, 0.8);
+    margin: 1vh auto;
+    padding: 0 2.2rem 0 1rem; // ✅ espace ajusté pour l’icône œil
+    font-size: 0.9rem;
+    box-sizing: border-box;
+  }
+
+  .password-container {
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+
+    .eyes {
+      position: absolute;
+      right: 0.8rem; // ✅ rapproché du bord intérieur
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #666;
+      font-size: 1.1rem; // légèrement réduit
+      pointer-events: auto;
+    }
+  }
+
+  input[type="submit"] {
+    width: 70%;
+    max-width: 250px;
+    height: 6vh;
+    min-height: 40px;
+    margin: 2vh auto;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-weight: bold;
+    background-color: #5C5454;
+    color: white;
+    cursor: pointer;
+    border: none;
+  }
+}
+
+// =================================
+// RESPONSIVE BREAKPOINTS
+// =================================
+@include mixins.breakpoint(custom) {
+  #login-form {
+    h3 { max-width: 400px; }
+    .container-login { 
+        max-width: 400px;
+        max-height: 400px;
+     }
+  }
+}
+
+@include mixins.breakpoint(medium) {
+  #login-form {
+    h3, .container-login { max-width: 400px; }
+  }
+}
+
+@include mixins.breakpoint(large) {
+  #login-form {
+    h3, .container-login { max-width: 400px; }
+  }
+}
+
+@include mixins.breakpoint(ultra) {
+  #login-form {
+    h3, .container-login { max-width: 400px; }
+  }
+}
+
+@include mixins.breakpoint(huge) {
+  #login-form {
+    h3, .container-login { max-width: 400px; }
+  }
+}

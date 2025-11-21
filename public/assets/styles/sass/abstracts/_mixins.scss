@@ -5,7 +5,11 @@
 // MIXINS MEDIA QUERIES
 // ====================================
 @mixin breakpoint($size) {
-    @if $size == mobile {
+    @if $size == custom {
+        @media #{varcolors.$custom} {
+            @content;
+        }
+     } @else if $size == mobile {
         @media #{varcolors.$mobile} {
             @content;
         }

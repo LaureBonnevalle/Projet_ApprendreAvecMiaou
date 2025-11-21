@@ -60,7 +60,7 @@ abstract class AbstractController
     protected function getDefaultScripts(): array {
         
         return [
-            'public/assets/js/common.js',
+            'assets/js/common.js',
             'public/assets/js/home.js',
             'assets/js/header.js',
             'assets/js/footer.js'

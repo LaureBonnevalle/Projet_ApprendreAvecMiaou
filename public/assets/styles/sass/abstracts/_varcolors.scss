@@ -1,7 +1,8 @@
 // ====================================
 // BREAKPOINTS
 // ====================================
-$mobile: '(max-width: 575px)';
+$custom: '(max-width: 430px)';
+$mobile: '(min-width: 431px)';
 $small: '(min-width: 576px)';
 $medium: '(min-width: 768px)';
 $mediumLarge: '(min-width: 850px)';

@@ -170,7 +170,7 @@
     }
 }
 
-@include mixins.breakpoint(mobile) {
+@include mixins.breakpoint(custom) {
     .header-actions .action-button span {
         display: none;
     }
@@ -180,6 +180,18 @@
         min-width: auto;
     }
 }
+
+@include mixins.breakpoint(mobile) {
+    .header-actions .action-button span {
+        display: inline;
+    }
+
+    .header-actions .action-button {
+        padding: 0.6rem;
+        min-width: auto;
+    }
+}
+
 
 // ====================================
 // NAVIGATION
