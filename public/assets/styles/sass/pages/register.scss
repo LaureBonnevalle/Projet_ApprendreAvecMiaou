@@ -1,0 +1,567 @@
+@use '../abstracts/varcolors';
+@use '../abstracts/mixins';
+@use '../components/header';
+@use '../components/footer';
+
+// =================================
+// CONTENEUR PRINCIPAL REGISTER
+// =================================
+.register-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 20vh);
+  padding: clamp(2rem, 5vh, 4rem) clamp(1rem, 3vw, 2rem);
+  width: 100%;
+  box-sizing: border-box;
+  position: relative;
+
+  // ✅ Classe sr-only pour accessibilité
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+}
+
+// =================================
+// FORMULAIRE D'INSCRIPTION (FENÊTRE)
+// =================================
+.register-form {
+  width: 100%;
+  max-width: clamp(350px, 92vw, 550px);
+  background-color: #FAF7ED; // ✅ Fond beige clair
+  border: 4px solid #5C5454; // ✅ Bordure grise foncée
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  position: relative;
+
+  // ✅ Header style fenêtre (barre de titre)
+  &::before {
+    content: 'Pour vous inscrire : Remplissez et validez le formulaire';
+    display: block;
+    background-color: #5C5454;
+    color: varcolors.$blanc;
+    padding: clamp(0.8rem, 2vh, 1.2rem) clamp(1rem, 3vw, 1.5rem);
+    font-family: 'Comic Sans MS', 'Raleway', cursive;
+    font-size: clamp(0.95rem, 2vw, 1.15rem);
+    font-weight: bold;
+    text-align: center;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  // ✅ Container interne avec image de fond
+  .form-container {
+    background-image: url('../../img/Miaou/chatAuth.png'); // ✅ Même fond que login
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: clamp(1.5rem, 3vh, 2.5rem) clamp(1rem, 3vw, 2rem);
+    position: relative;
+
+    // Améliore lisibilité
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.85); // ✅ Overlay pour lisibilité
+      pointer-events: none;
+    }
+
+    > * {
+      position: relative;
+      z-index: 1;
+    }
+  }
+
+  // ✅ Articles (sections du formulaire)
+  article {
+    margin-bottom: clamp(1rem, 2.5vh, 1.8rem);
+
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+  }
+
+  // ✅ Fieldsets
+  fieldset {
+    border: 2px solid #5C5454;
+    border-radius: 15px;
+    padding: clamp(1rem, 2.5vh, 1.5rem);
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+
+    legend {
+      font-family: 'Comic Sans MS', 'Raleway', cursive;
+      font-size: clamp(1rem, 2.2vw, 1.2rem);
+      font-weight: bold;
+      color: #5C5454;
+      padding: 0 0.8rem;
+      background-color: #FAF7ED;
+      border-radius: 8px;
+    }
+  }
+
+  // ✅ Labels
+  label {
+    display: block;
+    font-family: 'Comic Sans MS', 'Raleway', cursive;
+    font-size: clamp(0.9rem, 2vw, 1rem);
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.4rem;
+    margin-top: clamp(0.8rem, 1.5vh, 1.2rem);
+
+    &:first-of-type {
+      margin-top: 0;
+    }
+  }
+
+  // ✅ Inputs text, email, number
+  input[type="email"],
+  input[type="text"],
+  input[type="number"] {
+    width: 100%;
+    height: clamp(40px, 6vh, 50px);
+    border-radius: 25px;
+    background-color: varcolors.$blanc;
+    border: 2px solid #5C5454;
+    padding: 0 clamp(1rem, 3vw, 1.5rem);
+    font-size: clamp(0.9rem, 2vw, 1rem);
+    font-family: 'Comic Sans MS', 'Raleway', cursive;
+    box-sizing: border-box;
+    transition: all varcolors.$transition-normal;
+
+    &:focus {
+      outline: 3px solid varcolors.$violet-main;
+      outline-offset: 2px;
+      background-color: #FAFAFA;
+      box-shadow: 0 2px 8px rgba(178, 57, 237, 0.3);
+    }
+
+    &::placeholder {
+      color: #999;
+      font-style: italic;
+    }
+
+    // ✅ État invalide
+    &:invalid:not(:placeholder-shown) {
+      border-color: #d32f2f;
+    }
+  }
+
+  // ✅ Input number (enlever les spinners)
+  input[type="number"] {
+    -moz-appearance: textfield;
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  }
+
+  // ✅ Messages d'erreur
+  .error-message {
+    color: #d32f2f;
+    font-size: clamp(0.8rem, 1.8vw, 0.9rem);
+    font-weight: bold;
+    margin-top: 0.4rem;
+    min-height: 1.2em;
+    background-color: rgba(211, 47, 47, 0.1);
+    padding: 0.3rem 0.6rem;
+    border-radius: 8px;
+    display: none;
+
+    &:not(:empty) {
+      display: block;
+    }
+  }
+
+  // =================================
+  // SECTION AVATARS
+  // =================================
+  .avatar {
+    fieldset {
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: clamp(0.8rem, 2vh, 1.2rem) 0 0 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+        gap: clamp(0.8rem, 2vw, 1.2rem);
+        justify-items: center;
+
+        li {
+          margin: 0;
+        }
+      }
+    }
+
+    .avatars {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      input[type="radio"] {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+
+        // ✅ Avatar sélectionné
+        &:checked + label {
+          img {
+            border: 4px solid varcolors.$violet-main;
+            box-shadow: 
+              0 0 0 2px varcolors.$blanc,
+              0 0 15px rgba(178, 57, 237, 0.6);
+            transform: scale(1.1);
+          }
+        }
+
+        // ✅ Focus visible
+        &:focus-visible + label {
+          img {
+            outline: 3px solid varcolors.$violet-main;
+            outline-offset: 4px;
+          }
+        }
+      }
+
+      label {
+        cursor: pointer;
+        margin: 0;
+        display: block;
+
+        img {
+          width: clamp(65px, 15vw, 85px);
+          height: clamp(65px, 15vw, 85px);
+          border-radius: 50%;
+          border: 3px solid #5C5454;
+          object-fit: cover;
+          transition: all varcolors.$transition-normal;
+          background-color: varcolors.$blanc;
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+
+          &:hover {
+            transform: scale(1.05);
+            border-color: varcolors.$violet-light;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+          }
+        }
+      }
+    }
+  }
+
+  // =================================
+  // SECTION NEWSLETTER
+  // =================================
+  .news {
+    fieldset {
+      div {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+
+        input[type="checkbox"] {
+          width: clamp(20px, 4vw, 24px);
+          height: clamp(20px, 4vw, 24px);
+          cursor: pointer;
+          accent-color: varcolors.$violet-main;
+          flex-shrink: 0;
+
+          &:focus-visible {
+            outline: 3px solid varcolors.$violet-main;
+            outline-offset: 2px;
+          }
+        }
+
+        label {
+          margin: 0;
+          font-size: clamp(0.9rem, 2vw, 1rem);
+          cursor: pointer;
+          flex: 1;
+        }
+      }
+    }
+  }
+
+  // =================================
+  // BOUTON SUBMIT
+  // =================================
+  .submit-btn {
+    fieldset {
+      border: none;
+      padding: 0;
+      background: transparent;
+      box-shadow: none;
+      display: flex;
+      justify-content: center;
+      margin-top: clamp(1rem, 2vh, 1.5rem);
+    }
+
+    .register-btn {
+      width: 100%;
+      max-width: clamp(200px, 60vw, 280px);
+      height: clamp(50px, 8vh, 60px);
+      border-radius: 30px;
+      font-size: clamp(1rem, 2.5vw, 1.3rem);
+      font-weight: bold;
+      font-family: 'Comic Sans MS', 'Raleway', cursive;
+      background-color: #5C5454;
+      color: varcolors.$blanc;
+      cursor: pointer;
+      border: 3px solid #3d3434;
+      box-sizing: border-box;
+      transition: all 0.15s ease;
+      
+      // ✅ Effet 3D cartoon
+      box-shadow: 
+        0 6px 0 #3d3434,
+        0 8px 12px rgba(0, 0, 0, 0.3);
+      position: relative;
+      transform: translateY(0);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+
+      &:hover {
+        background-color: #6d6060;
+        transform: translateY(2px);
+        box-shadow: 
+          0 4px 0 #3d3434,
+          0 6px 10px rgba(0, 0, 0, 0.3);
+      }
+
+      &:active {
+        transform: translateY(6px);
+        box-shadow: 
+          0 0 0 #3d3434,
+          0 2px 6px rgba(0, 0, 0, 0.3);
+      }
+
+      &:focus-visible {
+        outline: 3px solid varcolors.$violet-main;
+        outline-offset: 4px;
+      }
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        
+        &:hover,
+        &:active {
+          transform: translateY(0);
+          box-shadow: 
+            0 6px 0 #3d3434,
+            0 8px 12px rgba(0, 0, 0, 0.3);
+        }
+      }
+    }
+  }
+
+  // ✅ Input caché (CSRF token)
+  input[type="hidden"] {
+    display: none;
+  }
+}
+
+// =================================
+// RESPONSIVE
+// =================================
+
+// ✅ Très petits écrans (< 375px)
+@media (max-width: 374px) {
+  .register-form {
+    max-width: 95vw;
+
+    &::before {
+      font-size: 0.85rem;
+      padding: 0.7rem 0.8rem;
+    }
+
+    .form-container {
+      padding: 1rem 0.8rem;
+    }
+
+    fieldset {
+      padding: 0.8rem;
+    }
+
+    .avatar {
+      fieldset ul {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+  }
+}
+
+// ✅ Mobile (375px - 767px)
+@include mixins.breakpoint(mobile) {
+  .register-content {
+    min-height: calc(100vh - 25vh);
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .register-form {
+    max-width: 95vw;
+
+    .avatar {
+      fieldset ul {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+  }
+}
+
+// ✅ Tablette portrait (768px - 1023px)
+@include mixins.breakpoint(medium) {
+  .register-content {
+    min-height: calc(100vh - 30vh);
+  }
+
+  .register-form {
+    max-width: 500px;
+
+    .avatar {
+      fieldset ul {
+        grid-template-columns: repeat(5, 1fr);
+      }
+    }
+  }
+}
+
+// ✅ Desktop (1024px+)
+@include mixins.breakpoint(medium-large) {
+  .register-content {
+    min-height: calc(100vh - 35vh);
+    padding-top: 3rem;
+  }
+
+  .register-form {
+    max-width: 550px;
+
+    &::before {
+      font-size: 1.2rem;
+    }
+
+    .avatar {
+      fieldset ul {
+        grid-template-columns: repeat(6, 1fr);
+      }
+    }
+  }
+}
+
+// ✅ Grands écrans (1440px+)
+@include mixins.breakpoint(large) {
+  .register-form {
+    max-width: 600px;
+  }
+}
+
+// =================================
+// ACCESSIBILITÉ
+// =================================
+
+// ✅ Mode High Contrast
+@media (prefers-contrast: high) {
+  .register-form {
+    border-width: 5px;
+
+    input,
+    fieldset {
+      border-width: 3px;
+    }
+
+    .register-btn {
+      border-width: 4px;
+    }
+  }
+}
+
+// ✅ Réduction des animations
+@media (prefers-reduced-motion: reduce) {
+  .register-form {
+    input,
+    .register-btn,
+    .avatars label img {
+      transition: none !important;
+    }
+  }
+}
+
+// =================================
+// AMÉLIORATION UX
+// =================================
+
+// ✅ Indicateur de champ requis
+.register-form {
+  label {
+    &.required::after {
+      content: ' *';
+      color: #d32f2f;
+      font-weight: bold;
+    }
+  }
+
+  // ✅ Message de succès (si nécessaire)
+  .success-message {
+    background-color: rgba(76, 175, 80, 0.1);
+    color: #2e7d32;
+    border: 2px solid #4caf50;
+    border-radius: 12px;
+    padding: clamp(0.8rem, 2vh, 1.2rem);
+    margin-bottom: clamp(1rem, 2vh, 1.5rem);
+    font-family: 'Comic Sans MS', 'Raleway', cursive;
+    font-weight: 600;
+    text-align: center;
+    display: none;
+
+    &.show {
+      display: block;
+    }
+  }
+}
+
+// ✅ État de chargement du bouton
+.register-btn {
+  &.loading {
+    position: relative;
+    color: transparent;
+    pointer-events: none;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 24px;
+      height: 24px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-top-color: varcolors.$blanc;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
