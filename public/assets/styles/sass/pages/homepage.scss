@@ -6,7 +6,7 @@
 .homepage-content {
   //width: 100%;
   //max-width: 100%; // limite la largeur pour éviter de dépasser
-  margin: 0 auto;
+  margin: 8vh auto;
   padding:0;
   display: flex;
   flex-direction: column;
@@ -18,6 +18,20 @@
 
   // 📲 Tablette paysage et au-dessus
   // Header = 25vh + Nav = 10vh + Footer = 25vh → reste = 40vh
+  
+  @include mixins.breakpoint(custom) {
+    min-height: calc(100vh - 60vh);
+    
+  }
+  @include mixins.breakpoint(mobile) {
+    min-height: calc(100vh - 60vh);
+    .homepage-content {
+       padding: 25vh;
+    }
+  }
+  @include mixins.breakpoint(small) {
+    min-height: calc(100vh - 60vh);
+  }
   @include mixins.breakpoint(medium) {
     min-height: calc(100vh - 60vh);
   }

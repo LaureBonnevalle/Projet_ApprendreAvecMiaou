@@ -1,0 +1,45 @@
+<div id="customModal" class="modal" role="dialog" aria-labelledby="modal-title" aria-describedby="modal-message" aria-hidden="true">
+    <div class="modal-content" role="document">
+        
+        {# Header avec titre et bouton fermer #}
+        <div class="modal-header">
+            <h2 id="modal-title" class="modal-title">Titre de la modale</h2>
+            
+            {# Bouton fermer accessible au clavier #}
+            <button 
+                type="button"
+                class="close-button" 
+                aria-label="Fermer la fenêtre de dialogue"
+                tabindex="0"
+            >
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        {# Corps de la modale #}
+        <div class="modal-body">
+            {# Container pour l'illustration du chat (background géré par CSS) #}
+            <div id="modal-illustration-container">
+                {# 
+                    Les classes CSS seront ajoutées dynamiquement par JS :
+                    - illustration-inquiet
+                    - illustration-stop  
+                    - illustration-danger
+                #}
+                <div id="modal-illustration" class="illustration-placeholder" role="img" aria-label="Illustration du message"></div>
+            </div>
+
+            {# Bulle de texte avec le message #}
+            <div id="modal-text-bubble">
+                <p id="modal-message">Message de la modale</p>
+            </div>
+        </div>
+
+        {# Footer avec les boutons d'action #}
+        <div class="modal-footer">
+            <div id="modal-actions" role="group" aria-label="Actions disponibles">
+                {# Les boutons seront injectés dynamiquement par JavaScript #}
+            </div>
+        </div>
+    </div>
+</div>

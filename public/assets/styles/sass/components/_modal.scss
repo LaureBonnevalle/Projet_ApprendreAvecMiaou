@@ -1,0 +1,353 @@
+@use '../abstracts/varcolors';
+@use '../abstracts/mixins';
+@use 'sass:color';
+
+// ====================================
+// VARIABLES MODALE
+// ====================================
+$modal-font-family: 'Comic Sans MS', 'Raleway', cursive, sans-serif;
+$modal-button-bg: #5C5454;
+$modal-button-shadow: #3D3434;
+$modal-button-bg-hover: #6d6060;
+$modal-button-tertiary-bg: #28a745; // Vert pour "Oui"
+$modal-button-tertiary-hover: color.adjust(#28a745, $lightness: -10%);
+
+// ====================================
+// CONTENEUR GLOBAL DE LA MODALE
+// ====================================
+.modal {
+    display: none; // Caché par défaut
+    position: fixed;
+    z-index: 1000; // ✅ Utilise la variable z-index
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.7); // ✅ Overlay plus sombre
+    font-family: $modal-font-family;
+    
+    // ✅ Transitions fluides
+    &[style*="display: block"] {
+        animation: fadeIn 0.3s ease-in-out;
+    }
+}
+
+// ✅ Animation d'apparition
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+// ====================================
+// CONTENU DE LA MODALE (LA BOÎTE)
+// ====================================
+.modal-content {
+    background-color: #FAF7ED;
+    margin: clamp(5%, 10vh, 10%) auto; // ✅ Marge responsive
+    padding: 0;
+    border: 3px solid $modal-button-shadow;
+    width: clamp(280px, 90%, 500px); // ✅ Largeur responsive
+    border-radius: 12px;
+    position: relative;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3); // ✅ Ombre plus prononcée
+    animation: slideIn 0.4s ease-out;
+
+    // ✅ Animation d'apparition
+    @keyframes slideIn {
+        from {
+            transform: translateY(-50px);
+            opacity: 0;
+        }
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    // ✅ Responsive mobile
+    @include mixins.breakpoint(mobile) {
+        margin-top: 5%;
+        width: 95%;
+        max-width: 400px;
+    }
+}
+
+// ====================================
+// BANDEAU/TITRE (HEADER)
+// ====================================
+.modal-header {
+    padding: clamp(0.8rem, 2vh, 1.2rem) clamp(1rem, 3vw, 1.5rem);
+    background-color: $modal-button-bg;
+    color: #FAF7ED;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.modal-title,
+#modal-title {
+    margin: 0 auto;
+    font-size: clamp(1.2rem, 3vw, 1.5rem);
+    font-weight: bold;
+    flex-grow: 1;
+    text-align: center;
+}
+
+// ✅ Bouton de fermeture amélioré
+.close-button {
+    color: #FAF7ED;
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    cursor: pointer;
+    line-height: 1;
+    background: transparent;
+    border: none;
+    padding: 0;
+    width: clamp(30px, 5vw, 40px);
+    height: clamp(30px, 5vw, 40px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all varcolors.$transition-normal;
+    border-radius: 50%;
+    flex-shrink: 0;
+
+    // ✅ Focus visible
+    &:focus-visible {
+        outline: 3px solid varcolors.$violet-main;
+        outline-offset: 2px;
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.15);
+        transform: scale(1.1);
+    }
+
+    &:active {
+        transform: scale(0.95);
+    }
+}
+
+// ====================================
+// CORPS DE LA MODALE (BODY)
+// ====================================
+.modal-body {
+    padding: clamp(1rem, 3vh, 2rem);
+    text-align: center;
+    position: relative;
+    border-bottom: 2px solid $modal-button-shadow;
+}
+
+// ✅ Bulle de texte
+#modal-text-bubble {
+    background: varcolors.$blanc;
+    padding: clamp(0.8rem, 2vh, 1.2rem) clamp(1rem, 3vw, 1.5rem);
+    border-radius: 20px;
+    border: 2px solid $modal-button-shadow;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: clamp(0.8rem, 2vh, 1.2rem);
+}
+
+#modal-message {
+    margin: 0;
+    font-weight: 500;
+    font-size: clamp(0.95rem, 2vw, 1.1rem);
+    line-height: 1.5;
+    color: #333;
+}
+
+// ✅ Container d'illustration
+#modal-illustration-container {
+    height: clamp(100px, 15vh, 140px);
+    margin-bottom: clamp(0.8rem, 2vh, 1.2rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+// ✅ Placeholder pour l'illustration (background géré par CSS)
+.illustration-placeholder {
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    transition: background-image 0.3s ease-in-out;
+}
+
+// ✅ Classes spécifiques pour chaque illustration
+.illustration-inquiet {
+    background-image: url('../../img/Miaou/chatMontre.svg'); // ✅ Adaptez le chemin
+}
+
+.illustration-stop {
+    background-image: url('../../img/Miaou/chatAttention.svg'); // ✅ Adaptez le chemin
+}
+
+.illustration-danger {
+    background-image: url('../../img/Miaou/chatDanger.svg'); // ✅ Adaptez le chemin
+}
+
+// ====================================
+// BOUTONS D'ACTION (FOOTER)
+// ====================================
+.modal-footer {
+    padding: clamp(1rem, 3vh, 1.5rem);
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    gap: clamp(0.8rem, 2vw, 1rem);
+    flex-wrap: wrap;
+}
+
+#modal-actions {
+    display: flex;
+    gap: clamp(0.8rem, 2vw, 1rem);
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+// ✅ Styles des boutons (OK, Non)
+.modal-footer button,
+.modal-footer a {
+    @include mixins.button-3d(
+        $modal-button-bg,
+        $modal-button-shadow,
+        $modal-button-shadow
+    );
+
+    // Style adaptatif
+    width: auto;
+    min-width: clamp(90px, 20vw, 120px);
+    height: clamp(40px, 6vh, 50px);
+    padding: 0 clamp(1rem, 3vw, 1.8rem);
+    margin: 0;
+    
+    font-size: clamp(0.9rem, 2vw, 1.1rem);
+    font-weight: bold;
+    font-family: $modal-font-family;
+    text-decoration: none;
+    text-align: center;
+    line-height: clamp(40px, 6vh, 50px);
+    
+    border-radius: 25px;
+    color: #FAF7ED;
+    
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    
+    transition: all varcolors.$transition-normal;
+    cursor: pointer;
+
+    &:hover {
+        background-color: $modal-button-bg-hover;
+    }
+
+    // ✅ Focus visible
+    &:focus-visible {
+        outline: 3px solid varcolors.$violet-main;
+        outline-offset: 3px;
+    }
+
+    // ✅ État désactivé
+    &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        
+        &:hover {
+            transform: none;
+        }
+    }
+
+    // ✅ Mobile : boutons empilés
+    @include mixins.breakpoint(mobile) {
+        width: 100%;
+        max-width: 250px;
+        margin: 0.5rem auto;
+    }
+}
+
+// ✅ Style spécifique pour le bouton "Oui" (Vert)
+.btn-tertiary {
+    @include mixins.button-3d(
+        $modal-button-tertiary-bg,
+        $modal-button-shadow,
+        $modal-button-shadow
+    );
+
+    &:hover {
+        background-color: $modal-button-tertiary-hover;
+    }
+}
+
+// ✅ Style optionnel pour le bouton "Non" (peut être différencié)
+.btn-secondary {
+    background-color: color.adjust($modal-button-bg, $lightness: 10%);
+    
+    &:hover {
+        background-color: color.adjust($modal-button-bg, $lightness: 5%);
+    }
+}
+
+// ====================================
+// ACCESSIBILITÉ
+// ====================================
+
+// ✅ Mode High Contrast
+@media (prefers-contrast: high) {
+    .modal-content {
+        border-width: 4px;
+    }
+    
+    .modal-footer button,
+    .modal-footer a {
+        border-width: 3px;
+    }
+}
+
+// ✅ Réduction des animations
+@media (prefers-reduced-motion: reduce) {
+    .modal,
+    .modal-content,
+    .close-button,
+    .modal-footer button,
+    .modal-footer a,
+    .illustration-placeholder {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+// ✅ Mode sombre (optionnel)
+@media (prefers-color-scheme: dark) {
+    .modal {
+        background-color: rgba(0, 0, 0, 0.85);
+    }
+    
+    .modal-content {
+        background-color: #2a2a2a;
+        border-color: #555;
+    }
+    
+    #modal-text-bubble {
+        background-color: #3a3a3a;
+        border-color: #555;
+        color: #f0f0f0;
+    }
+    
+    #modal-message {
+        color: #e0e0e0;
+    }
+}

@@ -1,234 +1,455 @@
+@use '../abstracts/varcolors';
 @use '../abstracts/mixins';
-@use '../components/header';
-@use '../components/footer';
 
 // =================================
-// LOGIN CONTENT
+// CONTENEUR PRINCIPAL LOGIN
 // =================================
 .login-content {
-  margin: 0 auto;
-  padding: 0;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  flex: 1;
+  justify-content: center; // ✅ Centre verticalement
+  align-items: center; // ✅ Centre horizontalement
+  min-height: calc(100vh - 20vh); // ✅ Hauteur minimale (viewport - marges)
+  padding: clamp(2rem, 5vh, 4rem) clamp(1rem, 3vw, 2rem); // ✅ Padding responsive
+  width: 100%;
+  box-sizing: border-box;
   position: relative;
 
-  // 📱 Mobile & tablette portrait
-  min-height: calc(100vh - 50vh);
-
-  // 📲 Tablette paysage et au-dessus
-  @include mixins.breakpoint(medium)       { min-height: calc(100vh - 60vh); }
-  @include mixins.breakpoint(medium-large) { min-height: calc(100vh - 60vh); }
-  @include mixins.breakpoint(large)        { min-height: calc(100vh - 60vh); }
-  @include mixins.breakpoint(larger)       { min-height: calc(100vh - 60vh); }
-  @include mixins.breakpoint(extra)        { min-height: calc(100vh - 60vh); }
-  @include mixins.breakpoint(extra-large)  { min-height: calc(100vh - 60vh); }
-  @include mixins.breakpoint(ultra)        { min-height: calc(100vh - 60vh); }
-  @include mixins.breakpoint(huge)         { min-height: calc(100vh - 60vh); }
-
-  // Pseudo-élément pour l'image de fond
-  &::before {
-    content: "";
-    background-image: url("../../img/Miaou/backgroundMain.png");
-    background-size: cover;
-    opacity: 0.6;
+  // ✅ Classe sr-only pour accessibilité
+  .sr-only {
     position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    z-index: -1;
-  }
-}
-
-// =================================
-// LOGIN (mobile first)
-// =================================
-@include mixins.breakpoint(custom) {
-  #login {
-    padding-top: 0vh;
-    margin-top: 0;
-    position: relative;
-    width: 100%;
-    min-height: 100vh;
-    padding-inline: 1rem;
-    box-sizing: border-box;
-    z-index: 980;
-    background-color: transparent;
-
-    &::before {
-      content: "";
-      //background-image: url("../../img/Miaou/backgroundMain.png");
-      background-size: cover;
-      //opacity: 0.6;
-      position: absolute;
-      inset: 0;
-      z-index: -1;
-      max-width: 400px;
-    }
-
-    .sr-only {
-      position: absolute;
-      width: 1px; height: 1px;
-      padding: 0; margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
-    }
-
-    margin: 0 auto;
+    width: 1px;
+    height: 1px;
     padding: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-
-    // 📱 Mobile & tablette portrait
-    min-height: calc(100vh - 50vh);
-
-    // 📲 Tablette paysage et au-dessus
-    @include mixins.breakpoint(medium)       { min-height: calc(100vh - 60vh); }
-    @include mixins.breakpoint(medium-large) { min-height: calc(100vh - 60vh); }
-    @include mixins.breakpoint(large)        { min-height: calc(100vh - 60vh); }
-    @include mixins.breakpoint(larger)       { min-height: calc(100vh - 60vh); }
-    @include mixins.breakpoint(extra)        { min-height: calc(100vh - 60vh); }
-    @include mixins.breakpoint(extra-large)  { min-height: calc(100vh - 60vh); }
-    @include mixins.breakpoint(ultra)        { min-height: calc(100vh - 60vh); }
-    @include mixins.breakpoint(huge)         { min-height: calc(100vh - 60vh); }
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
 }
 
 // =================================
-// LOGIN FORM
+// FORMULAIRE LOGIN
 // =================================
 #login-form {
-  margin: auto;
+  width: 100%;
+  max-width: clamp(320px, 90vw, 450px); // ✅ Largeur responsive
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
+  margin: 0 auto; // ✅ Centre horizontalement
 
+  // ✅ Titre du formulaire
   h3 {
     background-color: #5C5454;
-    color: white;
+    color: varcolors.$blanc;
     text-align: center;
     border-radius: 15px 15px 0 0;
-    font-size: clamp(1rem, 3vw, 1.2rem);
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    font-family: 'Comic Sans MS', 'Raleway', cursive;
+    font-weight: bold;
     width: 100%;
-    max-width: 90vw;
-    min-height: 40px;
-    margin: 0 auto;
-    padding: 1vh 1vw;
+    min-height: clamp(50px, 8vh, 70px);
+    margin: 0;
+    padding: clamp(0.8rem, 2vh, 1.2rem) clamp(1rem, 3vw, 1.5rem);
     display: flex;
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    line-height: 1.3;
+
+    // ✅ Gestion du <br> dans le titre
+    br {
+      @include mixins.breakpoint(mobile) {
+        display: inline; // Garde le retour à la ligne sur mobile
+      }
+      
+      @include mixins.breakpoint(medium-large) {
+        display: none; // Supprime sur grand écran
+        
+        &::before {
+          content: " "; // Ajoute un espace
+        }
+      }
+    }
   }
 
+  // ✅ Container du formulaire avec image de fond
   .container-login {
     background-image: url('../../img/Miaou/chatAuth.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     width: 100%;
-    max-width: 90vw;
-    min-height: 50vh;
-    max-height: 400px;
-    margin: 0 auto;
-    padding: 2vh 1vw;
+    min-height: clamp(400px, 55vh, 500px); // ✅ Hauteur responsive
+    padding: clamp(1.5rem, 4vh, 3rem) clamp(1rem, 3vw, 2rem);
     border: 2px solid #5C5454;
     border-radius: 0 0 15px 15px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: clamp(0.8rem, 2vh, 1.2rem);
     box-sizing: border-box;
-  }
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 
-  label {
-    margin-bottom: 0.3rem;
-    font-size: 0.9rem;
-  }
-
-  input[type="email"],
-  input[type="password"], 
-  input[type="text"] {
-    width: 98%;
-    max-width: 300px;
-    height: 5vh;
-    min-height: 35px;
-    border-radius: 25px;
-    background-color: rgba(255, 255, 255, 0.8);
-    margin: 1vh auto;
-    padding: 0 2.2rem 0 1rem; // ✅ espace ajusté pour l’icône œil
-    font-size: 0.9rem;
-    box-sizing: border-box;
-  }
-
-  .password-container {
-    position: relative;
-    width: 100%;
-    max-width: 300px;
-
-    .eyes {
+    // ✅ Améliore la lisibilité sur l'image
+    &::before {
+      content: '';
       position: absolute;
-      right: 0.8rem; // ✅ rapproché du bord intérieur
-      top: 50%;
-      transform: translateY(-50%);
-      cursor: pointer;
-      color: #666;
-      font-size: 1.1rem; // légèrement réduit
-      pointer-events: auto;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 0 0 15px 15px;
+      pointer-events: none;
     }
   }
 
-  input[type="submit"] {
-    width: 70%;
-    max-width: 250px;
-    height: 6vh;
-    min-height: 40px;
-    margin: 2vh auto;
-    border-radius: 25px;
-    font-size: 1rem;
+  // ✅ Legend caché mais accessible
+  legend {
+    @include mixins.sr-only;
+  }
+
+  // ✅ Labels
+  label {
+    font-size: clamp(0.9rem, 2vw, 1rem);
     font-weight: bold;
+    color: #333;
+    margin-bottom: 0.3rem;
+    align-self: flex-start;
+    width: 100%;
+    max-width: clamp(280px, 85vw, 350px);
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+    font-family: 'Comic Sans MS', 'Raleway', cursive;
+  }
+
+  // ✅ Inputs text et email
+  input[type="email"],
+  input[type="text"] {
+    width: 100%;
+    max-width: clamp(280px, 85vw, 350px);
+    height: clamp(40px, 6vh, 50px);
+    border-radius: 25px;
+    background-color: rgba(255, 255, 255, 0.95);
+    border: 2px solid #5C5454;
+    padding: 0 clamp(1rem, 3vw, 1.5rem);
+    font-size: clamp(0.9rem, 2vw, 1rem);
+    font-family: 'Comic Sans MS', 'Raleway', cursive;
+    box-sizing: border-box;
+    transition: all varcolors.$transition-normal;
+    position: relative;
+    z-index: 1;
+
+    // ✅ Focus visible
+    &:focus {
+      outline: 3px solid varcolors.$violet-main;
+      outline-offset: 2px;
+      background-color: varcolors.$blanc;
+      box-shadow: 0 2px 8px rgba(178, 57, 237, 0.3);
+    }
+
+    // ✅ Placeholder
+    &::placeholder {
+      color: #999;
+      font-style: italic;
+    }
+  }
+
+  // ✅ Container du password avec icône œil
+  .password-container {
+    position: relative;
+    width: 100%;
+    max-width: clamp(280px, 85vw, 350px);
+    display: flex;
+    align-items: center;
+
+    input[type="password"] {
+      width: 100%;
+      height: clamp(40px, 6vh, 50px);
+      border-radius: 25px;
+      background-color: rgba(255, 255, 255, 0.95);
+      border: 2px solid #5C5454;
+      padding: 0 clamp(2.5rem, 10vw, 3.5rem) 0 clamp(1rem, 3vw, 1.5rem); // ✅ Espace pour l'icône
+      font-size: clamp(0.9rem, 2vw, 1rem);
+      font-family: 'Comic Sans MS', 'Raleway', cursive;
+      box-sizing: border-box;
+      transition: all varcolors.$transition-normal;
+
+      &:focus {
+        outline: 3px solid varcolors.$violet-main;
+        outline-offset: 2px;
+        background-color: varcolors.$blanc;
+        box-shadow: 0 2px 8px rgba(178, 57, 237, 0.3);
+      }
+    }
+
+    // ✅ Icône œil
+    .eyes {
+      position: absolute;
+      right: clamp(0.8rem, 3vw, 1.2rem);
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #5C5454;
+      font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+      pointer-events: auto;
+      z-index: 2;
+      transition: all varcolors.$transition-normal;
+
+      &:hover {
+        color: varcolors.$violet-main;
+        transform: translateY(-50%) scale(1.1);
+      }
+
+      // ✅ Focus visible pour accessibilité
+      &:focus-visible {
+        outline: 2px solid varcolors.$violet-main;
+        outline-offset: 2px;
+        border-radius: 50%;
+      }
+
+      .eyesImag {
+        pointer-events: none;
+      }
+    }
+  }
+
+  // ✅ Messages d'erreur
+  .error-message {
+    color: #d32f2f;
+    font-size: clamp(0.8rem, 1.8vw, 0.9rem);
+    font-weight: bold;
+    margin-top: 0.3rem;
+    min-height: 1.2em;
+    width: 100%;
+    max-width: clamp(280px, 85vw, 350px);
+    text-align: left;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 0.3rem 0.5rem;
+    border-radius: 8px;
+    text-shadow: none;
+    display: none; // ✅ Caché par défaut
+
+    &:not(:empty) {
+      display: block; // ✅ Visible uniquement si contenu
+    }
+  }
+
+  // ✅ Bouton submit
+  input[type="submit"] {
+    width: 100%;
+    max-width: clamp(220px, 70vw, 300px);
+    height: clamp(45px, 7vh, 55px);
+    margin-top: clamp(1rem, 3vh, 2rem);
+    border-radius: 25px;
+    font-size: clamp(1rem, 2.2vw, 1.2rem);
+    font-weight: bold;
+    font-family: 'Comic Sans MS', 'Raleway', cursive;
     background-color: #5C5454;
-    color: white;
+    color: varcolors.$blanc;
     cursor: pointer;
-    border: none;
+    border: 2px solid #3d3434;
+    box-sizing: border-box;
+    transition: all varcolors.$transition-normal;
+    box-shadow: 4px 6px 0px #3d3434;
+    position: relative;
+    z-index: 1;
+
+    &:hover {
+      background-color: #6d6060;
+      transform: translate(2px, 2px);
+      box-shadow: 2px 4px 0px #3d3434;
+    }
+
+    &:active {
+      transform: translate(4px, 4px);
+      box-shadow: 1px 2px 0px #3d3434;
+    }
+
+    // ✅ Focus visible
+    &:focus-visible {
+      outline: 3px solid varcolors.$violet-main;
+      outline-offset: 3px;
+    }
+
+    // ✅ État désactivé
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      
+      &:hover {
+        transform: none;
+        box-shadow: 4px 6px 0px #3d3434;
+      }
+    }
+  }
+
+  // ✅ Input caché (CSRF)
+  input[type="hidden"] {
+    display: none;
+  }
+
+  // ✅ Liens supplémentaires (optionnel)
+  .login-links {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(0.5rem, 1.5vh, 0.8rem);
+    width: 100%;
+    max-width: clamp(280px, 85vw, 350px);
+    margin-top: clamp(1rem, 2vh, 1.5rem);
+    align-items: center;
+
+    a {
+      font-size: clamp(0.85rem, 1.8vw, 0.95rem);
+      color: #5C5454;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all varcolors.$transition-normal;
+      text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+      font-family: 'Comic Sans MS', 'Raleway', cursive;
+
+      &:hover {
+        color: varcolors.$violet-main;
+        text-decoration: underline;
+      }
+
+      &:focus-visible {
+        outline: 2px solid varcolors.$violet-main;
+        outline-offset: 2px;
+        border-radius: 4px;
+        padding: 0.2rem 0.4rem;
+      }
+    }
+
+    .forgot-password-link {
+      font-style: italic;
+    }
+
+    .register-link {
+      font-weight: bold;
+      color: varcolors.$orange-main;
+
+      &:hover {
+        color: varcolors.$rouge-main;
+      }
+    }
+  }
+
+  // ✅ Indicateur de champ requis
+  .required {
+    color: #d32f2f;
+    font-weight: bold;
+    margin-left: 0.2rem;
   }
 }
 
 // =================================
-// RESPONSIVE BREAKPOINTS
+// RESPONSIVE - AJUSTEMENTS FINS
 // =================================
-@include mixins.breakpoint(custom) {
+
+// ✅ Très petits écrans (< 375px)
+@media (max-width: 374px) {
   #login-form {
-    h3 { max-width: 400px; }
-    .container-login { 
-        max-width: 400px;
-        max-height: 400px;
-     }
+    h3 {
+      font-size: 0.95rem;
+      padding: 0.7rem 0.8rem;
+    }
+
+    .container-login {
+      min-height: 380px;
+      padding: 1.2rem 0.8rem;
+    }
+
+    input[type="submit"] {
+      font-size: 0.95rem;
+    }
   }
 }
 
+// ✅ Mobile (375px - 767px)
+@include mixins.breakpoint(mobile) {
+  .login-content {
+    min-height: calc(100vh - 25vh); // ✅ Ajusté pour header + nav mobile
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+}
+
+// ✅ Tablette portrait (768px - 1023px)
 @include mixins.breakpoint(medium) {
+  .login-content {
+    min-height: calc(100vh - 30vh); // ✅ Ajusté pour header + nav tablette
+  }
+
   #login-form {
-    h3, .container-login { max-width: 400px; }
+    max-width: 450px;
+
+    .container-login {
+      min-height: 450px;
+    }
   }
 }
 
+// ✅ Desktop (1024px+)
+@include mixins.breakpoint(medium-large) {
+  .login-content {
+    min-height: calc(100vh - 35vh); // ✅ Ajusté pour header + nav desktop
+    padding-top: 3rem;
+  }
+
+  #login-form {
+    max-width: 480px;
+
+    h3 {
+      font-size: 1.3rem;
+    }
+
+    .container-login {
+      min-height: 500px;
+    }
+  }
+}
+
+// ✅ Grands écrans (1440px+)
 @include mixins.breakpoint(large) {
   #login-form {
-    h3, .container-login { max-width: 400px; }
+    max-width: 500px;
+
+    .container-login {
+      min-height: 520px;
+    }
   }
 }
 
-@include mixins.breakpoint(ultra) {
+// =================================
+// ACCESSIBILITÉ
+// =================================
+
+// ✅ Mode High Contrast
+@media (prefers-contrast: high) {
   #login-form {
-    h3, .container-login { max-width: 400px; }
+    input[type="email"],
+    input[type="text"],
+    input[type="password"] {
+      border-width: 3px;
+    }
+
+    input[type="submit"] {
+      border-width: 3px;
+    }
   }
 }
 
-@include mixins.breakpoint(huge) {
+// ✅ Réduction des animations
+@media (prefers-reduced-motion: reduce) {
   #login-form {
-    h3, .container-login { max-width: 400px; }
+    input,
+    .eyes {
+      transition: none !important;
+    }
   }
 }

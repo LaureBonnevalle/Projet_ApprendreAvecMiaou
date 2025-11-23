@@ -133,17 +133,20 @@ $_SESSION["login_data"] = [
         unset($_SESSION["error-message"]);
         
         $timesModels = new TimesModels();
+        $func = new Utils();
         $elapsedTime = $timesModels->getElapsedTime();
         $avatar = $am->getById($result['avatar']);
         
         if ($result['role'] == 1 || $result['role'] == 2) {
             $scripts=$this->getDefaultScripts();
+            $avatar->setUrlMini($func->asset($avatar->getUrlMini()));
             $this->render("homepageUser.html.twig", [
                 'user' =>$_SESSION['user'] ?? null,
                 'elapsed_time' => $elapsedTime, 
                 'session' => $_SESSION,
                 'success_message' => $_SESSION["login_data"]['success_message'] ?? null, 
-                "avatar" => $avatar
+                "avatar" => $avatar,
+                "isValidateUser" => $func->isValidateUser()
             ], $scripts);
         } /*else {
             $adminAvatar = $am->getById(7);
@@ -204,7 +207,15 @@ public function displayModify() : void
         
         $am = new AvatarManager();
         $avatars = $am->findAllAvatars();
-        $scripts = $this->addScripts(['public/assets/js/formController.js','public/assets/js/formFunction.js', 'public/assets/js/formController.js']);
+        $func = new Utils();
+
+        foreach ($avatars as $avatar) {
+        $avatar->setUrlMini($func->asset($avatar->getUrlMini()));
+        }
+
+    
+
+        $scripts = $this->addScripts(['assets/js/formController.js','assets/js/formFunction.js']);
          $timesModels = new TimesModels();
         $elapsedTime = $timesModels->getElapsedTime();
         //var_dump($avatars);
@@ -262,7 +273,7 @@ public function displayModify() : void
         
         // vérifier que tous les champs du formulaire sont là
         if(isset($data['email']) && isset($data['firstname']) && isset($data['age']) && isset($data['avatar']) && isset($data['csrf_token'])) {
-               
+              
             $tm = new CSRFTokenManager();
             $tokenVerify= $tm->validateCSRFToken($_SESSION['csrf_token']);
          
@@ -276,6 +287,7 @@ public function displayModify() : void
                     // L'utilisateur n'existe pas, on peut le créer
                     
                     // Generate a random password for the user
+                    $func= new Utils();
                     $passwordGenerated = $func->generateRandomPassword(12);
                     $passwordHash = password_hash($passwordGenerated, PASSWORD_BCRYPT);
                     $passwordView = $passwordGenerated;

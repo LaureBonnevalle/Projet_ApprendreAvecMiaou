@@ -5,52 +5,148 @@
 Miaou | Connexion
 {% endblock %}
 
+{# Description meta pour SEO #}
+{% block meta_description %}
+Connectez-vous à Miaou pour accéder aux jeux éducatifs, histoires et coloriages pour enfants.
+{% endblock %}
+
 {# Contenu spécifique à la page login #}
 {% block content %}
+
+{# Bloc d'erreurs (si nécessaire) #}
 {% block error %}
-    {% endblock %}
+    {# Les erreurs seront affichées ici par JavaScript ou PHP #}
+{% endblock %}
+
 <main>
     <section id="login" class="login-content">
+        {# Titre principal accessible mais masqué visuellement #}
         <h2 class="sr-only">Se connecter au site Miaou</h2>
-        <article id="login-form" class="form">
-            <h3>Pour vous connecter :</br> authentifiez-vous</h3>
-            <form action="index.php?route=check-login" method="POST">
+        
+        <article id="login-form" class="form" role="form" aria-labelledby="login-title">
+            {# Titre du formulaire #}
+            <h3 id="login-title">
+                Pour vous connecter :<br aria-hidden="true"> authentifiez-vous
+            </h3>
+            
+            <form 
+                action="index.php?route=check-login" 
+                method="POST" 
+                novalidate
+                aria-describedby="login-description"
+            >
+                {# Description cachée pour lecteurs d'écran #}
+                <div id="login-description" class="sr-only">
+                    Formulaire de connexion. Veuillez entrer votre adresse email et votre mot de passe pour vous connecter.
+                </div>
+
                 <div class="container-login">
-                    <legend class="sr-only">Pour vous connecter : authentifiez-vous</legend>
+                    {# Legend pour l'accessibilité #}
+                    <legend class="sr-only">Informations de connexion</legend>
 
-                    <label for="email">Email :</label>
-                    <input type="email"
-                           id="email"
-                           name="email"
-                           aria-label="Email field"
-                           value="j.guilbert@interieur.gouv.fr">
-                    <div class="error-message" id="error-email"></div>
+                    {# ============ CHAMP EMAIL ============ #}
+                    <label for="email">
+                        Email <span aria-label="requis" class="required">*</span>
+                    </label>
+                    <input 
+                        type="email"
+                        id="email"
+                        name="email"
+                        aria-label="Adresse email"
+                        aria-required="true"
+                        aria-describedby="error-email"
+                        placeholder="exemple@email.com"
+                        autocomplete="email"
+                        required
+                        {# Enlever les valeurs pré-remplies en production ! #}
+                        {% if app_env == 'development' %}
+                        value="j.guilbert@interieur.gouv.fr"
+                        {% endif %}
+                    >
+                    <div 
+                        class="error-message" 
+                        id="error-email" 
+                        role="alert" 
+                        aria-live="polite"
+                    ></div>
 
-                    <label for="password">Mot de passe :</label>
+                    {# ============ CHAMP MOT DE PASSE ============ #}
+                    <label for="password">
+                        Mot de passe <span aria-label="requis" class="required">*</span>
+                    </label>
                     <div class="password-container">
-                        <input type="password"
-                               class="password"
-                               id="password"
-                               name="password"
-                               aria-label="Password field"
-                               value="123456789Abc&">
-                        <div class="error-message" id="error-old_password"></div>
-                        <span class="eyes">
-                            <i class="fas fa-eye-slash eyesImag"></i>
-                        </span>
+                        <input 
+                            type="password"
+                            class="password"
+                            id="password"
+                            name="password"
+                            aria-label="Mot de passe"
+                            aria-required="true"
+                            aria-describedby="error-password"
+                            placeholder="Votre mot de passe"
+                            autocomplete="current-password"
+                            required
+                            {# Enlever les valeurs pré-remplies en production ! #}
+                            {% if app_env == 'development' %}
+                            value="123456789Abc&"
+                            {% endif %}
+                        >
+                        {# Bouton toggle visibilité mot de passe #}
+                        <button 
+                            type="button"
+                            class="eyes"
+                            aria-label="Afficher ou masquer le mot de passe"
+                            aria-pressed="false"
+                            tabindex="0"
+                        >
+                            <i class="fas fa-eye-slash eyesImag" aria-hidden="true"></i>
+                        </button>
                     </div>
-                    <div class="error-message" id="error-password"></div>
+                    <div 
+                        class="error-message" 
+                        id="error-password" 
+                        role="alert" 
+                        aria-live="polite"
+                    ></div>
 
-                    <input type="hidden"
-                           name="csrf_token"
-                           id="csrf_token"
-                           value="{{ token }}">
-                    <div class="error-message" id="error-token"></div>
+                    {# ============ CSRF TOKEN ============ #}
+                    <input 
+                        type="hidden"
+                        name="csrf_token"
+                        id="csrf_token"
+                        value="{{ token }}"
+                        aria-hidden="true"
+                    >
+                    <div 
+                        class="error-message" 
+                        id="error-token" 
+                        role="alert" 
+                        aria-live="assertive"
+                    ></div>
 
-                    <input type="submit" name="soumettre" value="Se connecter">
+                    {# ============ BOUTON SUBMIT ============ #}
+                    <input 
+                        type="submit" 
+                        name="soumettre" 
+                        value="Se connecter"
+                        aria-label="Se connecter au site"
+                    >
+
+                    {# ============ LIENS SUPPLÉMENTAIRES (optionnel) ============ #}
+                    {# 
+                    <div class="login-links">
+                        <a href="?route=forgot-password" class="forgot-password-link">
+                            Mot de passe oublié ?
+                        </a>
+                        <a href="?route=register" class="register-link">
+                            Pas encore inscrit ? Créer un compte
+                        </a>
+                    </div>
+                    #}
                 </div>
             </form>
         </article>
     </section>
 </main>
+
 {% endblock %}

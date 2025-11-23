@@ -9,7 +9,7 @@ Miaou | Accueil Utilisateur
 {% block content %}
 {% block error %}
     {% endblock %}
-<main>
+
         
         <section id="homepageUser" class ="homepageUser-content">
                 <h2>Bonjour {{ session.user.firstname }}!</h2>  
@@ -30,7 +30,7 @@ Miaou | Accueil Utilisateur
         {% if error_message is defined %}
             <p>{{ error_message }}</p>
         {% endif %}#}
-        </main>
+        
         {% endblock %}
         
             

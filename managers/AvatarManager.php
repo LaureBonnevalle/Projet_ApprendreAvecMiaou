@@ -4,7 +4,7 @@
 
 class AvatarManager extends AbstractManager {
     
-   public function __construct()
+    public function __construct()
     {
         parent::__construct();
     }
@@ -12,8 +12,8 @@ class AvatarManager extends AbstractManager {
     // Ajouter un avatar
     public function addAvatar(Avatars $avatar): Avatars {
         $query = $this->db->prepare("
-            INSERT INTO avatars (name, url, description, caracteristique, qualite) 
-            VALUES (:name, :url, :description, :caracteristique, :qualite)
+            INSERT INTO avatars (name, url, description, caracteristique, qualite, url_mini) 
+            VALUES (:name, :url, :description, :caracteristique, :qualite, :urlMini)
         ");
         
         $parameters = [
@@ -21,37 +21,40 @@ class AvatarManager extends AbstractManager {
             "url" => $avatar->getUrl(),
             "description" => $avatar->getDescription(),
             "caracteristique" => $avatar->getCaracteristique(),
-            "qualite" => $avatar->getQualite()
+            "qualite" => $avatar->getQualite(),
+            "urlMini" => $avatar->getUrlMini()
         ];
 
-         $query->execute($parameters);
-         $lastInsertId = $this->db->lastInsertId();
+        $query->execute($parameters);
+        $lastInsertId = $this->db->lastInsertId();
 
-    // Retourner un nouvel item Avatar avec l'ID inséré
-    return new Avatars(
-        $lastInsertId,
-        $avatar->getName(),
-        $avatar->getUrl(),
-        $avatar->getDescription(),
-        $avatar->getCaracteristique(),
-        $avatar->getQualite()
-    );
+        // Retourner un nouvel item Avatar avec l'ID inséré
+        return new Avatars(
+            $lastInsertId,
+            $avatar->getName(),
+            $avatar->getUrl(),
+            $avatar->getDescription(),
+            $avatar->getCaracteristique(),
+            $avatar->getQualite(),
+            $avatar->getUrlMini()
+        );
     }
 
     // Mettre à jour un avatar
-    public function update(Avatars $avatar): Avatar {
+    public function update(Avatars $avatar): bool {
         $query = $this->db->prepare("
             UPDATE avatars 
-            SET name = :name, url = :url, description = :description, caracteristique = :caracteristique, qualite = :qualite 
+            SET name = :name, url = :url, description = :description, caracteristique = :caracteristique, qualite = :qualite, url_mini = :urlMini
             WHERE id = :id
         ");
         
         $parameters = [
             "name" => $avatar->getName(),
-            "source" => $avatar->getSource(),
+            "url" => $avatar->getUrl(),
             "description" => $avatar->getDescription(),
             "caracteristique" => $avatar->getCaracteristique(),
             "qualite" => $avatar->getQualite(),
+            "urlMini" => $avatar->getUrlMini(),
             "id" => $avatar->getId()
         ];
 
@@ -87,11 +90,21 @@ class AvatarManager extends AbstractManager {
         $data = $query->fetch();
 
         if ($data) {
-            return new Avatars($data['id'], $data['name'], $data['url'], $data['description'], $data['caracteristique'], $data['qualite']);
+            return new Avatars(
+                $data['id'],
+                $data['name'],
+                $data['url'],
+                $data['description'],
+                $data['caracteristique'],
+                $data['qualite'],
+                $data['url_mini']
+            );
         }
 
         return null;
     }
+
+    // Récupérer un avatar par son nom
     public function getByName(string $name): ?Avatars {
         $query = $this->db->prepare("
             SELECT * FROM avatars 
@@ -106,39 +119,42 @@ class AvatarManager extends AbstractManager {
         $result = $query->fetch();
 
         if ($result) {
-            return new Avatars($result['id'], $result['name'], $result['url'], $result['description'], $result['caracteristique'], $result['qualite']);
+            return new Avatars(
+                $result['id'],
+                $result['name'],
+                $result['url'],
+                $result['description'],
+                $result['caracteristique'],
+                $result['qualite'],
+                $result['url_mini']
+            );
         }
 
         return null;
     }
     
+    // Récupérer un avatar par son URL
     public function getByUrl(string $url): ?Avatars {
-    $query = $this->db->prepare("SELECT * FROM avatars WHERE url = :url");
-    $query->execute(['url' => $url]);
-    $result = $query->fetch();
+        $query = $this->db->prepare("SELECT * FROM avatars WHERE url = :url");
+        $query->execute(['url' => $url]);
+        $result = $query->fetch();
 
-    if ($result) {
-        return new Avatars($result['id'], $result['name'], $result['url'], $result['description'], $result['caracteristique'], $result['qualite']);
+        if ($result) {
+            return new Avatars(
+                $result['id'],
+                $result['name'],
+                $result['url'],
+                $result['description'],
+                $result['caracteristique'],
+                $result['qualite'],
+                $result['url_mini']
+            );
+        }
+        
+        return null; 
     }
-    
-     return null; // 
-
-}
 
     // Récupérer tous les avatars
-    //public function getAll(): array {
-    //   $query = $this->db->query("
-    //       SELECT * FROM avatars
-    //    ");
-
-    //    $avatars = [];
-    //    while ($avatars = $query->fetchAll()) {
-    //        $avatars[] = new Avatars($data['id'], $data['name'], $data['source'], $data['description'], $data['caracteristique'], $data['qualite']);
-    //    }
-
-    //   return $avatars;
-    //}
-    
     public function findAllAvatars() : array
     {
         $query = $this->db->prepare('SELECT * FROM avatars');
@@ -148,7 +164,15 @@ class AvatarManager extends AbstractManager {
 
         foreach($result as $item)
         {
-            $avatar = new Avatars($item["id"],$item["name"],$item["url"],$item["description"],$item["caracteristique"],$item["qualite"]);
+            $avatar = new Avatars(
+                $item["id"],
+                $item["name"],
+                $item["url"],
+                $item["description"],
+                $item["caracteristique"],
+                $item["qualite"],
+                $item['url_mini']
+            );
             
             $avatars[] = $avatar;
         }
@@ -156,69 +180,71 @@ class AvatarManager extends AbstractManager {
         return $avatars;
     }
     
+    // Supprimer un avatar (version simplifiée)
     public function deleteAvatar(int $id) {
         $sql = "DELETE FROM `avatars` WHERE id = ?";
-    $params = [$id]; // Utiliser un tableau indexé
-    $this->execute($sql, $params);
+        $params = [$id]; // Utiliser un tableau indexé
+        $this->execute($sql, $params);
     }
     
+    // Réassigner les utilisateurs à un avatar par défaut
     public function reassignUsersToDefaultAvatar(int $oldAvatarId, int $defaultAvatarId = 4): void
-{
-    $query = $this->db->prepare("
-        UPDATE users 
-        SET avatar = :defaultId 
-        WHERE avatar = :oldId
-    ");
-    
-    $query->execute([
-        'defaultId' => $defaultAvatarId,
-        'oldId' => $oldAvatarId,
-    ]);
-}
-    
- /*       // Méthode pour mettre à jour le mot de passe
-public function updatePassword(int $userId, string $passwordHash): bool {
-    try {
-        $query = $this->db->prepare("UPDATE users SET password = :password WHERE id = :id");
-        return $query->execute([
-            ':password' => $passwordHash,
-            ':id' => $userId
+    {
+        $query = $this->db->prepare("
+            UPDATE users 
+            SET avatar = :defaultId 
+            WHERE avatar = :oldId
+        ");
+        
+        $query->execute([
+            'defaultId' => $defaultAvatarId,
+            'oldId' => $oldAvatarId,
         ]);
-    } catch (PDOException $e) {
-        error_log("Erreur updatePassword: " . $e->getMessage());
-        return false;
     }
-}
-
-// Méthode pour mettre à jour le statut
-public function updateStatus(int $userId, int $status): bool {
-    try {
-        $query = $this->db->prepare("UPDATE users SET statut = :statut WHERE id = :id");
-        return $query->execute([
-            ':statut' => $status,
-            ':id' => $userId
-        ]);
-    } catch (PDOException $e) {
-        error_log("Erreur updateStatus: " . $e->getMessage());
-        return false;
+    
+    /* 
+    // Méthode pour mettre à jour le mot de passe
+    public function updatePassword(int $userId, string $passwordHash): bool {
+        try {
+            $query = $this->db->prepare("UPDATE users SET password = :password WHERE id = :id");
+            return $query->execute([
+                ':password' => $passwordHash,
+                ':id' => $userId
+            ]);
+        } catch (PDOException $e) {
+            error_log("Erreur updatePassword: " . $e->getMessage());
+            return false;
+        }
     }
+
+    // Méthode pour mettre à jour le statut
+    public function updateStatus(int $userId, int $status): bool {
+        try {
+            $query = $this->db->prepare("UPDATE users SET statut = :statut WHERE id = :id");
+            return $query->execute([
+                ':statut' => $status,
+                ':id' => $userId
+            ]);
+        } catch (PDOException $e) {
+            error_log("Erreur updateStatus: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    // Méthode pour mettre à jour le rôle
+    public function updateRole(int $userId, int $role): bool {
+        try {
+            $query = $this->db->prepare("UPDATE users SET role = :role WHERE id = :id");
+            return $query->execute([
+                ':role' => $role,
+                ':id' => $userId
+            ]);
+        } catch (PDOException $e) {
+            error_log("Erreur updateRole: " . $e->getMessage());
+            return false;
+        }
+    }
+    */
 }
-
-// Méthode pour mettre à jour le rôle
-public function updateRole(int $userId, int $role): bool {
-    try {
-        $query = $this->db->prepare("UPDATE users SET role = :role WHERE id = :id");
-        return $query->execute([
-            ':role' => $role,
-            ':id' => $userId
-        ]);
-    } catch (PDOException $e) {
-        error_log("Erreur updateRole: " . $e->getMessage());
-        return false;
-    }*/
-}
-
-// Méthode pour mettre à jour l'avatar
-
 
 ?>

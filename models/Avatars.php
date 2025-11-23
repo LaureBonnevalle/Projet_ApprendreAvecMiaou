@@ -7,14 +7,24 @@ class Avatars {
     private string $description;
     private string $caracteristique;
     private string $qualite;
+    private string $urlMini; // correspond à la colonne url_mini
 
-    public function __construct(?int $id, string $name, string $url, string $description, string $caracteristique, string $qualite) {
+    public function __construct(
+        ?int $id,
+        string $name,
+        string $url,
+        string $description,
+        string $caracteristique,
+        string $qualite,
+        string $urlMini
+    ) {
         $this->id = $id;
         $this->name = $name;
         $this->url = $url;
         $this->description = $description;
         $this->caracteristique = $caracteristique;
         $this->qualite = $qualite;
+        $this->urlMini = $urlMini;
     }
 
     public function getId(): ?int {
@@ -41,6 +51,10 @@ class Avatars {
         return $this->qualite;
     }
 
+    public function getUrlMini(): string {
+        return $this->urlMini;
+    }
+
     public function setId(?int $id): void {
         $this->id = $id;
     }
@@ -63,5 +77,9 @@ class Avatars {
 
     public function setQualite(string $qualite): void {
         $this->qualite = $qualite;
+    }
+
+    public function setUrlMini(string $urlMini): void {
+        $this->urlMini = $urlMini;
     }
 }

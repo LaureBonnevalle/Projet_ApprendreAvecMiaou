@@ -4,7 +4,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 18vh;
+  height: 19vh;
   background-color: #000000;
   z-index: 1000;
   padding: 1rem clamp(1rem, 3vw, 2rem);
@@ -19,11 +19,12 @@
   border-image: linear-gradient(135deg, #FFC0CB 0%, #FF1493 30%, #B239ED 70%, #8B00FF 100%) 1;
   border-radius: 20px;
   padding: clamp(1rem, 2vw, 1.5rem);
+  margin: auto;
   display: flex;
   align-items: center;
   gap: clamp(0.5rem, 2vw, 1vw);
   height: 10vh;
-  width: 87vw;
+  width: 85vw;
   overflow: hidden;
   margin-bottom: 1rem;
 }
@@ -196,7 +197,7 @@
 }
 #nav {
   position: fixed;
-  top: 0;
+  top: -5vh;
   left: -100%;
   width: auto;
   max-width: 320px;
@@ -506,22 +507,40 @@ main {
   box-sizing: border-box;
 }
 
+@media (min-width: 431px) {
+  main {
+    padding-top: 18vh; /* header + nav */
+    padding-bottom: 25vh; /* footer */
+  }
+}
 @media (min-width: 576px) {
   main {
-    padding-top: 15vh; /* header + nav */
+    padding-top: 19vh; /* header + nav */
     padding-bottom: 25vh; /* footer */
   }
 }
 /* Tablette paysage et au-dessus : header + nav */
 @media (min-width: 768px) {
   main {
-    padding-top: 15vh; /* header + nav */
+    padding-top: 25vh; /* header + nav */
     padding-bottom: 25vh; /* footer */
   }
 }
 @media (min-width: 850px) {
   main {
-    padding-top: 25vh; /* header + nav */
+    padding-top: 35vh; /* header + nav */
+    padding-bottom: 25vh; /* footer */
+  }
+}
+@media (min-width: 992px) {
+  main {
+    padding-top: 35vh; /* header + nav */
+    padding-bottom: 25vh; /* footer */
+  }
+}
+@media (min-width: 1600px) {
+  main {
+    padding-top: 35vh; /* header + nav */
     padding-bottom: 25vh; /* footer */
   }
 }
@@ -1209,12 +1228,30 @@ main {
   }
 }
 .homepage-content {
-  margin: 0 auto;
+  margin: 8vh auto;
   padding: 0;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   min-height: 50vh;
+}
+@media (max-width: 430px) {
+  .homepage-content {
+    min-height: 40vh;
+  }
+}
+@media (min-width: 431px) {
+  .homepage-content {
+    min-height: 40vh;
+  }
+  .homepage-content .homepage-content {
+    padding: 25vh;
+  }
+}
+@media (min-width: 576px) {
+  .homepage-content {
+    min-height: 40vh;
+  }
 }
 @media (min-width: 768px) {
   .homepage-content {

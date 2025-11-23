@@ -60,7 +60,12 @@
     {% block footer %}
         {% include "subpages/_footer.html.twig" %}
     {% endblock %}
-    
+    {% block modal %}
+        {% if isValidateUser %}
+            {% include "subpages/_modal.html.twig" %}
+        {% endif %}
+    {% endblock %}
+
     {% block scripts %}
         {% if scripts is defined %}
             {% for script in scripts %}

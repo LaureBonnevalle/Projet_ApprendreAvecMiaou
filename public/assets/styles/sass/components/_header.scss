@@ -10,7 +10,7 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 18vh;
+    height: 19vh;
     background-color: varcolors.$noir;
     z-index: varcolors.$z-header;
     padding: 1rem clamp(1rem, 3vw, 2rem);
@@ -25,11 +25,12 @@
         border-image: linear-gradient(135deg, #FFC0CB 0%, #FF1493 30%, #B239ED 70%, #8B00FF 100%) 1;
         border-radius: 20px;
         padding: clamp(1rem, 2vw, 1.5rem);
+        margin: auto;
         display: flex;
         align-items: center;
         gap: clamp(0.5rem, 2vw, 1vw);
         height: 10vh;
-        width: 87vw;
+        width: 85vw;
         overflow: hidden;
         margin-bottom: 1rem;
         
@@ -198,7 +199,7 @@
 // ====================================
 #nav {
     position: fixed;
-    top: 0;
+    top: -5vh;
     left: -100%;
     width: auto;
     max-width: 320px;
@@ -436,10 +437,16 @@ main {
   min-height: 200vh; /* occupe toute la hauteur visible */
   box-sizing: border-box;
 }
+@include mixins.breakpoint(mobile) {
+    main {
+    padding-top: calc(0vh + 18vh);              /* header + nav */
+    padding-bottom: 25vh;           /* footer */  
+    }
+}
 
 @include mixins.breakpoint(small) {
     main {
-    padding-top: calc(0vh + 15vh);              /* header + nav */
+    padding-top: calc(0vh + 19vh);              /* header + nav */
     padding-bottom: 25vh;           /* footer */  
     }
 }
@@ -447,14 +454,35 @@ main {
 /* Tablette paysage et au-dessus : header + nav */
 @include mixins.breakpoint(medium) {
   main {
-    padding-top: calc(0vh + 15vh); /* header + nav */
+    padding-top: calc(0vh + 25vh); /* header + nav */
     padding-bottom: 25vh;           /* footer */
   }
 }
 
 @include mixins.breakpoint(medium-large) {
   main {
-    padding-top: calc(10vh + 15vh); /* header + nav */
+    padding-top: calc(10vh + 25vh); /* header + nav */
+    padding-bottom: 25vh;           /* footer */
+  }
+}
+
+@include mixins.breakpoint(large) {
+  main {
+    padding-top: calc(10vh + 25vh); /* header + nav */
+    padding-bottom: 25vh;           /* footer */
+  }
+}
+
+@include mixins.breakpoint(ultra) {
+  main {
+    padding-top: calc(10vh + 25vh); /* header + nav */
+    padding-bottom: 25vh;           /* footer */
+  }
+}
+
+@include mixins.breakpoint(hugee) {
+  main {
+    padding-top: calc(10vh + 25vh); /* header + nav */
     padding-bottom: 25vh;           /* footer */
   }
 }
