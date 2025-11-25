@@ -51,20 +51,22 @@ abstract class AbstractController
         exit;
     }
     
-    protected function addScripts(array $scripts) : array {
-     
-        return array_merge ($this->getDefaultScripts(), $scripts);   
-        
-    }
+   
     
     protected function getDefaultScripts(): array {
         
         return [
             'assets/js/common.js',
-            'public/assets/js/home.js',
+            //'public/assets/js/home.js',
             'assets/js/header.js',
             'assets/js/footer.js'
         ];
+        
+    }
+
+    protected function addScripts(array $scripts) : array {
+     
+        return array_merge ($this->getDefaultScripts(), $scripts);   
         
     }
     

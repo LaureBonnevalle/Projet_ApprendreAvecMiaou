@@ -7,7 +7,7 @@ class DefaultController extends AbstractController {
         parent::__construct();
     }
 
-    public function homepage() : void
+   /* public function homepage() : void
     {   
         $avatar = (new AvatarManager())->getByName("Miaou");
          unset($_SESSION['start_time']);
@@ -65,27 +65,95 @@ class DefaultController extends AbstractController {
         } else {
             $this->redirectTo('login');
         }
+    } */
+
+    public function homepage() : void
+{
+    $am = new AvatarManager();
+    $timesModels = new TimesModels();
+    $elapsedTime = $timesModels->getElapsedTime();
+
+    // Scripts communs (footer + burger)
+    $scripts = $this->getDefaultScripts();
+    $scripts = $this->addScripts([
+    ], $scripts);
+
+    // Cas 1 : pas d'utilisateur connecté → page publique
+    if (!isset($_SESSION['user'])) {
+        unset($_SESSION['start_time']);
+      //$_SESSION['start_time'] = time();
+
+        $avatar = $am->getByName("Miaou");
+
+        $this->render("homepage.html.twig", [
+            'titre'        => 'Accueil',
+            'elapsed_time' => 0,
+            'avatar'       => $avatar,
+            'start_time'   => null,
+            'isUser'       => false
+        ], $scripts);
+        return;
     }
+
+    // Cas 2 : utilisateur connecté → switch sur le rôle
+    $avatar = $am->getById($_SESSION['user']['avatar']);
+    $role   = $_SESSION['user']['role'];
+    if (!isset($_SESSION['start_time'])) {
+    $_SESSION['start_time'] = time();
+}
+
+    switch ($role) {
+        case 1: // utilisateur standard
+
+            var_dump($_SESSION);
+            exit;
+            
+            $this->render("homepageUser.html.twig", [
+                'user'            => $_SESSION['user'],
+                'elapsed_time'    => $elapsedTime,
+                'session'         => $_SESSION,
+                'connected'       => true,
+                'success_message' => $_SESSION['success_message'] ?? null,
+                'avatar'          => [$avatar],
+                'isUser'          => true,
+                'start_time'      => $_SESSION['start_time']
+            ], $scripts);
+            break;
+
+        case 2: // administrateur
+            $this->render("homepageAdmin.html.twig", [
+                'user'            => $_SESSION['user'],
+                'role'            => $role,
+                'elapsed_time'    => $elapsedTime,
+                'session'         => $_SESSION,
+                'connected'       => true,
+                'success_message' => $_SESSION['success_message'] ?? null,
+                'avatar'          => [$avatar],
+                'isUser'          => true,
+                'start_time'      => $_SESSION['start_time']
+            ], $scripts);
+            break;
+
+        default:
+            // rôle inconnu → page publique
+            $avatar = $am->getByName("Miaou");
+            $this->redirectTo("homepage");
+            break;
+        }
+    }
+   
 
     public function logout() : void
-    {
-        // Réinitialiser le timer lors de la déconnexion
-        //echo "<script>localStorage.removeItem('startTime');</script>";
-        unset($_SESSION['start_time']);
-        $_SESSION[$session] = [];
+{
+    unset($_SESSION['start_time']);
+    session_destroy();
+    session_start();
+    $_SESSION['error_message'] = "Déconnexion effectuée !";
 
-        // Destroy the entire session, including all session data
-        session_destroy();
-        
-        session_start();
-        
-        $_SESSION['error_message'] = "Déconnexion effectuée !";
-
-        // Redirect to the default 'home' route if the 'route' parameter is not set
-        //$this->redirectTo('homepage');
-
-       $this->homepage();
-    }
+   // ⚡ Redirection HTTP → recharge complet
+    $this->redirectTo('homepage');
+    exit;
+}
         
         
     

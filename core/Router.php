@@ -139,7 +139,7 @@ class Router {
                     $ac->modifyPassword();
                     break;
                  case "logout":
-                    $ac->logout();
+                    $dc->logout();
                     break;
             }
         }
@@ -157,7 +157,7 @@ die(); // Arrêt pour voir les valeurs*/
                 switch ($route) {
                     
                     case "homepageUser":
-                        $dc->homepageUser();
+                        $dc->homepage();
                     break; 
                     case "profile":
                         $ac->displayProfile();
@@ -196,10 +196,10 @@ die(); // Arrêt pour voir les valeurs*/
                 // Redirection intelligente selon le statut de l'utilisateur
                 if ($func->isAuthentified() && $func->isValidateUser()) {
                     // Utilisateur validé mais pas admin -> redirection vers homepageUser
-                    $this->redirectTo("homepageUser");
+                    $dc->redirectTo("homepager");
                 } else {
                     // Utilisateur non connecté ou non validé -> redirection vers homepage
-                    $this->redirectTo("homepage");
+                    $dc->redirectTo("homepage");
                 }
             }
         }
@@ -281,15 +281,19 @@ die(); // Arrêt pour voir les valeurs*/
                     case "modifGame":
                         $dash->modifGames();
                         break;
+                        case "logout":
+                        $ac->logout();
+                        break;
+                    
                 }
             } else {
                 // Redirection intelligente selon le statut de l'utilisateur
                 if ($func->isAuthentified() && $func->isValidateUser()) {
                     // Utilisateur validé mais pas admin -> redirection vers homepageUser
-                    $this->redirectTo("homepageUser");
+                    $dc->redirectTo("homepage");
                 } else {
                     // Utilisateur non connecté ou non validé -> redirection vers homepage
-                    $this->redirectTo("homepage");
+                    $dc->redirectTo("homepage");
                 }
             }
         }

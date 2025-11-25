@@ -127,6 +127,25 @@ class Utils {
         }
         return false; // ← AJOUT ESSENTIEL
     }
+
+
+    public function validateEmail($email): bool {
+        // Returns true if the email is valid, otherwise false.
+        return filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
+    }
+
+    public function validatePassword($password, $nbr = 8) {
+        // The preg_match() function searches for a match between the regex pattern and the password.
+        // The regex pattern is '/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/'
+        // This pattern requires:
+        // - At least one uppercase letter (?=.*?[A-Z])
+        // - At least one lowercase letter (?=.*?[a-z])
+        // - At least one digit (?=.*?[0-9])
+        // - At least one special character among #?!@$%^&*- (?=.*?[#?!@$%^&*-])
+        // - A minimum length of 8 characters .{'.$nbr.',}
+        // The function returns 1 if a match is found, otherwise 0.
+        return preg_match('/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/', $password);
+    }
             
         
 

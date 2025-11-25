@@ -1,40 +1,73 @@
 {% extends "layout.html.twig" %}
 
-{# Titre de la page #}
 {% block title %}
-Miaou | Accueil Utilisateur
+      Miaou |Page Accueil 
 {% endblock %}
 
-{# Contenu spécifique à la page login #}
-{% block content %}
-{% block error %}
-    {% endblock %}
+
+
+{% block body %}
+
+        {% block header %}
+            {{ parent() }}
+        {% endblock %}
 
         
-        <section id="homepageUser" class ="homepageUser-content">
-                <h2>Bonjour {{ session.user.firstname }}!</h2>  
-                    <p>Tu es connecté au site Apprendre Avec Miaou</p>
-                    <p>Tu peux maintenant accéder aux jeux et activités du site.</p>
-                    <p>Que veux-tu faire maintenant?</p>
-                    
-                    <section class="cards">
-                        <article></article>
-                    </section>  
-            </section>
-        {#{% block error %}
-            {{ parent() }}
-            {% endblock %}#}
-        {#{% if success_message is defined %}
-            <p>{{ success_message }}</p>
-        {% endif %}
-        {% if error_message is defined %}
-            <p>{{ error_message }}</p>
-        {% endif %}#}
-        
+    
+    {% block content %}
+    
+    {% block error %}
+    {% endblock %}
+        <section class="homeUser-content">
+            <header class="homepageUser-header">
+                <h1>Bienvenue sur ta page d'activités !</h1>
+                <p>Que veux-tu faire maintenant ?</p>
+                </header>
+
+            <article class="card-article">
+                <div class="card card-color-vert">
+                    <div class="card-image-container card-coloring">
+                    </div>
+                    <div class="card-title">
+                        <h2 class ="sr-only">Activité coloriages</h2>
+                    </div>
+                    <a href="?route=colorings" class="activite-action-button" id="colorings" aria-label="Je colorie">
+                        Je colorie
+                    </a>
+                </div>
+            </article>
+
+            <article class="card-article">
+                <div class="card card-color-bleu">
+                    <div class="card-image-container card-story">
+                                            </div>
+                    <div class="card-title">
+                        <h2 class ="sr-only">Activité histoire</h2>
+                    </div>
+                    <a href="?route=stories" class="activite-action-button" id="stories" aria-label="J'écoute une histoire">
+                        J'écoute l'histoire
+                    </a>
+                </div>
+            </article>
+
+            <article class="card-article">
+                <div class="card card-color-jaune">
+                    <div class="card-image-container card-game">
+                                            </div>
+                    <div class="card-title">
+                        <h2 class="sr-only">Acitvité jeux</h2>
+                    </div>
+                    <a href="?route=displayGames" class="activite-action-button" id="games" aria-label="Je joue">
+                        Je joue
+                    </a>
+                </div>
+            </article>
+        </section>
+       
         {% endblock %}
         
             
-           
+{% endblock %}           
         
        
 

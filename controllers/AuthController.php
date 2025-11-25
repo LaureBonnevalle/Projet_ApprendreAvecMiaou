@@ -20,7 +20,7 @@ class AuthController extends AbstractController {
     {  
          $scripts = $this->addScripts(['public/assets/js/formController.js', 'public/assets/js/common.js', 'public/assets/js/global.js', 'public/assets/js/home.js']);
         
-        //var_dump($avatars);
+        //($avatars);
         // Générer le token pour le mettre dans le vue, dans l'input de type hidden
         $tm = new CSRFTokenManager();
         $am = new AvatarManager();
@@ -122,11 +122,14 @@ $_SESSION["account_status"] = [
     if ($result['statut'] == 1) {
         // Utilisateur validé - connexion réussie
        // Créer un tableau qui conserve toutes les informations
-$_SESSION["login_data"] = [
-    'connected' => 1,
-    'start_time' => time(),
-    'success_message' => "Connexion réussie ! Bienvenue."
-];
+
+      $_SESSION['start_time']= time();
+
+        $_SESSION["login_data"] = [
+            'connected' => 1,
+            'start_time' => time(),
+            'success_message' => "Connexion réussie ! Bienvenue.",
+        ];
         
         // Nettoyer les messages d'erreur
         unset($_SESSION["error_message"]);
@@ -137,26 +140,33 @@ $_SESSION["login_data"] = [
         $elapsedTime = $timesModels->getElapsedTime();
         $avatar = $am->getById($result['avatar']);
         
+
         if ($result['role'] == 1 || $result['role'] == 2) {
-            $scripts=$this->getDefaultScripts();
+            $scripts= $this->getDefaultScripts();
+            $scripts=$this->addScripts(['assets/js/mess.js'], $scripts);
             $avatar->setUrlMini($func->asset($avatar->getUrlMini()));
             $this->render("homepageUser.html.twig", [
                 'user' =>$_SESSION['user'] ?? null,
-                'elapsed_time' => $elapsedTime, 
+                'elapsed_time' => 0, // reset 
                 'session' => $_SESSION,
+                'start_time' => $_SESSION['start_time'],
                 'success_message' => $_SESSION["login_data"]['success_message'] ?? null, 
                 "avatar" => $avatar,
-                "isValidateUser" => $func->isValidateUser()
+                "isValidateUser" => $func->isValidateUser(),
+                "isUser" => true
             ], $scripts);
-        } /*else {
+        } else {
             $adminAvatar = $am->getById(7);
+            $scripts=$this->addScripts([], $scripts);
             $this->render("dashboard.html.twig", [
-                'elapsed_time' => $elapsedTime, 
+                'elapsed_time' => 0, // reset
                 'session' => $_SESSION,
+                'start_time'=> $_SESSION['start_time'],
                 'success_message' => $_SESSION['success_message'], 
-                "avatar" => $adminAvatar
-            ], [$this->getDefaultScripts()]);
-        }*/
+                "avatar" => $adminAvatar,
+                "isUser" => true
+            ], $scripts);
+        }
         return;
     }
     
@@ -218,7 +228,7 @@ public function displayModify() : void
         $scripts = $this->addScripts(['assets/js/formController.js','assets/js/formFunction.js']);
          $timesModels = new TimesModels();
         $elapsedTime = $timesModels->getElapsedTime();
-        //var_dump($avatars);
+        //($avatars);
         // Générer le token pour le mettre dans le vue, dans l'input de type hidden
         $tm = new CSRFTokenManager();
         $scripts= $this->addScripts([
@@ -372,7 +382,7 @@ public function displayModify() : void
         $scripts = $this->addScripts(['public/assets/js/common.js','public/assets/js/formController.js','public/assets/js/formFunction.js']);
         $timesModels = new TimesModels();
                                 $elapsedTime = $timesModels->getElapsedTime();
-        //var_dump($avatars);
+        //($avatars);
         // Générer le token pour le mettre dans le vue, dans l'input de type hidden
         $tm = new CSRFTokenManager();
         $token = $tm->generateCSRFToken();
@@ -387,116 +397,73 @@ public function displayModify() : void
 
     // Méhtode pour soumettre et traiter le formulaire de modification du mot de passe
     public function modifyPassword() { 
-        
-        if(isset($_SESSION['error_message'])) {
-            unset($_SESSION['error_message']);
+    unset($_SESSION['error_message'], $_SESSION['success_message']);
+    
+    $func = new Utils();
+    $errorMessages = new ErrorMessages();
+    $tm = new CSRFTokenManager();
+    $errors = [];
+
+    if ($func->checkPostKeys(['email', 'old_password', 'new_password', 'confirm_new_password', 'csrf_token'])) {
+        $data = [
+            'email'                 => strtolower(trim($_POST['email'])),
+            'old_password'          => trim($_POST['old_password']),
+            'new_password'          => trim($_POST['new_password']),               
+            'confirm_new_password'  => trim($_POST['confirm_new_password']),
+            'csrf_token'            => trim($_POST['csrf_token']),
+        ];
+
+        if (empty($data['email']) || !$func->validateEmail($data['email'])) {
+            $errors[] = $errorMessages->getMessage(2);
+        }
+        if (!$func->validatePassword($data['old_password'])) {
+            $errors[] = $errorMessages->getMessage(1);
+        }
+        if (!$func->validatePassword($data['new_password'])) {
+            $errors[] = $errorMessages->getMessage(1);
+        }
+        if ($data['new_password'] == $data['old_password']) {
+            $errors[] = $errorMessages->getMessage(24);
+        }
+        if ($data['new_password'] !== $data['confirm_new_password']) {
+            $errors[] = $errorMessages->getMessage(23);
+        }
+        if (!$tm->validateCSRFToken($_SESSION['csrf_token'])) {
+            $errors[] = $errorMessages->getMessage(43);
         }
 
-        if(isset($_SESSION['success_message'])) {
-            unset($_SESSION['success_message']);
-        }
-        
-        $errors = [];
-        
-        //var_dump($_POST);
-        
-        $func = new Utils();
-        $errorMessages = new ErrorMessages();
-        $errorMessages->getMessages();
-        $tm = new CSRFTokenManager();
-        if ($func->checkPostKeys(['email', 'old_password', 'new_password', 'confirm_new_password', 'csrf_token'])) {
-                        
-            $data = [
-                'email'                 => strtolower(trim($_POST['email'])),
-                'old_password'          => trim($_POST['old_password']),
-                'new_password'          => trim($_POST['new_password']),               
-                'confirm_new_password'  => trim($_POST['confirm_new_password']),
-                'csrf_token'            => trim($_POST['csrf_token']),
-            ];
-            
-                if(empty($data['email']) || !$func->validateEmail($data['email'])) {
-                // Message d'erreur que l'email ne peut pas être vide
-                $errors[] = $errorMessages[2];
-                }
-                
-                // old_password est il vide ? A t il bien 8 caractères, ...
-                if(!$func->validatePassword($data['old_password'])) {
-                    $errors[] = $errorMessages[1]; // Le mot de passe doit faire au moins 8 caractères ...... !
-                }
-                // new_password est il vide ? A t il bien 8 caractères, ...
-                if(!$func->validatePassword($data['new_password'])) {
-                    $errors[] = $errorMessages[1]; // Le mot de passe doit faire au moins 8 caractères ...... !
-                }
-                if($data['new_password'] == $data['old_password']) {
-                    $errors[] = $errorMessages[24]; // Le mot de passe old doit etre different du new ...... !  
-                }
-                if($data['new_password'] !== $data['confirm_new_password']) {
-                    $errors[] = $errorMessages[23]; // Le mot de passe new doit etre egal au confirm new ...... !  
-                }
-                
-                if ( !($tokenVerify= $tm->validateCSRFToken($_SESSION['csrf_token']))) {
-                    $errors[] = $errorMessages[43]; // token invalide ...... !  
-                }
-                //var_dump($_POST, $errors); die;
-                
-                if(count($errors) == 0) {
-                    // Je continu le traitement 
-                    $um = new UserManager();
-                    //recupere un user par son mail
-                    $search = $um->findByEmail($_SESSION['user']['email']);
-            
-                    
-                    
-                    // Vérifier si l'ancien MDP renseigné dans le forumlaire est bien = à l'ancien de la BDD ($search['password']
-                    if ($search == null) {
-                        $errors[] = $errorMessages[44]; // Le mot de passe doit faire au moins 8 caractères ...... !
-                    }
-                    else {
-                        $user = new Users();  
-                        $user->setId($_SESSION['user']['id']);
-                        $user->setPassword(password_hash($data['new_password'], PASSWORD_DEFAULT));                                     
-                  
-                               
-                        $um = new UserManager();         
-                        $um->changePasswordAndStatut($user); // Vérifier la suite
-                        
-                        
-                        // Modification de la session
-                        $_SESSION['user']["statut"] = 1;
-                        $_SESSION['connected'] = true;
-                        
-                        unset($_SESSION["error-message"]);
-                        unset($_SESSION["success-message"]);
-                        $_SESSION['start_time'] = time();       
-                        
-                        $_SESSION["success_message"] = "Tu es connectés tu peux maintenant accéder aux jeux et activités";
-                        //$dc = new DefaultController();
-                        //$dc->HomepageUser();
-                        //recupere l'avatar de l'utilisateur par l'id de l'avatar de $result
-                        //$am = new AvatarManager();
-                        //$avatar = $am->getById($search['avatar']);
-                        header("Location: ?route=homepageUser");
-                        exit();
-                        
-                        //$this->render("homepageUser.html.twig", ['error_message'=> $_SESSION['error_message']],[$this->getDefaultScript()]); // on redirige vers la page d'acceuil
-                                                   
-                    
-                    }    
-                } else {
-                    $errors[] = $errorMessages[38]; // Il y a des erreur sur le formulaire.....
-                    //$this->render("ModifyPassword.html.twig", ['error_message'=> $_SESSION['error_message']],$data); // on redirige
-                    $this->redirectTo('displayModify');
-                }  
+        if (count($errors) === 0) {
+            $um = new UserManager();
+            $search = $um->findByEmail($data['email']);
+
+            if ($search === null) {
+                $_SESSION['error_message'] = $errorMessages->getMessage(44);
+                $this->redirectTo('displayModify');
+            } else {
+                $user = new Users();  
+                $user->setId($_SESSION['user']['id']);
+                $user->setPassword(password_hash($data['new_password'], PASSWORD_DEFAULT));                                     
+                $um->changePasswordAndStatut($user);
+
+                $_SESSION['user']["statut"] = 1;
+                $_SESSION['connected'] = true;
+                $_SESSION['start_time'] = time();       
+                $_SESSION["success_message"] = "Tu es connecté, tu peux maintenant accéder aux jeux et activités";
+                $_SESSION['isUser'] =true;
+
+                $this->redirectTo("homepageUser");
+                exit();
+            }
         } else {
-           $errors[] = $errorMessages->getMessages()[0] ?? 'Erreur inconnue';
-            
-            //$this->render("homepage.html.twig", ['error_message'=> $_SESSION['error_message']],[$this->getDefaultScript()]); // on redirige
-            $this->redirectTo('homepage');
+            $_SESSION['error_message'] = implode('<br>', $errors); // concatène toutes les erreurs
+            $this->redirectTo('displayModify');
         }
-            
-           
-            
+    } else {
+        $_SESSION['error_message'] = $errorMessages->getMessage(0);
+        $this->redirectTo('homepage');
     }
+}
+
     
     
 public function displayProfile() {
@@ -505,7 +472,7 @@ public function displayProfile() {
         $scripts = $this->addScripts(['public/assets/js/formController.js','public/assets/js/formFunction.js', 'public/assets/js/formController.js']);
          $timesModels = new TimesModels();
         $elapsedTime = $timesModels->getElapsedTime();
-        //var_dump($avatars);
+        //($avatars);
         // Générer le token pour le mettre dans le vue, dans l'input de type hidden
         $tm = new CSRFTokenManager();
         $scripts= $this->addScripts([

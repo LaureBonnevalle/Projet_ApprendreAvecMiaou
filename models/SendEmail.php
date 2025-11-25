@@ -43,7 +43,7 @@ class SendEmail {
         $message .= $content_encode . "\n";
         $message .= "\n\n";	*/
 
-        file_put_contents('documents/email1.html', $message);
+        file_put_contents('../documents/email1.html', $message);
 
         //mail($destinataire, "CONFIRMATION DE RECEPTION DE DEMANDE D'INSCRIPTION SUR ApprendreAvecMiaou.", $message, $header);
     }
@@ -114,7 +114,7 @@ class SendEmail {
         mail($destinataire, $subject, $message, $header);
     
         // Optionally save the email to a file for records
-        file_put_contents('documents/email2.html', $message);
+        file_put_contents('../documents/email2.html', $message);
     }
     
     public function sendPasswordResetEmail(string $firstname, string $email, string $newPassword): void {
@@ -188,8 +188,8 @@ class SendEmail {
     
     
     // Optionally save the email to a file for records
-        file_put_contents('documents/email3.html', $message);
+        file_put_contents('../documents/email3.html', $message);
     // Sauvegarde optionnelle pour les logs
-    file_put_contents('documents/email_reset_' . date('Y-m-d_H-i-s') . '.html', $message);
+    file_put_contents('../documents/email_reset_' . date('Y-m-d_H-i-s') . '.html', $message);
 }
 }

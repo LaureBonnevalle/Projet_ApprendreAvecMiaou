@@ -362,3 +362,18 @@
     
     @include respect-motion;
 }
+
+// Mixin pour les cartes (Cards)
+@mixin cards($background-color) {
+    background-color: $background-color;
+    border-radius: 30px;
+    padding: 10px; // Espace intérieur
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); // Petite ombre pour le relief
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%; // S'assure que la carte remplit l'article
+    min-height: 250px; // Hauteur minimale indicative
+}

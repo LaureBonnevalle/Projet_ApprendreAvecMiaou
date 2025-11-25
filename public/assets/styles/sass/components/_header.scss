@@ -10,13 +10,26 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 19vh;
+    height: 17.5vh;
     background-color: varcolors.$noir;
-    z-index: varcolors.$z-header;
+    z-index: 2;
     padding: 1rem clamp(1rem, 3vw, 2rem);
 
+    @include mixins.breakpoint(medium) {
+        height: 18.5vh;
+    }
+
+    @include mixins.breakpoint(medium-large) {
+        height: 19vh;
+    }
+
+    @include mixins.breakpoint(large) {
+        height: 22vh;
+    }
+
     .rect {
-        position: relative;
+        position: fixed;
+        top: 2vh;
         background-image: url('../../img/Miaou/backgroundHeader.jpg');
         background-size: cover;
         background-position: center;
@@ -36,11 +49,12 @@
         
         &::before {
             content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            position: fixed;
+            top: 2vh;
+            width: 90vh;
+         // left: 0;
+        //  right: 0;
+        //  bottom: 0;
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(178, 57, 237, 0.1) 100%);
             pointer-events: none;
         }
@@ -210,6 +224,7 @@
     transition: left varcolors.$transition-slow;
     overflow-y: auto;
     padding-top: clamp(140px, 25vh, 180px);
+    z-index: 1;
 
     &.open {
         left: 0;
@@ -279,7 +294,7 @@
     // ✅ Navigation desktop COLLÉE au header
     @include mixins.breakpoint(medium-large) {
         position: fixed; // ✅ Fixed au lieu de static
-        top: 23vh; // ✅ Collé juste sous le header
+        top: 20vh;                     //✅ Collé juste sous le header
         left: 0;
         width: 100%;
         max-width: none;
@@ -372,6 +387,17 @@
                 }
             }
         }
+
+        @include mixins.breakpoint(large) {
+            position: fixed; // ✅ Fixed au lieu de static
+        top: 21vh;               //Collé juste sous le header
+        }
+
+        @include mixins.breakpoint(larger) {
+            position: fixed; // ✅ Fixed au lieu de static
+        top: 20vh;
+        }
+
     }
 }
 
@@ -437,6 +463,114 @@ main {
   min-height: 200vh; /* occupe toute la hauteur visible */
   box-sizing: border-box;
 }
+
+
+
+/* Animation clignotement vert 
+@keyframes blink-success {
+  0%, 100% { background-color: #28a745; color: #fff; }
+  50% { background-color: transparent; color: #28a745; }
+}
+
+ Animation clignotement rouge 
+@keyframes blink-error {
+  0%, 100% { background-color: #dc3545; color: #fff; }
+  50% { background-color: transparent; color: #dc3545; }
+}
+
+.blink-success {
+  animation: blink-success 1s linear infinite;
+}
+
+.blink-error {
+  animation: blink-error 1s linear infinite;
+}*/
+
+/* Styles communs 
+.alert {
+  width: 80%;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+  color: varcolors.$blanc;
+  border-radius: 20px;
+  padding: .5em 1em;
+  margin: 1.5em auto; // centré horizontalement
+  box-sizing: border-box;
+  border: 2px solid;
+
+  > img {
+    width: 6em;
+    margin-right: 4em;
+  }
+}*/
+
+#session-message, .alert-success, 
+#session-error, .alert-error,
+#session-alert, .alert-warning {
+	position: fixed;
+	z-index: 998;	
+	top: 32vh;
+	left: 10%; // 35%
+	text-align: center;
+	font-size: 1vh;
+	width: 80%; // 30%
+	border-radius: 20px;
+	padding-top: 3vh;
+	border-bottom: 2px solid;
+	font-family: "Playwrite", sans-serif;
+    font-size: 2vh;
+
+	@include mixins.breakpoint(mobile) {
+	// Styles par défaut pour les mobiles
+	left: 15%;
+	width: 70%;
+	}
+
+	@include mixins.breakpoint(small) {
+	// Petits appareils (téléphones en mode paysage, 576px et plus)
+	left: 20%;
+	font-size: 1.5rem;
+	width: 60%;
+	}
+	
+	@include mixins.breakpoint(medium) {
+	// Appareils moyens (tablettes, 768px et plus)
+	}
+	
+	@include mixins.breakpoint(medium-large) {
+	// Grands appareils (ordinateurs de bureau, 992px et plus)
+		top: 26vh;                            /* Calcul de la hauteur du header + nav */
+		left: 25%;
+		font-size: 2vh;
+		width: 50%;
+	}
+	
+	@include mixins.breakpoint(large) {
+	// Très grands appareils (grands écrans d'ordinateurs, 1200px et plus)
+	left: 30%; // 35%
+	font-size: 1.8rem;
+	width: 40%;
+	}
+
+}
+
+#session-message, .alert-success {
+	color: varcolors.$light_greenish_blue;
+}
+
+#session-error, .alert-error{
+	color: varcolors.$pink_Glamour;
+}
+
+
+#session-alert, .alert-warning {
+	color: varcolors.$bright_yarrow;
+}
+
+
+
 @include mixins.breakpoint(mobile) {
     main {
     padding-top: calc(0vh + 18vh);              /* header + nav */
@@ -480,7 +614,7 @@ main {
   }
 }
 
-@include mixins.breakpoint(hugee) {
+@include mixins.breakpoint(huge) {
   main {
     padding-top: calc(10vh + 25vh); /* header + nav */
     padding-bottom: 25vh;           /* footer */

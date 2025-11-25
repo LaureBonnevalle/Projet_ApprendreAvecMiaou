@@ -20,7 +20,9 @@
     <script src="https://kit.fontawesome.com/3c515cc4da.js" crossorigin="anonymous"></script>
 </head>
 
-<body>
+<body
+    data-is-connected="{{ isUser|default(false) ? 'true' : 'false' }}"
+    data-start-time="{{ start_time|default('') }}">
     {% block header %}
         {% include "subpages/_header.html.twig" %}
     {% endblock %}
@@ -28,19 +30,19 @@
     <main>
         {% block messages %}
             {% if success_message is defined %}
-                <div class="alert alert-success" role="alert">
+                 <div id="session-message" class="alert alert-success" role="alert">
                     <p>{{ success_message }}</p>
                 </div>
             {% endif %}
             
             {% if error_message is defined %}
-                <div class="alert alert-error" role="alert">
+                <div id="session-error"t-error" role="alert">
                     <p>{{ error_message }}</p>
                 </div>
             {% endif %}
             
             {% if app.session.get('error_message') %}
-                <div class="alert alert-error" role="alert">
+                 <div id="session-alert" class="alert alert-warning" role="alert">
                     <p>{{ app.session.get('error_message') }}</p>
                 </div>
             {% endif %}
