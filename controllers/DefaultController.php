@@ -75,7 +75,7 @@ class DefaultController extends AbstractController {
 
     // Scripts communs (footer + burger)
     $scripts = $this->getDefaultScripts();
-    $scripts = $this->addScripts([
+    $scripts = $this->addScripts(['assets/js/mess.js'
     ], $scripts);
 
     // Cas 1 : pas d'utilisateur connecté → page publique
@@ -104,9 +104,6 @@ class DefaultController extends AbstractController {
 
     switch ($role) {
         case 1: // utilisateur standard
-
-            var_dump($_SESSION);
-            exit;
             
             $this->render("homepageUser.html.twig", [
                 'user'            => $_SESSION['user'],

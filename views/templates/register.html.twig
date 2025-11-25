@@ -21,138 +21,143 @@
                         {# Titre principal masqué pour accessibilité #}
                         <h2 class="sr-only">Formulaire d'inscription</h2>
 
-                        {# Formulaire style "fenêtre" #}
-                        <form 
-                                method="post" 
-                                action="?route=check-register" 
-                                class="register-form" 
-                                novalidate
-                                aria-labelledby="register-title"
-                        >
-                                {# Le titre est généré par CSS ::before, mais on garde un span caché #}
-                                <span id="register-title" class="sr-only">Pour vous inscrire : Remplissez et validez le formulaire</span>
-
-                                {# Container avec fond chat #}
-                                <div class="form-container">
-
-                                        {# ============ SECTION INFORMATIONS PERSONNELLES ============ #}
-                                        <article class="form">
-                                                <fieldset>
-                                                <legend>Informations personnelles</legend>
-
-                                                {# Email #}
-                                                <label for="email">Email :</label>
-                                                <input 
-                                                        type="email"
-                                                        id="email"
-                                                        name="email"
-                                                        aria-describedby="error-email"
-                                                        autocomplete="email"
-                                                        required
-                                                >
-                                                <div class="error-message" id="error-email" role="alert"></div>
-
-                                                {# Prénom #}
-                                                <label for="firstname">Prénom de l'enfant :</label>
-                                                <input 
-                                                        type="text"
-                                                        id="firstname"
-                                                        name="firstname"
-                                                        aria-describedby="error-firstname"
-                                                        autocomplete="given-name"
-                                                        required
-                                                >
-                                                <div class="error-message" id="error-firstname" role="alert"></div>
-
-                                                {# Âge #}
-                                                <label for="age">Âge de l'enfant :</label>
-                                                <input 
-                                                        type="number"
-                                                        id="age"
-                                                        name="age"
-                                                        aria-describedby="error-age"
-                                                        min="1"
-                                                        max="12"
-                                                        required
-                                                >
-                                                <div class="error-message" id="error-age" role="alert"></div>
-                                                </fieldset>
-                                        </article>
-
-                                        {# ============ SECTION AVATARS ============ #}
-                                        <article class="avatar">
-                                                <fieldset>
-                                                <legend>Choisir un avatar</legend>
-                                                <ul>
-                                                        {% for avatar in avatars %}
-                                                        <li>
-                                                        <div class="avatars">
-                                                                <input 
-                                                                type="radio"
-                                                                id="avatar-{{ avatar.id }}"
-                                                                name="avatar"
-                                                                value="{{ avatar.id }}"
-                                                                aria-describedby="error-avatar"
-                                                                {% if loop.first %}checked{% endif %}
-                                                                required
-                                                                >
-                                                                <label for="avatar-{{ avatar.id }}">
-                                                                <img 
-                                                                        src="{{ avatar.urlMini }}"
-                                                                        alt="{{ avatar.description }}"
-                                                                >
-                                                                </label>
-                                                        </div>
-                                                        </li>
-                                                        {% endfor %}
-                                                </ul>
-                                                <div class="error-message" id="error-avatar" role="alert"></div>
-                                                </fieldset>
-                                        </article>
-
-                                        {# ============ SECTION NEWSLETTER ============ #}
-                                        <article class="news">
-                                                <fieldset>
-                                                <legend>Newsletter</legend>
-                                                <div>
-                                                        <input 
-                                                        type="checkbox"
-                                                        id="newsletter"
-                                                        name="newsletter"
-                                                        value="1"
-                                                        checked
-                                                        >
-                                                        <label for="newsletter">
-                                                        Je souhaite recevoir la newsletter
-                                                        </label>
-                                                </div>
-                                                </fieldset>
-                                        </article>
-
-                                        {# ============ CSRF TOKEN ============ #}
-                                        <input 
-                                                type="hidden"
-                                                name="csrf_token"
-                                                id="csrf_token"
-                                                value="{{ token }}"
+                                <article id="register-form" class="form" role="form" aria-labelledby="register-title">
+                                        {# Titre du formulaire #}
+                                        <h3 id="login-title">
+                                                Pour accéder aux activitéx :<br aria-hidden="true"> créer un compte
+                                        </h3>
+                                        {# Formulaire style "fenêtre" #}
+                                        <form 
+                                                method="post" 
+                                                action="?route=check-register" 
+                                                class="register-form" 
+                                                novalidate
+                                                aria-describedby="register-description"
                                         >
-                                        <div class="error-message" id="error-token" role="alert"></div>
+                
 
-                                        {# ============ BOUTON SUBMIT ============ #}
-                                        <article class="submit-btn">
-                                                <fieldset>
-                                                <button 
-                                                        type="submit" 
-                                                        class="register-btn"
-                                                        name="soumettre"
-                                                >
-                                                        Créer un compte
-                                                </button>
-                                                </fieldset>
-                                        </article>
+                                                {# Container avec fond chat #}
+                                                <div class="container-register">
+                                                        {# Legend pour l'accessibilité #}
+                                                        <legend class="sr-only">Informations personnelles</legend>
 
-                                </div>
-                        </form>
+                                                        {# Email #}
+                                                        <label for="email">
+                                                                Email <span aria-label="requis" class="required">*</span>
+                                                        </label>
+                                                        <input 
+                                                                type="email"
+                                                                id="email"
+                                                                name="email"
+                                                                aria-describedby="error-email"
+                                                                autocomplete="email"
+                                                                required
+                                                        >
+                                                        <div 
+                                                                class="error-message" 
+                                                                id="error-email" 
+                                                                role="alert" 
+                                                                aria-live="polite"
+                                                        ></div>
+
+                                                        {# Prénom #}
+                                                        <label for="firstname">Prénom de l'enfant <span aria-label="requis" class="required">*</span>
+                                                        </label>
+                                                        <input 
+                                                                type="text"
+                                                                id="firstname"
+                                                                name="firstname"
+                                                                aria-describedby="error-firstname"
+                                                                autocomplete="given-name"
+                                                                required
+                                                        >
+                                                        <div class="error-message" id="error-firstname" role="alert" aria-live="polite"></div>
+
+                                                        {# Âge #}
+                                                        <label for="age">Âge de l'enfant <span aria-label="requis" class="required">*</span>
+                                                        </label>
+                                                        <input 
+                                                                type="number"
+                                                                id="age"
+                                                                name="age"
+                                                                aria-describedby="error-age"
+                                                                min="1"
+                                                                max="12"
+                                                                required
+                                                        >
+                                                        <div class="error-message" id="error-age" role="alert" aria-live="polite"></div>
+
+                                                        {# ============ SECTION AVATARS ============ #}
+                                                        <label for="avatars">Choisir un avatar<span aria-label="requis" class="required">*</span>
+                                                        </label>
+                                                        <article class="avatar">
+                                                
+                                                                <legend class= "sr-only">Choisir un avatar</legend>
+                                                                <ul>
+                                                                        {% for avatar in avatars %}
+                                                                        <li>
+                                                                        <div class="avatars">
+                                                                                <input 
+                                                                                type="radio"
+                                                                                id="avatar-{{ avatar.id }}"
+                                                                                name="avatar"
+                                                                                value="{{ avatar.id }}"
+                                                                                aria-describedby="error-avatar"
+                                                                                {% if loop.first %}checked{% endif %}
+                                                                                required
+                                                                                >
+                                                                                <label for="avatar-{{ avatar.id }}">
+                                                                                <img 
+                                                                                        src="{{ avatar.urlMini }}"
+                                                                                        alt="{{ avatar.description }}"
+                                                                                >
+                                                                                </label>
+                                                                        </div>
+                                                                        </li>
+                                                                        {% endfor %}
+                                                                </ul>
+                                                                <div class="error-message" id="error-avatar" role="alert" area-live="polite"></div>
+                                                                
+                                                        </article>
+
+                                                        {# ============ SECTION NEWSLETTER ============ #}
+                                                        <label for="news">
+                                                                <div>
+                                                                        <input 
+                                                                        type="checkbox"
+                                                                        id="newsletter"
+                                                                        name="newsletter"
+                                                                        value="1"
+                                                                        checked
+                                                                        >
+                                                                        <label for="newsletter">
+                                                                        Je souhaite recevoir la newsletter
+                                                                        </label>
+                                                                </div>
+
+                                                                {# ============ CSRF TOKEN ============ #}
+                                                                <input 
+                                                                        type="hidden"
+                                                                        name="csrf_token"
+                                                                        id="csrf_token"
+                                                                        value="{{ token }}"
+                                                                >
+                                                                <div class="error-message" id="error-token" role="alert" aria-live="assertive"></div>
+
+                                                                {# ============ BOUTON SUBMIT ============ #}
+                                                                <div class = "submit-button">
+                                                                <input
+                                                                                type="submit" 
+                                                                                class="register-btn"
+                                                                                name="soumettre"
+                                                                                value="Créer un compte"
+                                                                                area-label=" Créer un compte pour accéder aux activités"
+                                                                        >
+                                                                </div>
+                                         </form>       
+
+                                </article>
+                        
                 </section>
 
 

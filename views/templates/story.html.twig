@@ -1,0 +1,89 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}
+      Miaou |Page Accueil 
+{% endblock %}
+
+
+
+{% block body %}
+
+        {% block header %}
+            {{ parent() }}
+        {% endblock %}
+
+        
+    
+    {% block content %}
+    
+    {% block error %}
+    {% endblock %}
+   
+    <section id="histoire" class="story-content">
+
+  <h2>Mon histoire</h2>
+
+  <form id="histoire-form" method="post" class="entity-form">
+    <fieldset>
+      <legend class="sr-only">Choix des éléments de l’histoire</legend>
+
+      <article class="select-group" id="select">
+        <div class="select-box" id="select-character">
+            <label for="personnage_id">Personnage</label>
+            <select name="personnage_id" id="personnage_id" required>
+                <option value="">Choisir un personnage</option>
+                {% for personnage in personnages %}
+                <option value="{{ personnage.getId }}">{{ personnage.getPersoName }}</option>
+                {% endfor %}
+            </select>
+            <div class="image-preview" id="personnage-image"></div>
+        </div>
+      
+        <div class="select-box" id="select-item">
+            <label for="item_id">Objet</label>
+            <select name="item_id" id="item_id" required>
+                <option value="">Choisir un Objet</option>
+                {% for item in items %}
+                <option value="{{ item.getId }}">{{ item.getItemName }}</option>
+                {% endfor %}
+            </select>
+            <div class="image-preview" id="item-image"></div>
+        </div>
+
+        <div class="select-box" id="select-location">
+            <label for="location_id">Personnage</label>
+            <select name="location_id" id="location_id" required>
+                <option value="">Choisir un personnage</option>
+                {% for location in locationss %}
+                <option value="{{ location.getId }}">{{ location.getLocationName }}</option>
+                {% endfor %}
+            </select>
+            <div class="image-preview" id="location-image"></div>
+        </div>
+      </article>
+
+      <button type="submit" class="bouton-3d">Générer l’histoire</button>
+    </fieldset>
+  </form>
+
+  <section id="entity-preview" class="entity-preview">
+    <h3 class="sr-only">Aperçu des éléments choisis</h3>
+    <div class="image-wrapper">
+      <figure id="personnage-image"></figure>
+      <figure id="objet-image"></figure>
+      <figure id="lieu-image"></figure>
+    </div>
+  </section>
+
+  <section id="story-section" class="story-display">
+    <!-- JS injecte ici le contenu de l’histoire -->
+  </section>
+
+</section>
+
+
+    
+    {% endblock %}
+
+    
+{% endblock %}

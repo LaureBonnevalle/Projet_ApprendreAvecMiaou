@@ -3,6 +3,11 @@
 @use '../components/header';
 @use '../components/footer';
 
+.alert-success, #session-message, .alert-error, #session-error, #session-alert, .alert {
+  color : varcolors.$pink_Glamour;
+}
+
+
 .homeUser-content {
   display: flex;
   flex-direction: column;

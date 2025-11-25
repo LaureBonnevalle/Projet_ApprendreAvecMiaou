@@ -47,7 +47,7 @@ $modal-button-tertiary-hover: color.adjust(#28a745, $lightness: -10%);
 // CONTENU DE LA MODALE (LA BOÎTE)
 // ====================================
 .modal-content {
-    background-color: #FAF7ED;
+    background-color:antiquewhite;
     margin: clamp(5%, 10vh, 10%) auto; // ✅ Marge responsive
     padding: 0;
     border: 3px solid $modal-button-shadow;

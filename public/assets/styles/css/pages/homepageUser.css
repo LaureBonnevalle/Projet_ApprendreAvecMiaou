@@ -1363,6 +1363,10 @@ main {
     font-size: 18px;
   }
 }
+.alert-success, #session-message, .alert-error, #session-error, #session-alert, .alert {
+  color: #FF7675;
+}
+
 .homeUser-content {
   display: flex;
   flex-direction: column;

@@ -225,7 +225,7 @@ public function displayModify() : void
 
     
 
-        $scripts = $this->addScripts(['assets/js/formController.js','assets/js/formFunction.js']);
+        //$scripts = $this->addScripts(['assets/js/formController.js','assets/js/formFunction.js']);
          $timesModels = new TimesModels();
         $elapsedTime = $timesModels->getElapsedTime();
         //($avatars);
@@ -330,7 +330,7 @@ public function displayModify() : void
 
                     $_SESSION['success_message'] = "Un email de validation vient de vous être envoyé";
                     
-                    $scripts= $this->addScripts(['public/assets/js/formController.js',]);
+                    $scripts= $this->addScripts(['public/assets/js/formController.js', 'public/assets/js/mess.js']);
 
                     $this->render("homepage.html.twig", ['elapsed_time' => $elapsedTime, 'success_message'=> $_SESSION['success_message']], $scripts);
                     exit();
@@ -379,7 +379,7 @@ public function displayModify() : void
         }
         
         
-        $scripts = $this->addScripts(['public/assets/js/common.js','public/assets/js/formController.js','public/assets/js/formFunction.js']);
+        $scripts = $this->addScripts(['public/assets/js/formController.js','public/assets/js/formFunction.js, /assets/js/mess.js']);
         $timesModels = new TimesModels();
                                 $elapsedTime = $timesModels->getElapsedTime();
         //($avatars);
