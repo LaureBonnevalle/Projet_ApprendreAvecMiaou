@@ -34,22 +34,29 @@
             </div>
             <div class="footer-bottom">
                 <div class="footer-nav">
+
+                    {% set canAccess = isUser or (user.role == 1 and user.statut == 1) %}
+
                     <p>Vous êtes sur la page <strong>{{ titre }}</strong></p>
                     <ul>
                         {% if titre != 'Accueil' %}
                             <li><a href="?route=homepage">Accueil</a></li>
                         {% endif %}
 
-                        {% if titre != 'Coloriages' %}
+                        {% if titre != 'Coloriages' and canAccess %}
                             <li><a href="?route=drawing">Coloriages</a></li>
                         {% endif %}
 
-                        {% if titre != 'Jeux' %}
+                        {% if titre != 'Jeux' and canAccess %}
                             <li><a href="?route=games">Jeux</a></li>
                         {% endif %}
 
-                        {% if titre != 'Histoires' %}
+                        {% if titre != 'Histoires' and canAccess %}
                             <li><a href="?route=stories">Histoires</a></li>
+                        {% endif %}
+
+                        {% if titre != 'Profil' and canAccess %}
+                            <li><a href="?route=profile">Profil</a></li>
                         {% endif %}
                     </ul>
                 </div>

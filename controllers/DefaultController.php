@@ -7,66 +7,7 @@ class DefaultController extends AbstractController {
         parent::__construct();
     }
 
-   /* public function homepage() : void
-    {   
-        $avatar = (new AvatarManager())->getByName("Miaou");
-         unset($_SESSION['start_time']);
-        $_SESSION['start_time'] = time(); // Initialiser le timer lors de l'affichage de la page d'accueil
-        $timesModels = new TimesModels();
-        $elapsedTime = $timesModels->getElapsedTime();
-        $scripts = $this->getDefaultScripts();
-        $this->render("homepage.html.twig", ['titre' => 'Accueil', 'elapsed_time' =>$elapsedTime, 'avatar' => $avatar, 'start_time' => $_SESSION['start_time']], $scripts);
-    }
-
-    public function homepageUser() : void
-    {
-        if (isset($_SESSION["user"])) {
-            $am = new AvatarManager();
-            $avatar = $am->getById($_SESSION['user']['avatar']);
-            $role = $am->getById($_SESSION['user']['role']);
-            $_SESSION["user"];
-            $timesModels = new TimesModels();
-            $elapsedTime = $timesModels->getElapsedTime();
-            $scripts = $this->getDefaultScripts();
-            $scripts = $this->addScripts(['public/assets/js/formController.js']);
-            $this->render("homepageUser.html.twig", [
-                'user' => $_SESSION['user'] ?? null,
-                'elapsed_time' =>$elapsedTime,
-                'session' => $_SESSION,
-                'connected' => $_SESSION['user'],
-                'success_message' => $_SESSION['success_message'] ?? null,
-                'avatar' => [$avatar]
-            ], [$scripts]);
-        } else {
-            $this->redirectTo('login');
-        }
-    }
-
-    public function homepageAdmin() : void
-    {
-        if (isset($_SESSION["user"])and $_SESSION['user']['role'] == 2) {
-            $am = new AvatarManager();
-            $avatar = $am->getById($_SESSION['user']['avatar']);
-            $role = $am->getById($_SESSION['user']['role']);
-            $_SESSION["user"];
-            $timesModels = new TimesModels();
-            $elapsedTime = $timesModels->getElapsedTime();
-             $scripts = $this->getDefaultScripts();
-            $scripts = $this->addScripts(['public/assets/js/formController.js']);
-            $this->render("homepageAdmin.html.twig", [
-                'user' => $_SESSION['user'] ?? null,
-                'role' => $_SESSION['user']['role'],
-                'elapsed_time' =>$elapsedTime,
-                'session' => $_SESSION,
-                'connected' => $_SESSION['user'],
-                'success_message' => $_SESSION['success_message'] ?? null,
-                'avatar' => [$avatar]
-            ], [$scripts]);
-        } else {
-            $this->redirectTo('login');
-        }
-    } */
-
+  
     public function homepage() : void
 {
     $am = new AvatarManager();
@@ -106,6 +47,7 @@ class DefaultController extends AbstractController {
         case 1: // utilisateur standard
             
             $this->render("homepageUser.html.twig", [
+                'titre'           => 'Activités',
                 'user'            => $_SESSION['user'],
                 'elapsed_time'    => $elapsedTime,
                 'session'         => $_SESSION,

@@ -2,7 +2,7 @@
 
 {# Titre de la page #}
 {% block title %}
-Miaou | Page Activités
+         | Page Activités
 {% endblock %}
 
 {% block body %}
@@ -64,7 +64,10 @@ Miaou | Page Activités
             </article>
         </section>       
         
-            
+         {% block modal %}
+            {{ parent() }}
+         {% endblock %}
+
 {% endblock %}  
 
 

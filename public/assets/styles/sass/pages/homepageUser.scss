@@ -3,6 +3,8 @@
 @use '../components/header';
 @use '../components/footer';
 
+
+
 .alert-success, #session-message, .alert-error, #session-error, #session-alert, .alert {
   color : varcolors.$pink_Glamour;
 }
@@ -12,10 +14,15 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+
+  @include mixins.breakpoint(small) {
+    flex-direction: row;
+  }
 }
 
 // Bloc header (h1 + p)
 .homeUser-header {
+  display: block;
   text-align: center;
   margin: auto;
 
@@ -33,16 +40,13 @@
 
 // Bloc cartes
 .cards-container {
-  display: flex;
-  flex-direction: column;
+  display : flex;
+  flex-direction: row;
   align-items: center;
   gap: 20px;
 
-  @include mixins.breakpoint(small) {
-    display: grid;
-    gap: 20px;
-    //justify-items: center;
-  }
+  
+  
 }
 
 // Cartes
@@ -53,9 +57,10 @@
  
  
   border-radius: 20px;
-  display: flex;
-  flex-direction: column;
   align-items: center;
+
+  
+  
 }
 
 // Mixins cards

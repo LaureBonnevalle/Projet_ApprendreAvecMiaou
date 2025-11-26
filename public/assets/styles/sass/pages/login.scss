@@ -3,7 +3,11 @@
 @use '../components/header';
 @use '../components/footer';
 
+main {
+  padding-top :10vh;
 
+  
+}
 // =================================
 // CONTENEUR PRINCIPAL LOGIN
 // =================================
@@ -12,11 +16,19 @@
   flex-direction: column;
   justify-content: center; // ✅ Centre verticalement
   align-items: center; // ✅ Centre horizontalement
-  min-height: calc(100vh - 20vh); // ✅ Hauteur minimale (viewport - marges)
+  min-height: calc(100vh - 30vh); // ✅ Hauteur minimale (viewport - marges)
   padding: clamp(2rem, 5vh, 4rem) clamp(1rem, 3vw, 2rem); // ✅ Padding responsive
+  padding-top: 0;
+  margin-top :0;
   width: 100%;
   box-sizing: border-box;
   position: relative;
+
+    @include mixins.breakpoint(mediumLarge) {
+    padding-top :0vh;
+    margin-top: 20vh;
+  }
+
 
   // ✅ Classe sr-only pour accessibilité
   .sr-only {

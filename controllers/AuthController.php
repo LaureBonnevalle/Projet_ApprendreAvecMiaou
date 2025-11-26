@@ -30,7 +30,11 @@ class AuthController extends AbstractController {
         $elapsedTime = $timesModels->getElapsedTime();
         
         $_SESSION['error_message'] = "";      
-        $this->render("login.html.twig", [ "token" => $token, "avatar" => $am->getById(4), 'elapsed_time' =>$elapsedTime] , $scripts);
+        $this->render("login.html.twig", [ 
+            'titre' => "Connexion",
+            "token" => $token, 
+            "avatar" => $am->getById(4), 
+            'elapsed_time' =>$elapsedTime] , $scripts);
         return;
         // $template = "register";
         // require "templates/layout.phtml";
@@ -481,6 +485,7 @@ public function displayProfile() {
         
         $_SESSION['error_mesage'] = "";      
         $this->render("profile.html.twig", [
+            'titre' => 'Mon profil',
             "user" => $_SESSION['user'] ?? null,
             "elapsed_time" => $elapsedTime, 
             "avatars" => $avatars, 

@@ -1,10 +1,14 @@
 {% extends "layout.html.twig" %}
 
 {% block title %}
-      Miaou |Page Accueil 
+         |Histoires
 {% endblock %}
 
-
+{#{% block stylesheets %}
+ {{ parent() }}
+    <link rel="stylesheet" href="/assets/vendor/select2/css/select2.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{% endblock %}#}
 
 {% block body %}
 
@@ -14,74 +18,81 @@
 
         
     
-    {% block content %}
-    
-    {% block error %}
-    {% endblock %}
+        {% block content %}
+        
+        {% block error %}
+        {% endblock %}
    
-    <section id="histoire" class="story-content">
+            <section id="histoire" class="story-content">
+                <h2>Mon histoire</h2>
 
-  <h2>Mon histoire</h2>
+                <form id="histoire-form" method="post" class="entity-form">
+                    <fieldset>
+                        <legend class="sr-only">Choix des éléments de l’histoire</legend>
 
-  <form id="histoire-form" method="post" class="entity-form">
-    <fieldset>
-      <legend class="sr-only">Choix des éléments de l’histoire</legend>
+                        <article class="select-group" id="select">
+                            <div class="select-box" id="select-character">
+                                <label for="character_id">Personnage</label>
+                                <select name="character_id" id="character_id" required>
+                                    <option value="">Choisir un personnage</option>
+                                    {% for character in characters %}
+                                    <option value="{{ character.getId }}" data-image="{{ character.getUrl }}">{{ character.getCharacterName }}</option>
+                                    {% endfor %}
+                                </select>
+                                <div class="image-preview" id="character-image"></div>
+                            </div>
+                        
+                            <div class="select-box" id="select-item">
+                                <label for="item_id">Objet</label>
+                                <select name="item_id" id="item_id" required>
+                                    <option value="">Choisir un objet</option>
+                                    {% for item in items %}
+                                    <option value="{{ item.getId }}" data-image="{{ item.getUrl }}">{{ item.getItemName }}</option>
+                                    {% endfor %}
+                                </select>
+                                <div class="image-preview" id="item-image"></div>
+                            </div>
 
-      <article class="select-group" id="select">
-        <div class="select-box" id="select-character">
-            <label for="personnage_id">Personnage</label>
-            <select name="personnage_id" id="personnage_id" required>
-                <option value="">Choisir un personnage</option>
-                {% for personnage in personnages %}
-                <option value="{{ personnage.getId }}">{{ personnage.getPersoName }}</option>
-                {% endfor %}
-            </select>
-            <div class="image-preview" id="personnage-image"></div>
-        </div>
-      
-        <div class="select-box" id="select-item">
-            <label for="item_id">Objet</label>
-            <select name="item_id" id="item_id" required>
-                <option value="">Choisir un Objet</option>
-                {% for item in items %}
-                <option value="{{ item.getId }}">{{ item.getItemName }}</option>
-                {% endfor %}
-            </select>
-            <div class="image-preview" id="item-image"></div>
-        </div>
+                            <div class="select-box" id="select-location">
+                                <label for="location_id">Lieu</label>
+                                <select name="location_id" id="location_id" required>
+                                    <option value="">Choisir un lieu</option>
+                                    {% for location in locations %}
+                                    <option value="{{ location.getId }}" data-image="{{ location.getUrl }}">{{ location.getLocationName }}</option>
+                                    {% endfor %}
+                                </select>
+                                <div class="image-preview" id="location-image"></div>
+                            </div>
+                        </article>
+                    </fieldset>
+                        <button id="generate-story" type="button" class="bouton-3d">
+                            Découvre ton histoire
+                        </button>
 
-        <div class="select-box" id="select-location">
-            <label for="location_id">Personnage</label>
-            <select name="location_id" id="location_id" required>
-                <option value="">Choisir un personnage</option>
-                {% for location in locationss %}
-                <option value="{{ location.getId }}">{{ location.getLocationName }}</option>
-                {% endfor %}
-            </select>
-            <div class="image-preview" id="location-image"></div>
-        </div>
-      </article>
+                        <!-- <button type="submit" class="bouton-3d">Découvre ton histoire</button>-->
+                    
+                </form>
 
-      <button type="submit" class="bouton-3d">Générer l’histoire</button>
-    </fieldset>
-  </form>
+            <!--<section id="entity-preview" class="entity-preview">
+                <h3 class="sr-only">Aperçu des éléments choisis</h3>
+                <div class="image-wrapper">
+                <figure id="character-image"></figure>
+                <figure id="objet-image"></figure>
+                <figure id="lieu-image"></figure>
+                </div>
+            </section>-->
 
-  <section id="entity-preview" class="entity-preview">
-    <h3 class="sr-only">Aperçu des éléments choisis</h3>
-    <div class="image-wrapper">
-      <figure id="personnage-image"></figure>
-      <figure id="objet-image"></figure>
-      <figure id="lieu-image"></figure>
-    </div>
-  </section>
+                <section id="story-section" class="story-display">
+                    <!-- JS injecte ici le contenu de l’histoire -->
+                </section>
 
-  <section id="story-section" class="story-display">
-    <!-- JS injecte ici le contenu de l’histoire -->
-  </section>
+            </section>
 
-</section>
-
-
+            {% block modal %}
+                {% if isValidateUser or isUser %}
+                    {% include "subpages/_modal.html.twig" %}
+                {% endif %}
+            {% endblock %}
     
     {% endblock %}
 

@@ -1,10 +1,4 @@
 <?php
-/*require_once("managers/StoryManager.php");
-require_once("managers/CharacterManager.php");
-require_once("managers/ItemManager.php");
-require_once("managers/LocationManager.php");
-require_once("managers/AvatarManager.php");
-require_once("models/TimesModels.php");*/
 
 class StoryController extends AbstractController {
 
@@ -14,7 +8,7 @@ class StoryController extends AbstractController {
         $itemId = $_POST['item_id'];
 
         $storyManager = new storyManager();
-        $imageUrl = $storyManager->getImageUrl($characterId, $locationId, $itemId);
+        $imageUrl = $storyManager->getUrl($characterId, $locationId, $itemId);
 
         header('Content-Type: application/json');
         echo json_encode(['url' => $imageUrl]);
@@ -22,68 +16,85 @@ class StoryController extends AbstractController {
     }
     
     public function displayStories() {
-        $pm = new characterManager();
-        $lm = new locationManager();
-        $om = new itemManager();
+        $pm = new CharacterManager();
+        $lm = new LocationManager();
+        $om = new ItemManager();
         $am = new AvatarManager();
         $avatar = $am->getById($_SESSION['user']['avatar']);
         $timesModels = new TimesModels();
         $elapsedTime = $timesModels->getElapsedTime();
         
         
-        $scripts = $this->addScripts(['public/assets/js/ajaxStorie.js', 'public/assets/js/common.js']);
+    $scripts = $this->addScripts(['assets/js/ajaxStory.js']);
 
-        $characters = $pm->getAllcharacters();
-        $locationx = $lm->getAlllocationx();
-        $items = $om->getAllitems();
+        $characters = $pm->getAllCharacters();
+        $locations = $lm->getAllLocations();
+        $items = $om->getAllItems();
+
+        //var_dump ($characters, $items, $locations, $_SESSION);
+        //exit;
 
         return $this->render('story.html.twig', [
-            
+            'titre' => 'Histoires',
             'user' => $_SESSION['user'] ?? null,
+            //'isConnecte' => true,
+            'session'         => $_SESSION,
+            'connected'       => true,
             'elapsed_time' => $elapsedTime,
             'characters' => $characters,
-            'locationx' => $locationx,
+            'locations' => $locations,
             'items' => $items,
-            'avatar' => $avatar,
+            'avatar' => [$avatar],
+            'isUser'          => true,
+            'start_time'      => $_SESSION['start_time']
         ], $scripts);
     }
 
     
     
     public function getImage() {
-        $entity = $_GET['entity'];
-        $id = $_GET['id'];
-        //var_dump($_GET);
-        //die;
-        
-        $manager = null;
-        
-        switch($entity) {
+    $entity = $_GET['entity'] ?? '';
+    $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+
+        switch ($entity) {
             case 'character':
-                $manager = new characterManager();
+                $manager = new CharacterManager();
                 break;
             case 'item':
-                $manager = new itemManager();
+                $manager = new ItemManager();
                 break;
             case 'location':
-                $manager = new locationManager();
+                $manager = new LocationManager();
                 break;
             default:
                 http_response_code(400);
+                header('Content-Type: application/json; charset=UTF-8');
                 echo json_encode(['error' => 'Invalid entity']);
                 exit;
-                break;
         }
 
         $data = $manager->getById($id);
-        //file_put_contents('text1.txt', $data['url']);
-        //file_put_contents('text2.txt', $data['alt']);
-        header('Content-Type: application/json');
-        echo json_encode($data['url']);
-        //echo json_encode($data['alt']);
+
+        if (!$data) {
+            http_response_code(404);
+            header('Content-Type: application/json; charset=UTF-8');
+            echo json_encode(['error' => 'Not found']);
+            exit;
+        }
+
+        // Nettoyer les buffers pour éviter tout output parasite
+        while (ob_get_level() > 0) {
+            ob_end_clean();
+        }
+
+        header('Content-Type: application/json; charset=UTF-8');
+        echo json_encode([
+            'url' => $data->getUrl(),
+            'alt' => $data->getAlt()
+        ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
         exit;
-        
     }
+
     
     public function getStory() {
         $characterId = $_GET['perso'];
@@ -91,7 +102,7 @@ class StoryController extends AbstractController {
         $locationId  = $_GET['location'];
         
         
-        $storyManager = new storyManager();
+        $storyManager = new StoryManager();
         $story = $storyManager->getStoryByCriteria($characterId, $itemId, $locationId);
                 
         header('Content-Type: application/json');

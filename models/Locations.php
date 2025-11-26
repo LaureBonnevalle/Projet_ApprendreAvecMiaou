@@ -1,16 +1,18 @@
 <?php
 
-class Locationx {
+class Locations {
     private ?int $id;
     private string $location_name;
     private string $location_description;
-    private string $url;
-    private string $alt;
+    private string $url="";
+    private string $alt="";
 
-    public function __construct(?int $id, string $location_name, string $location_description) {
+    public function __construct(?int $id, string $location_name, string $location_description, string $url, string $alt) {
         $this->id = $id;
         $this->location_name = $location_name;
         $this->location_description = $location_description;
+        $this->url = $url;
+        $this->alt = $alt;
     }
 
     public function getId(): ?int {
@@ -51,6 +53,27 @@ class Locationx {
     
     public function setAlt(string $alt): void {
         $this->alt = $alt;
+    }
+    // Méthode utile pour créer un location depuis un array (comme celui de la BDD)
+    public static function fromArray(array $data): self {
+        return new self(
+            $data['id'] ?? 0,
+            $data['location_name'] ?? '', // Correspond à votre colonne
+            $data['location_description'] ?? '', // Correspond à votre colonne
+            $data['url'] ?? '',
+            $data['alt'] ?? ''
+        );
+    }
+    
+    // Méthode pour convertir en array
+    public function toArray(): array {
+        return [
+            'id' => $this->id,
+            'location_name' => $this->location_name,
+            'location_description' => $this->location_description,
+            'url' => $this->url,
+            'alt' => $this->alt
+        ];
     }
 }
 ?>

@@ -1,0 +1,296 @@
+@use '../abstracts/varcolors' as varcolors;
+@use '../abstracts/mixins' as mixins;
+@use '../components/header';
+@use '../components/footer';
+
+
+.story-content {
+  margin: 10vh clamp(1vh, 2vh, 5vh) 1vh 2vh  ;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+    @include mixins.breakpoint(mobile) {
+    padding: 3vh;
+  }
+
+  @include mixins.breakpoint(small) {
+    padding-top: 10vh;
+  }
+
+  @include mixins.breakpoint(medium) {
+    padding: 0;
+  }
+
+  h2 {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 0;
+    //color: $color-histoires-dark;
+  }
+
+  // ✅ Ajout d’espace en bas pour petits écrans
+  @include mixins.breakpoint(custom) {
+    padding-bottom: 6rem;
+  }
+  @include mixins.breakpoint(mobile) {
+    padding-bottom: 25vh;
+  }
+
+   @include mixins.breakpoint(small) {
+    padding-bottom: 25vh;
+    padding-top: 2vh;
+  }
+
+  @include mixins.breakpoint(medium) {
+    padding-bottom: 25vh;
+    padding-top: 10vh;
+  }
+
+  .entity-form {
+    fieldset {
+      border: none;
+      padding: 0;
+
+
+        
+
+
+    }
+
+    .select-group {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin: auto;
+
+      @include mixins.breakpoint(mobile) {
+        gap: 2vh;
+        padding: 0 0 0 13vw;
+      }
+
+      @include mixins.breakpoint(small) {
+        flex-direction: row;
+        justify-content:space-around;
+        margin: auto;
+        gap: 1vh;
+        padding: 0;
+      }
+
+      @include mixins.breakpoint(larger) {
+        flex-direction: row;
+        justify-content:space-around;
+        margin: auto;
+        gap: 1vh;
+        padding: 0 10vw 0 10vw;
+      }
+
+      @include mixins.breakpoint(extra) {
+        flex-direction: row;
+        justify-content:space-around;
+        margin: auto;
+        gap: 1vh;
+        padding: 0 15vw 0 15vw;
+      }
+
+    }
+
+    .select-box {
+      background-color: varcolors.$bleu-light;
+      border-radius: 30px;
+      padding: 1rem;
+      box-shadow: varcolors.$shadow-soft;
+      box-shadow: 4px 4px 8px rgba(0,0,0,0.6);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      align-items: center; // ✅ centre horizontalement
+      max-width: 230px;
+      marge: auto;
+
+      label {
+        font-weight: bold;
+        font-family: 'Comic Sans MS', 'Raleway', cursive;
+        color: varcolors.$noir-light;
+        text-align: center; // ✅ centre le texte
+        width: 100%;
+      }
+
+      select {
+        padding: 0.5rem 1rem;
+        border-radius: 30px;
+        border: 2px solid varcolors.$bleu-dark;
+        font-size: clampe (1.5vh, 2vh, 3vh);
+        font-family: 'Comic Sans MS', 'Raleway', cursive;
+        background-color: varcolors.$blanc;
+        cursor: pointer;
+        transition: border-color varcolors.$transition-normal;
+        max-width: 150px;
+
+        &:hover {
+          border-color: varcolors.$bleu-main; // ✅ bordure bleue au hover
+        }
+
+        &:focus {
+          border-color: varcolors.$bleu-main;
+          outline: none;
+          box-shadow: 0 0 0 3px rgba(varcolors.$bleu-main, 0.3);
+        }
+      }
+
+      .image-preview {
+        width: 100%;
+        height: 120px;
+        border-radius: 30px;
+        overflow: hidden;
+        background-color: varcolors.$blanc;
+        box-shadow: varcolors.$shadow-soft;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        img {
+          max-height: 100%;
+          max-width: 100%;
+          object-fit: contain;
+          animation: fadeIn varcolors.$transition-slow;
+        }
+      }
+    }
+
+    // ✅ Bouton bleu histoire
+    .bouton-3d {
+      @include mixins.button-histoires;
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      border-radius: 30px;
+      margin: 2rem auto 0 auto;
+      display: block;
+
+      &::after {
+        content: " ✨";
+      }
+
+      &:hover {
+        border: 1px solid varcolors.$blanc;
+      }
+    }
+  }
+
+    #story-section {
+    display: none;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    position: relative;
+    }
+
+    #story-section.visible {
+    display: block;
+    opacity: 1;
+    }
+
+    #story-section.visible::after {
+    content: "✨✨✨";
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2rem;
+    animation: sparkle 1.5s ease forwards;
+    }
+
+@keyframes sparkle {
+  0% { opacity: 0; transform: translateX(-50%) scale(0.5); }
+  50% { opacity: 1; transform: translateX(-50%) scale(1.2); }
+  100% { opacity: 0; transform: translateX(-50%) scale(0.8); }
+}
+
+  .story-display {
+    background-color: rgba(varcolors.$blanc, 0.9);
+    border-radius: 30px;
+    padding: 2rem;
+    box-shadow: varcolors.$shadow-medium;
+    position: relative;
+
+    h3 {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+      font-family: 'Comic Sans MS', 'Raleway', cursive;
+      color: varcolors.$color-histoires-dark;
+      text-align: center;
+    }
+
+    // ✅ Bouton Play avec image
+    #play-audio {
+      height: 0;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      img {
+        width: 100px;
+        height: 100px;
+        transition: transform varcolors.$transition-normal;
+      }
+
+      &:hover img {
+        transform: scale(1.1);
+      }
+
+      &:active img {
+        transform: scale(0.95);
+      }
+    }
+
+    #story-content {
+      margin-bottom: 2rem;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: varcolors.$noir-light;
+    }
+
+    // ✅ Boîtes de téléchargement en bleu
+    .download-section {
+      margin-top: 1rem;
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+       @include mixins.button-3d(varcolors.$bleu-main, varcolors.$bleu-dark);
+
+       &:hover {
+        border: 1px solid varcolors.$blanc;
+       }
+
+      
+        a {
+          font-weight: bold;
+          color: varcolors.$blanc;
+          text-decoration: none;
+
+          &:hover {
+            text-decoration: none;
+            
+          }
+        }
+
+      
+    }
+  }
+}
+
+// ✅ Animations
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes pulse {
+  from { transform: scale(1); }
+  to { transform: scale(1.05); }
+}

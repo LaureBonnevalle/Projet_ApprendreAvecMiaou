@@ -1,175 +1,140 @@
 <?php
 
-require_once('models/Characters.php');
-
 class CharacterManager extends AbstractManager {
     
-   public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
     }
     
-    // Ajouter un character
-    public function add(Characters $character): Character {
+    public function add(Characters $character): bool {
         $query = $this->db->prepare("
-            INSERT INTO characters (perso_name, perso_description) 
-            VALUES (:perso_name, :perso_description)
+            INSERT INTO characters (character_name, character_description, url, alt) 
+            VALUES (:character_name, :character_description, :url, :alt)
         ");
         
         $parameters = [
-            "perso_name" => $character->getPersoName(),
-            "perso_description" => $character->getPersoDescription()
+            "character_name" => $character->getCharacterName(),
+            "character_description" => $character->getCharacterDescription(),
+            "url" => $character->getUrl(),
+            "alt" => $character->getAlt()
         ];
 
         return $query->execute($parameters);
     }
 
-    // Mettre à jour un character
-    public function update(Characters $character): Character {
+    public function update(Characters $character): bool {
         $query = $this->db->prepare("
             UPDATE characters 
-            SET perso_name = :perso_name, perso_description = :perso_description 
+            SET character_name = :character_name, 
+                character_description = :character_description,
+                url = :url,
+                alt = :alt
             WHERE id = :id
         ");
         
         $parameters = [
-            "perso_name" => $character->getPersoName(),
-            "perso_description" => $character->getPersoDescription(),
+            "character_name" => $character->getCharacterName(),
+            "character_description" => $character->getCharacterDescription(),
+            "url" => $character->getUrl(),
+            "alt" => $character->getAlt(),
             "id" => $character->getId()
         ];
 
         return $query->execute($parameters);
     }
 
-    // Supprimer un character
-    public function delete(int $id): Character {
+    public function delete(int $id): bool {
         $query = $this->db->prepare("
             DELETE FROM characters 
             WHERE id = :id
         ");
         
-        $parameters = [
-            "id" => $id
-        ];
-
+        $parameters = ["id" => $id];
         return $query->execute($parameters);
     }
 
-    // Récupérer un character par son ID
-    public function getById(int $id)  {
-        
-        //file_put_contents('text2.txt', $id);
-        
+    public function getById(int $id): ?Characters {
         $query = $this->db->prepare("
             SELECT * FROM characters 
             WHERE id = :id
         ");
         
-        $parameters = [
-            "id" => $id
-        ];
-
-        $query->execute($parameters);
-        return $query->fetch();
-/*
-        if ($data) {
-            return new Characters($data['id'], $data['perso_name'], $data['perso_description']);
+        $query->execute(["id" => $id]);
+        $row = $query->fetch(PDO::FETCH_ASSOC);
+        
+        if ($row) {
+            return new Characters(
+                $row['id'], 
+                $row['character_name'], 
+                $row['character_description'],
+                $row['url'] ?? '',
+                $row['alt'] ?? ''
+            );
         }
-
-        return null;*/
+        return null;
     }
 
-    // Récupérer tous les characters
     public function getAllCharacters(): array {
-        $query = $this->db->prepare("
-            SELECT * FROM characters
-        ");
-        $result =$query->execute();
+        $query = $this->db->prepare("SELECT * FROM characters");
+        $query->execute();
         
-        //return $result->fetch(PDO::FETCH_ASSOC);
-
         $characters = [];
-        while ($result = $query->fetch()) {
-            $characters[] = new Characters($result['id'], $result['perso_name'], $result['perso_description']);
+        while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+            $characters[] = new Characters(
+                $row['id'], 
+                $row['character_name'], 
+                $row['character_description'],
+                $row['url'] ?? '',
+                $row['alt'] ?? ''
+            );
         }
 
         return $characters;
     }
     
-    /**
-     * Récupère les IDs de tous les characters
-     * @return array Liste des IDs
-     */
     public function getAllCharacterIds(): array {
         $sql = "SELECT id FROM characters";
-        return array_column($this->findAll($sql), 'id');
+        $query = $this->db->prepare($sql);
+        $query->execute();
+        return array_column($query->fetchAll(PDO::FETCH_ASSOC), 'id');
     }
     
-    /**
-     * Compte le nombre de characters
-     * @return int Nombre de characters
-     */
     public function countCharacters(): int {
         $sql = "SELECT COUNT(*) as count FROM characters";
-        $result = $this->findOne($sql);
+        $query = $this->db->prepare($sql);
+        $query->execute();
+        $result = $query->fetch(PDO::FETCH_ASSOC);
         return $result['count'] ?? 0;
     }
     
-    /**
-     * Ajoute un nouveau character
-     * @param array $data Données du character (perso_name, perso_description, url, alt)
-     * @return int ID du character créé
-     * @throws Exception Si le character existe déjà
-     */
     public function addCharacter(array $data): int {
-        // Vérifier si le character existe déjà
-        if ($this->characterExists($data['perso_name'])) {
-            throw new Exception("Le character '{$data['perso_name']}' existe déjà.");
+        if ($this->characterExists($data['character_name'])) {
+            throw new Exception("Le personnage '{$data['character_name']}' existe déjà.");
         }
         
-        $sql = "INSERT INTO characters (perso_name, perso_description, url, alt) VALUES (:perso_name, :perso_description, :url, :alt)";
+        $sql = "INSERT INTO characters (character_name, character_description, url, alt) 
+                VALUES (:character_name, :character_description, :url, :alt)";
         $params = [
-            'perso_name' => $data['perso_name'],
-            'perso_description' => $data['perso_description'] ?? null,
-            'url' => $data['url'] ?? null,
-            'alt' => $data['alt'] ?? null
+            'character_name' => $data['character_name'],
+            'character_description' => $data['character_description'] ?? '',
+            'url' => $data['url'] ?? '',
+            'alt' => $data['alt'] ?? ''
         ];
-        try {
-    $this->execute($sql, $params);
-    return $this->db->lastInsertId();
-} catch (\PDOException $e) {
-    throw new Exception("Erreur SQL : " . $e->getMessage());
-}
+        
+        $query = $this->db->prepare($sql);
+        $query->execute($params);
+        return $this->db->lastInsertId();
     }
     
-    /**
-     * Vérifie si un character existe déjà
-     * @param string $name Nom du character
-     * @return bool True si le character existe
-     */
     public function characterExists(string $name): bool {
-        $sql = "SELECT id FROM characters WHERE perso_name = :name";
-        $result = $this->findOne($sql, ['name' => $name]);
+        $sql = "SELECT id FROM characters WHERE character_name = :name";
+        $query = $this->db->prepare($sql);
+        $query->execute(['name' => $name]);
+        $result = $query->fetch(PDO::FETCH_ASSOC);
         return $result !== false;
     }
     
-    /**
-     * Récupère un character par son ID
-     * @param int $id ID du character
-     * @return array|false Données du character ou false si non trouvé
-     */
-    public function getCharacterById(int $id) {
-        $sql = "SELECT * FROM characters WHERE id = :id";
-        return $this->findOne($sql, ['id' => $id]);
+    public function getCharacterById(int $id): ?Characters {
+        return $this->getById($id);
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
 }
-?>
