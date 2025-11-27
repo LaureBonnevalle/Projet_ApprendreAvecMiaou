@@ -111,7 +111,7 @@
         margin-bottom: 1vh;
 
         .action-button {
-            @include mixins.button-3d(varcolors.$rouge-main, varcolors.$rouge-dark, varcolors.$noir);
+            @include mixins.button-3d(varcolors.$rouge-main, varcolors.$rouge-dark, /*varcolors.$noir*/);
             font-family: 'Comic Sans MS', 'Raleway', cursive;
             font-size: clamp(0.9rem, 1.5vw, 1.1rem);
             padding: clamp(0.4rem, 0.5vw, 0.8rem) clamp(1rem, 1vw, 1.5rem);
@@ -262,7 +262,7 @@
                 }
 
                 &:hover {
-                    background-color: varcolors.$noir-menu;
+                    //background-color: varcolors.$noir-menu;
                     padding-left: 2rem;
 
                     &::after {
@@ -278,6 +278,7 @@
             &:nth-child(3) a::after { background-color: varcolors.$color-histoires; }
             &:nth-child(4) a::after { background-color: varcolors.$color-coloriages; }
             &:nth-child(5) a::after { background-color: varcolors.$color-jeux; }
+            &:nth-child(6) a::after { background-color: varcolors.$corail; }
 
             span.disabled {
                 opacity: 0.5;
@@ -384,6 +385,14 @@
                     color: varcolors.$noir;
                     &:hover { box-shadow: 3px 4px 0px color.adjust(varcolors.$color-jeux, $lightness: -15%); }
                     &:active { box-shadow: 1px 2px 0px color.adjust(varcolors.$color-jeux, $lightness: -15%); }
+                }
+
+                &:nth-child(6) a {
+                    background-color: varcolors.$corail;
+                    box-shadow: 4px 6px 0px color.adjust(varcolors.$corail, $lightness: -15%);
+                    color: varcolors.$noir;
+                    &:hover { box-shadow: 3px 4px 0px color.adjust(varcolors.$corail, $lightness: -15%); }
+                    &:active { box-shadow: 1px 2px 0px color.adjust(varcolors.$corail, $lightness: -15%); }
                 }
             }
         }

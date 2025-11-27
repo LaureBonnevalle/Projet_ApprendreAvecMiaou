@@ -106,7 +106,7 @@
 }
 #header .header-actions .action-button {
   background-color: #FD1616;
-  border: 1px solid #000000;
+  border: 1px solid rgb(222.0936170213, 1.9063829787, 1.9063829787);
   box-shadow: 6px 6px 0px #B71B10;
   border-radius: 500px;
   padding: 0.8rem 1rem;
@@ -284,7 +284,6 @@
 #nav #nav-links-container li span:hover,
 #nav #navUser-links-container li a:hover,
 #nav #navUser-links-container li span:hover {
-  background-color: #1a1a1a;
   padding-left: 2rem;
 }
 #nav .nav-links-container li a:hover::after, #nav .nav-links-container li span:hover::after,
@@ -320,6 +319,11 @@
 #nav #nav-links-container li:nth-child(5) a::after,
 #nav #navUser-links-container li:nth-child(5) a::after {
   background-color: #F2E554;
+}
+#nav .nav-links-container li:nth-child(6) a::after,
+#nav #nav-links-container li:nth-child(6) a::after,
+#nav #navUser-links-container li:nth-child(6) a::after {
+  background-color: #FF8559;
 }
 #nav .nav-links-container li span.disabled,
 #nav #nav-links-container li span.disabled,
@@ -477,6 +481,23 @@
   #nav #nav-links-container li:nth-child(5) a:active,
   #nav #navUser-links-container li:nth-child(5) a:active {
     box-shadow: 1px 2px 0px rgb(231.8722826087, 214.2445652174, 17.6277173913);
+  }
+  #nav .nav-links-container li:nth-child(6) a,
+  #nav #nav-links-container li:nth-child(6) a,
+  #nav #navUser-links-container li:nth-child(6) a {
+    background-color: #FF8559;
+    box-shadow: 4px 6px 0px rgb(255, 76.7771084337, 12.5);
+    color: #000000;
+  }
+  #nav .nav-links-container li:nth-child(6) a:hover,
+  #nav #nav-links-container li:nth-child(6) a:hover,
+  #nav #navUser-links-container li:nth-child(6) a:hover {
+    box-shadow: 3px 4px 0px rgb(255, 76.7771084337, 12.5);
+  }
+  #nav .nav-links-container li:nth-child(6) a:active,
+  #nav #nav-links-container li:nth-child(6) a:active,
+  #nav #navUser-links-container li:nth-child(6) a:active {
+    box-shadow: 1px 2px 0px rgb(255, 76.7771084337, 12.5);
   }
 }
 @media (min-width: 850px) and (min-width: 992px) {
@@ -1703,7 +1724,6 @@ main {
 .story-content .story-display .download-section a:hover {
   text-decoration: none;
 }
-
 @keyframes fadeIn {
   from {
     opacity: 0;

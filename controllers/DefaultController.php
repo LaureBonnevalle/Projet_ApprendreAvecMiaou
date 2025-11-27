@@ -60,7 +60,8 @@ class DefaultController extends AbstractController {
             break;
 
         case 2: // administrateur
-            $this->render("homepageAdmin.html.twig", [
+            $this->render("homepageUser.html.twig", [
+                'titre'           => 'Activités',
                 'user'            => $_SESSION['user'],
                 'role'            => $role,
                 'elapsed_time'    => $elapsedTime,
@@ -101,4 +102,50 @@ class DefaultController extends AbstractController {
     {
         $this->render("page404.html.twig", []);
     }
+
+
+
+    public function pedagogie() {
+
+            $am = new AvatarManager();
+            $timesModels = new TimesModels();
+            $elapsedTime = $timesModels->getElapsedTime();
+
+            // Scripts communs (footer + burger)
+            $scripts = $this->getDefaultScripts();
+            $scripts = $this->addScripts(['assets/js/mess.js'
+            ], $scripts);
+
+        if (!isset($_SESSION['user'])) {
+        
+            $avatar = $am->getByName("Miaou");
+            $this->render("pedagogie.html.twig", [
+                'titre'   => 'Notre Philosophie',
+                'avatar'  => [$avatar]], $scripts);
+        }
+
+        else if (isset($_SESSION['user'])) {
+
+            
+
+            $avatar = $am->getById($_SESSION['user']['avatar']);
+            $_SESSION['start_time'] = time();
+            
+            $this->render("pedagogie.html.twig", [
+                'titre'           => 'Notre Philosophie',
+                'user'            => $_SESSION['user'],
+                'elapsed_time'    => $elapsedTime,
+                'session'         => $_SESSION,
+                'connected'       => true,
+                'success_message' => $_SESSION['success_message'] ?? null,
+                'avatar'          => [$avatar],
+                'isUser'          => true,
+                'start_time'      => $_SESSION['start_time']
+            ], $scripts);
+            
+            
+        }
+    }
 }
+
+

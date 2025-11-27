@@ -200,11 +200,11 @@
     animation: sparkle 1.5s ease forwards;
     }
 
-@keyframes sparkle {
-  0% { opacity: 0; transform: translateX(-50%) scale(0.5); }
-  50% { opacity: 1; transform: translateX(-50%) scale(1.2); }
-  100% { opacity: 0; transform: translateX(-50%) scale(0.8); }
-}
+    @keyframes sparkle {
+    0% { opacity: 0; transform: translateX(-50%) scale(0.5); }
+    50% { opacity: 1; transform: translateX(-50%) scale(1.2); }
+    100% { opacity: 0; transform: translateX(-50%) scale(0.8); }
+    }
 
   .story-display {
     background-color: rgba(varcolors.$blanc, 0.9);
@@ -282,15 +282,17 @@
       
     }
   }
-}
 
-// ✅ Animations
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
-}
 
-@keyframes pulse {
-  from { transform: scale(1); }
-  to { transform: scale(1.05); }
+    // ✅ Animations
+    @keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes pulse {
+    from { transform: scale(1); }
+    to { transform: scale(1.05); }
+    }
+
 }

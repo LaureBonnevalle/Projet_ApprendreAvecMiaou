@@ -39,26 +39,47 @@
 
                     <p>Vous êtes sur la page <strong>{{ titre }}</strong></p>
                     <ul>
-                        {% if titre != 'Accueil' %}
-                            <li><a href="?route=homepage">Accueil</a></li>
-                        {% endif %}
+                        {% if canAccess %}
+                            {# Liens pour les utilisateurs connectés #}
+                            {% if titre != 'Accueil' %}
+                                <li><a href="?route=homepageUser">Accueil</a></li>
+                            {% endif %}
 
-                        {% if titre != 'Coloriages' and canAccess %}
-                            <li><a href="?route=drawing">Coloriages</a></li>
-                        {% endif %}
+                            {% if titre != 'Coloriages' %}
+                                <li><a href="?route=drawing">Coloriages</a></li>
+                            {% endif %}
 
-                        {% if titre != 'Jeux' and canAccess %}
-                            <li><a href="?route=games">Jeux</a></li>
-                        {% endif %}
+                            {% if titre != 'Jeux' %}
+                                <li><a href="?route=games">Jeux</a></li>
+                            {% endif %}
 
-                        {% if titre != 'Histoires' and canAccess %}
-                            <li><a href="?route=stories">Histoires</a></li>
-                        {% endif %}
+                            {% if titre != 'Histoires' %}
+                                <li><a href="?route=stories">Histoires</a></li>
+                            {% endif %}
 
-                        {% if titre != 'Profil' and canAccess %}
-                            <li><a href="?route=profile">Profil</a></li>
+                            {% if titre != 'Profil' %}
+                                <li><a href="?route=profile">Profil</a></li>
+                            {% endif %}
+                            {% if titre != 'Notre Philosophie' %}
+                                <li><a href="?route=pedagogie">Notre philosophie</a></li>
+                            {% endif %}
+
+                        {% else %}
+                            {# Liens pour les visiteurs non connectés #}
+                            {% if titre != 'Accueil' %}
+                                <li><a href="?route=homepage">Accueil</a></li>
+                            {% endif %}
+
+                            {% if titre != 'Contact' %}
+                                <li><a href="?route=contact">Contact</a></li>
+                            {% endif %}
+
+                            {% if titre != 'Notre Philosophie' %}
+                                <li><a href="?route=pedagogie">Notre philosophie</a></li>
+                            {% endif %}
                         {% endif %}
                     </ul>
+
                 </div>
                 <div class="footer-rs-legal">
                     <ul>

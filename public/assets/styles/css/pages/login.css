@@ -106,7 +106,7 @@
 }
 #header .header-actions .action-button {
   background-color: #FD1616;
-  border: 1px solid #000000;
+  border: 1px solid rgb(222.0936170213, 1.9063829787, 1.9063829787);
   box-shadow: 6px 6px 0px #B71B10;
   border-radius: 500px;
   padding: 0.8rem 1rem;
@@ -284,7 +284,6 @@
 #nav #nav-links-container li span:hover,
 #nav #navUser-links-container li a:hover,
 #nav #navUser-links-container li span:hover {
-  background-color: #1a1a1a;
   padding-left: 2rem;
 }
 #nav .nav-links-container li a:hover::after, #nav .nav-links-container li span:hover::after,
@@ -320,6 +319,11 @@
 #nav #nav-links-container li:nth-child(5) a::after,
 #nav #navUser-links-container li:nth-child(5) a::after {
   background-color: #F2E554;
+}
+#nav .nav-links-container li:nth-child(6) a::after,
+#nav #nav-links-container li:nth-child(6) a::after,
+#nav #navUser-links-container li:nth-child(6) a::after {
+  background-color: #FF8559;
 }
 #nav .nav-links-container li span.disabled,
 #nav #nav-links-container li span.disabled,
@@ -477,6 +481,23 @@
   #nav #nav-links-container li:nth-child(5) a:active,
   #nav #navUser-links-container li:nth-child(5) a:active {
     box-shadow: 1px 2px 0px rgb(231.8722826087, 214.2445652174, 17.6277173913);
+  }
+  #nav .nav-links-container li:nth-child(6) a,
+  #nav #nav-links-container li:nth-child(6) a,
+  #nav #navUser-links-container li:nth-child(6) a {
+    background-color: #FF8559;
+    box-shadow: 4px 6px 0px rgb(255, 76.7771084337, 12.5);
+    color: #000000;
+  }
+  #nav .nav-links-container li:nth-child(6) a:hover,
+  #nav #nav-links-container li:nth-child(6) a:hover,
+  #nav #navUser-links-container li:nth-child(6) a:hover {
+    box-shadow: 3px 4px 0px rgb(255, 76.7771084337, 12.5);
+  }
+  #nav .nav-links-container li:nth-child(6) a:active,
+  #nav #nav-links-container li:nth-child(6) a:active,
+  #nav #navUser-links-container li:nth-child(6) a:active {
+    box-shadow: 1px 2px 0px rgb(255, 76.7771084337, 12.5);
   }
 }
 @media (min-width: 850px) and (min-width: 992px) {
@@ -1395,6 +1416,16 @@ main {
   box-sizing: border-box;
   position: relative;
 }
+@media (min-width: 576px) {
+  .login-content {
+    margin-top: 5vh;
+  }
+}
+@media (min-width: 768px) {
+  .login-content {
+    margin-top: 5vh;
+  }
+}
 .login-content .sr-only {
   position: absolute;
   width: 1px;
@@ -1406,8 +1437,7 @@ main {
   white-space: nowrap;
   border: 0;
 }
-
-#login-form {
+.login-content #login-form {
   width: 100%;
   max-width: clamp(320px, 90vw, 450px);
   display: flex;
@@ -1415,7 +1445,7 @@ main {
   align-items: stretch;
   margin: 0 auto;
 }
-#login-form h3 {
+.login-content #login-form h3 {
   background-color: #5C5454;
   color: #ffffff;
   text-align: center;
@@ -1435,19 +1465,19 @@ main {
   line-height: 1.3;
 }
 @media (min-width: 431px) {
-  #login-form h3 br {
+  .login-content #login-form h3 br {
     display: inline;
   }
 }
 @media (min-width: 850px) {
-  #login-form h3 br {
+  .login-content #login-form h3 br {
     display: none;
   }
-  #login-form h3 br::before {
+  .login-content #login-form h3 br::before {
     content: " ";
   }
 }
-#login-form .container-login {
+.login-content #login-form .container-login {
   background-color: antiquewhite;
   background-image: url("../../img/Miaou/chatAuth.png");
   background-size: contain;
@@ -1466,7 +1496,7 @@ main {
   box-sizing: border-box;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
-#login-form .container-login::before {
+.login-content #login-form .container-login::before {
   content: "";
   position: absolute;
   top: 0;
@@ -1477,7 +1507,7 @@ main {
   border-radius: 0 0 15px 15px;
   pointer-events: none;
 }
-#login-form legend {
+.login-content #login-form legend {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -1488,7 +1518,7 @@ main {
   white-space: nowrap;
   border-width: 0;
 }
-#login-form label {
+.login-content #login-form label {
   font-size: clamp(0.9rem, 2vw, 1rem);
   font-weight: bold;
   color: #333;
@@ -1499,8 +1529,8 @@ main {
   text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
   font-family: "Comic Sans MS", "Raleway", cursive;
 }
-#login-form input[type=email],
-#login-form input[type=text] {
+.login-content #login-form input[type=email],
+.login-content #login-form input[type=text] {
   width: 100%;
   max-width: clamp(280px, 85vw, 350px);
   height: clamp(40px, 6vh, 50px);
@@ -1515,33 +1545,33 @@ main {
   position: relative;
   z-index: 1;
 }
-#login-form input[type=email]:hover,
-#login-form input[type=text]:hover {
+.login-content #login-form input[type=email]:hover,
+.login-content #login-form input[type=text]:hover {
   outline: 2px solid #B239ED;
   outline-offset: 2px;
   background-color: #ffffff;
   box-shadow: 0 2px 8px rgba(178, 57, 237, 0.3);
 }
-#login-form input[type=email]:focus,
-#login-form input[type=text]:focus {
+.login-content #login-form input[type=email]:focus,
+.login-content #login-form input[type=text]:focus {
   outline: 3px solid #B239ED;
   outline-offset: 2px;
   background-color: #ffffff;
   box-shadow: 0 2px 8px rgba(178, 57, 237, 0.3);
 }
-#login-form input[type=email]::placeholder,
-#login-form input[type=text]::placeholder {
+.login-content #login-form input[type=email]::placeholder,
+.login-content #login-form input[type=text]::placeholder {
   color: #999;
   font-style: italic;
 }
-#login-form .password-container {
+.login-content #login-form .password-container {
   position: relative;
   width: 100%;
   max-width: clamp(280px, 85vw, 350px);
   display: flex;
   align-items: center;
 }
-#login-form .password-container input[type=password] {
+.login-content #login-form .password-container input[type=password] {
   width: 100%;
   height: clamp(40px, 6vh, 50px);
   border-radius: 25px;
@@ -1553,19 +1583,19 @@ main {
   box-sizing: border-box;
   transition: all 0.3s ease;
 }
-#login-form .password-container input[type=password]:hover {
+.login-content #login-form .password-container input[type=password]:hover {
   outline: 2px solid #B239ED;
   outline-offset: 2px;
   background-color: #ffffff;
   box-shadow: 0 2px 8px rgba(178, 57, 237, 0.3);
 }
-#login-form .password-container input[type=password]:focus {
+.login-content #login-form .password-container input[type=password]:focus {
   outline: 3px solid #B239ED;
   outline-offset: 2px;
   background-color: #ffffff;
   box-shadow: 0 2px 8px rgba(178, 57, 237, 0.3);
 }
-#login-form .password-container .eyes {
+.login-content #login-form .password-container .eyes {
   position: absolute;
   right: clamp(0.8rem, 3vw, 1.2rem);
   top: 50%;
@@ -1577,19 +1607,19 @@ main {
   z-index: 2;
   transition: all 0.3s ease;
 }
-#login-form .password-container .eyes:hover {
+.login-content #login-form .password-container .eyes:hover {
   color: #B239ED;
   transform: translateY(-50%) scale(1.1);
 }
-#login-form .password-container .eyes:focus-visible {
+.login-content #login-form .password-container .eyes:focus-visible {
   outline: 2px solid #B239ED;
   outline-offset: 2px;
   border-radius: 50%;
 }
-#login-form .password-container .eyes .eyesImag {
+.login-content #login-form .password-container .eyes .eyesImag {
   pointer-events: none;
 }
-#login-form .error-message {
+.login-content #login-form .error-message {
   color: #d32f2f;
   font-size: clamp(0.8rem, 1.8vw, 0.9rem);
   font-weight: bold;
@@ -1604,10 +1634,10 @@ main {
   text-shadow: none;
   display: none;
 }
-#login-form .error-message:not(:empty) {
+.login-content #login-form .error-message:not(:empty) {
   display: block;
 }
-#login-form input[type=submit] {
+.login-content #login-form input[type=submit] {
   width: 100%;
   max-width: clamp(220px, 70vw, 300px);
   height: clamp(45px, 7vh, 55px);
@@ -1626,31 +1656,31 @@ main {
   position: relative;
   z-index: 1;
 }
-#login-form input[type=submit]:hover {
+.login-content #login-form input[type=submit]:hover {
   background-color: #6d6060;
   transform: translate(2px, 2px);
   box-shadow: 2px 4px 0px #3d3434;
 }
-#login-form input[type=submit]:active {
+.login-content #login-form input[type=submit]:active {
   transform: translate(4px, 4px);
   box-shadow: 1px 2px 0px #3d3434;
 }
-#login-form input[type=submit]:focus-visible {
+.login-content #login-form input[type=submit]:focus-visible {
   outline: 3px solid #B239ED;
   outline-offset: 3px;
 }
-#login-form input[type=submit]:disabled {
+.login-content #login-form input[type=submit]:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
-#login-form input[type=submit]:disabled:hover {
+.login-content #login-form input[type=submit]:disabled:hover {
   transform: none;
   box-shadow: 4px 6px 0px #3d3434;
 }
-#login-form input[type=hidden] {
+.login-content #login-form input[type=hidden] {
   display: none;
 }
-#login-form .login-links {
+.login-content #login-form .login-links {
   display: flex;
   flex-direction: column;
   gap: clamp(0.5rem, 1.5vh, 0.8rem);
@@ -1659,7 +1689,7 @@ main {
   margin-top: clamp(1rem, 2vh, 1.5rem);
   align-items: center;
 }
-#login-form .login-links a {
+.login-content #login-form .login-links a {
   font-size: clamp(0.85rem, 1.8vw, 0.95rem);
   color: #5C5454;
   text-decoration: none;
@@ -1668,99 +1698,98 @@ main {
   text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
   font-family: "Comic Sans MS", "Raleway", cursive;
 }
-#login-form .login-links a:hover {
+.login-content #login-form .login-links a:hover {
   color: #B239ED;
   text-decoration: underline;
 }
-#login-form .login-links a:focus-visible {
+.login-content #login-form .login-links a:focus-visible {
   outline: 2px solid #B239ED;
   outline-offset: 2px;
   border-radius: 4px;
   padding: 0.2rem 0.4rem;
 }
-#login-form .login-links .forgot-password-link {
+.login-content #login-form .login-links .forgot-password-link {
   font-style: italic;
 }
-#login-form .login-links .register-link {
+.login-content #login-form .login-links .register-link {
   font-weight: bold;
   color: #FF7438;
 }
-#login-form .login-links .register-link:hover {
+.login-content #login-form .login-links .register-link:hover {
   color: #FD1616;
 }
-#login-form .required {
+.login-content #login-form .required {
   color: #d32f2f;
   font-weight: bold;
   margin-left: 0.2rem;
 }
-
 @media (max-width: 374px) {
-  #login-form h3 {
+  .login-content #login-form h3 {
     font-size: 0.95rem;
     padding: 0.7rem 0.8rem;
   }
-  #login-form .container-login {
+  .login-content #login-form .container-login {
     min-height: 380px;
     padding: 1.2rem 0.8rem;
   }
-  #login-form input[type=submit] {
+  .login-content #login-form input[type=submit] {
     font-size: 0.95rem;
   }
 }
 @media (min-width: 431px) {
-  .login-content {
+  .login-content .login-content {
     min-height: 75vh;
     padding-top: 2rem;
     padding-bottom: 2rem;
   }
 }
 @media (min-width: 768px) {
-  .login-content {
+  .login-content .login-content {
     min-height: 70vh;
   }
-  #login-form {
+  .login-content #login-form {
     max-width: 450px;
   }
-  #login-form .container-login {
+  .login-content #login-form .container-login {
     min-height: 450px;
   }
 }
 @media (min-width: 850px) {
-  .login-content {
+  .login-content .login-content {
     min-height: 65vh;
     padding-top: 3rem;
   }
-  #login-form {
+  .login-content #login-form {
     max-width: 480px;
   }
-  #login-form h3 {
+  .login-content #login-form h3 {
     font-size: 1.3rem;
   }
-  #login-form .container-login {
+  .login-content #login-form .container-login {
     min-height: 500px;
   }
 }
 @media (min-width: 992px) {
-  #login-form {
+  .login-content #login-form {
     max-width: 500px;
   }
-  #login-form .container-login {
+  .login-content #login-form .container-login {
     min-height: 520px;
   }
 }
 @media (prefers-contrast: high) {
-  #login-form input[type=email],
-  #login-form input[type=text],
-  #login-form input[type=password] {
+  .login-content #login-form input[type=email],
+  .login-content #login-form input[type=text],
+  .login-content #login-form input[type=password] {
     border-width: 3px;
   }
-  #login-form input[type=submit] {
+  .login-content #login-form input[type=submit] {
     border-width: 3px;
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  #login-form input,
-  #login-form .eyes {
+  .login-content #login-form input,
+  .login-content #login-form .eyes {
     transition: none !important;
   }
 }

@@ -92,7 +92,8 @@ class Router {
         // Routes accessibles à tous (non connectés)
         $publicRoutes = [
             "homepage", "contact", "login", "check-login", 
-            "register", "check-register", "displayModify", "modifyPassword", "logout"
+            "register", "check-register", "displayModify", "modifyPassword", "logout",
+            "pedagogie"
         ];
 
         // Routes pour utilisateurs connectés et validés (role 1 ou 2)
@@ -108,7 +109,7 @@ class Router {
             "resetPassword", "updateStatus", "updateRole", "updateUserAvatar", 
             "updateNewsletter", "response", "messagerie", "deleteMessage", 
             "readMessage", "modifAvatar", "deleteAvatar", "addAvatar", 
-            "addstoryStoriesAd", "StoriesAdmin", "modifColoring", "addColoring", "deleteColoring", "addCategorie", "modifGame"
+            "addstoryStoriesAd", "StoriesAdmin", "modifColoring", "addColoring", "deleteColoring", "addCategorie", "modifGame", "modifypedagogie"
         ];
 
         // Gestion des routes publiques
@@ -140,6 +141,9 @@ class Router {
                     break;
                  case "logout":
                     $dc->logout();
+                    break;
+                 case "pedagogie";
+                    $dc->pedagogie();
                     break;
             }
         }
@@ -210,7 +214,7 @@ die(); // Arrêt pour voir les valeurs*/
                 switch ($route) {
                     
                     case "homepageAdmin":
-                        $dash->homepageAdmin();
+                        $dash->homepage();
                     break;
                     case "dashboard":
                         $dash->displayDashboard();

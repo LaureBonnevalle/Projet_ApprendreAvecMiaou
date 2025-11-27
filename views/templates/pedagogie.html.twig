@@ -1,0 +1,122 @@
+{% extends "layout.html.twig" %}
+
+{% block title %}
+      Miaou |Notre Philosophie
+{% endblock %}
+
+
+
+{% block body %}
+
+        {% block header %}
+            {{ parent() }}
+        {% endblock %}
+
+        
+    
+        {% block content %}
+        
+            {% block error %}
+            {% endblock %}
+
+            <section id="pedagogie" class="container">
+
+                <h1>🐾 Notre Pédagogie : Apprendre avec Miaou</h1>
+
+                {# 1. ARTICLE : NOTRE HISTOIRE #}
+                <article id="histoire">
+                    <h2>💖 Notre Histoire : Le Déclic de Laure</h2>
+                
+                    <p>Je suis Laure, maman de deux enfants neuroatypiques. L'idée d'<strong>Apprendre avec Miaou</strong> est née d'une observation simple et d'un besoin non satisfait.</p>
+                
+                    <p>Lorsque mon aîné était plus jeune, j'ai constaté que les <strong>supports numériques</strong> offraient une alternative puissante aux supports papier et carton. Bien utilisés, ils permettaient de consolider certains apprentissages grâce à la <strong>couleur</strong>, l'<strong>interaction dynamique</strong>, et le <strong>retour immédiat</strong> sur ses actions — des éléments particulièrement engageants.</p>
+                
+                    <p>Plus tard, en cherchant des activités ludiques pour mon second fils, qui présentait également un trouble du neurodéveloppement (TND) et peinait avec les supports classiques d'âge maternel, j'ai été confrontée à un vide. Les ressources disponibles étaient souvent trop fades, trop denses, ou peu adaptées aux besoins spécifiques des très jeunes enfants.</p>
+                
+                    <p>J'ai alors décidé de développer mon propre site d'activités pour combler ce manque. C'est ainsi qu'est né le projet <strong>Apprendre avec Miaou</strong>. L'engouement immédiat de mes collègues développeurs a confirmé la nécessité de ce projet : offrir une expérience d'apprentissage joyeuse, efficace, et surtout, <strong>adaptée</strong>.</p>
+                </article>
+
+                {# 2. ARTICLE : L'APPORT DES SUPPORTS MULTIMÉDIA #}
+                <article id="apport-multimedia">
+                    <h2>✨ L'Apport des Supports Média Adaptés</h2>
+                
+                    <p>Les supports multimédia, lorsqu'ils sont spécifiquement conçus pour être éducatifs et ergonomiques, se révèlent être de précieux outils pour l'apprentissage, en particulier pour les enfants présentant des <strong>Troubles du Neurodéveloppement (TND)</strong>, comme le TDAH.</p>
+                
+                    <ul>
+                        <li><strong>Stimulation Ciblée :</strong> L'interactivité, le rythme maîtrisé et les repères visuels clairs aident à <strong>soutenir l'attention</strong> et à <strong>réduire la charge cognitive</strong>. Pour un enfant avec TDAH, un support structuré et dynamique peut prévenir la dispersion.</li>
+                        <li><strong>Renforcement Positif Immédiat :</strong> La gratification instantanée est un puissant <strong>renforçateur positif</strong> qui favorise la mémorisation et l'engagement, un élément clé des thérapies comportementales.</li>
+                        <li><strong>Développement des Fonctions Exécutives :</strong> Des activités ciblées peuvent aider à améliorer les <strong>performances attentionnelles</strong> et la <strong>mémoire de travail</strong>, des aspects souvent déficitaires chez les enfants TND.</li>
+                    </ul>
+                
+                    <p><strong>Notre Philosophie :</strong> Le numérique ne remplace pas, il **compense et adapte**. Nous privilégions le *minimalisme* par rapport à la *surstimulation*.</p>
+                </article>
+            
+                {# 3. ARTICLE : NÉCESSITÉ D'ÉQUILIBRE ET MAÎTRISE DU TEMPS D'ÉCRAN #}
+                <article id="gestion-temps">
+                    <h2>⏳ Nécessité d'Équilibre et Maîtrise du Temps d'Écran</h2>
+                
+                    <p>Nous sommes profondément conscients des **dangers liés à la surexposition aux écrans**, qui peut nuire au développement du langage, de la motricité et des liens socioaffectifs, en particulier chez les plus jeunes (Santé Publique France).</p>
+                
+                    <p><strong>Apprendre avec Miaou</strong> est notre réponse concrète pour un usage numérique **intentionnel** et **limité**.</p>
+
+                    <h3>Le Rôle Central du Timer ⏰</h3>
+                    <p>Chaque activité est conçue autour de la notion de **"sessions courtes et qualitatives"**. Nous avons intégré un **repère temporel visuel et paramétrable (le "timer")**. Cet outil permet aux **parents et à l'enfant** de visualiser et de gérer activement le temps d'exposition, aidant ainsi à respecter les recommandations officielles de limitation de l'écran (OMS, Ministère de l'Éducation Nationale).</p>
+                
+                    <p class="note-source"><em>**Source clé :** Les recommandations officielles insistent sur l'usage accompagné et limité des écrans pour les jeunes enfants, notamment avant l'âge de 6 ans, en raison de l'impact sur le développement cérébral et social.</em></p>
+                </article>
+
+                {# 4. ARTICLE : LA CONCEPTION #}
+                <article id="conception">
+                    <h2>😻 La Conception : Pour les Enfants, avec les Parents</h2>
+                
+                    <div class="liste-activite">
+                        <div class="activite-card">
+                            <h3>Pour les Enfants (L'Expérience "Miaou")</h3>
+                            <ul>
+                                <li><span class="icon-miaou">🌈</span> **Visuel Engageant et Sécurisant :** Couleurs vives, Mascotte Chat Mignon style Manga.</li>
+                                <li><span class="icon-miaou">🖱️</span> **Interaction Ludique :** Boutons dynamiques qui donnent un feedback visuel et tactile.</li>
+                                <li><span class="icon-miaou">🧭</span> **Navigation Intuitive :** Un site simple et clair pour une autonomie encouragée.</li>
+                            </ul>
+                        </div>
+
+                        <div class="activite-card">
+                            <h3>Pour les Parents (La Qualité "Apprendre")</h3>
+                            <ul>
+                                <li><span class="icon-miaou">🛡️</span> **Sécurité et Transparence Totale :** Site **gratuit** et garanti **sans publicité**.</li>
+                                <li><span class="icon-miaou">🔑</span> **Contrôle Parental Essentiel :** Accès aux activités soumis à l'authentification des parents.</li>
+                                <li><span class="icon-miaou">📚</span> **Qualité Pédagogique :** Activités basées sur les fondamentaux de la maternelle.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <hr>
+                
+                    <h3>Exemples d'Activités Phares et leur Rôle Pédagogique</h3>
+                    <section class="liste-activite">
+                        <div class="activite-card">
+                            <h4>📖 Coin Histoire : L'Ancrage Réel</h4>
+                            <p>Choix de personnages/objets, écoute. **Téléchargement du PDF et Audio** pour prolonger l'expérience **hors écran**.</p>
+                        </div>
+                        <div class="activite-card">
+                            <h4>🎨 Atelier Coloriage : Motricité Fine</h4>
+                            <p>Choix simple, aperçu, et **téléchargement pour impression**. Utilisation de l'écran comme source, réalisation manuelle.</p>
+                        </div>
+                        <div class="activite-card">
+                            <h4>🎮 Jeux Adaptés : Coordination</h4>
+                            <p>Mémo, Pixel Art, et le **Jeu de Clic Souris** (cible aléatoire) pour développer la **coordination œil-main** et la **précision gestuelle**.</p>
+                        </div>
+                    </section>
+
+                </article>
+        
+            </section>
+
+
+
+    
+        {% endblock %}
+
+   
+
+    
+{% endblock %}
