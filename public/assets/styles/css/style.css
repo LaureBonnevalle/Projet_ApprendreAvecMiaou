@@ -11,6 +11,21 @@
   border: 0;
 }
 
+html {
+  width: 100%;
+  cursor: url("../../img/Miaou/main.svg") 4 0, pointer;
+}
+html a:hover, html button:hover, html input:hover, html select:hover, html .action-button:hover, html #backToTopButton img, html .retour-haut, html .retour-haut div {
+  cursor: url("../../img/Miaou/mainGrande.svg") 5 0, pointer;
+}
+
+body {
+  cursor: url("../../img/Miaou/main.svg") 4 0, pointer;
+}
+body a:hover, body button:hover, body input:hover, body select:hover, body .action-button:hover, body #backToTopButton img, body .retour-haut {
+  cursor: url("../../img/Miaou/mainGrande.svg") 5 0, pointer;
+}
+
 #header {
   position: fixed;
   top: 0;
@@ -118,7 +133,6 @@
   justify-content: center;
   gap: 0.5rem;
   transition: all 0.3s ease;
-  cursor: pointer;
   box-sizing: border-box;
 }
 #header .header-actions .action-button:focus-visible {
@@ -180,7 +194,6 @@
   left: 1vh;
   width: 0;
   height: 0;
-  cursor: pointer;
   z-index: 10;
 }
 #header .burger-btn:hover {
@@ -985,13 +998,34 @@ main {
   height: 10vh;
   min-height: 80px;
   max-height: 10vh;
-  cursor: pointer;
   position: relative;
   z-index: 10;
   background-color: black;
 }
 #footer .foot-box:hover {
   background-color: #1a1a1a;
+  cursor: url("../../img/Miaou/mainGrande.svg") 5 0, pointer;
+}
+#footer .foot-box:hover #cursor-halo {
+  position: fixed;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  pointer-events: none;
+  /* Dégradé plus foncé pour ressortir sur fond noir */
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(255, 105, 180, 0.5) 60%, rgba(0, 0, 0, 0.4) 100%);
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+  z-index: 9999;
+}
+#footer .foot-box::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -10vh;
+  height: 10vh;
 }
 #footer .foot-box .timer {
   display: flex;
@@ -1035,13 +1069,13 @@ main {
 #footer .foot-box .retour-haut #backToTopButton {
   height: clamp(30px, 4vh, 50px);
   width: auto;
-  cursor: pointer;
   transition: transform 0.3s ease, opacity 0.3s ease;
   opacity: 0.8;
 }
 #footer .foot-box .retour-haut #backToTopButton:hover {
   transform: translateY(-3px);
   opacity: 1;
+  cursor: url("../../img/Miaou/mainGrande.svg") 5 0, pointer;
 }
 #footer .foot-box .retour-haut #backToTopButton:active {
   transform: translateY(-1px);
@@ -1476,7 +1510,6 @@ main {
 .close-button {
   color: #FAF7ED;
   font-size: clamp(1.5rem, 4vw, 2rem);
-  cursor: pointer;
   line-height: 1;
   background: transparent;
   border: none;
@@ -1590,7 +1623,6 @@ main {
   justify-content: center;
   gap: 0.5rem;
   transition: all 0.3s ease;
-  cursor: pointer;
   box-sizing: border-box;
 }
 .modal-footer button:focus-visible,
@@ -1641,7 +1673,6 @@ main {
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
-  cursor: pointer;
 }
 .modal-footer button:hover,
 .modal-footer a:hover {
@@ -1684,7 +1715,6 @@ main {
   justify-content: center;
   gap: 0.5rem;
   transition: all 0.3s ease;
-  cursor: pointer;
   box-sizing: border-box;
 }
 .btn-tertiary:focus-visible {
@@ -1755,7 +1785,7 @@ main {
     color: #e0e0e0;
   }
 }
-.homepage-content {
+#homepage .homepage-content {
   margin: 8vh auto;
   padding: 0;
   display: flex;
@@ -1764,83 +1794,83 @@ main {
   min-height: 50vh;
 }
 @media (max-width: 430px) {
-  .homepage-content {
+  #homepage .homepage-content {
     min-height: 40vh;
   }
 }
 @media (min-width: 431px) {
-  .homepage-content {
+  #homepage .homepage-content {
     min-height: 40vh;
   }
-  .homepage-content .homepage-content {
+  #homepage .homepage-content .homepage-content {
     padding: 25vh;
   }
 }
 @media (min-width: 576px) {
-  .homepage-content {
+  #homepage .homepage-content {
     min-height: 40vh;
   }
 }
 @media (min-width: 768px) {
-  .homepage-content {
+  #homepage .homepage-content {
     min-height: 40vh;
   }
 }
 @media (min-width: 850px) {
-  .homepage-content {
+  #homepage .homepage-content {
     min-height: 40vh;
   }
 }
 @media (min-width: 992px) {
-  .homepage-content {
+  #homepage .homepage-content {
     min-height: 40vh;
   }
 }
 @media (min-width: 1100px) {
-  .homepage-content {
+  #homepage .homepage-content {
     min-height: 40vh;
   }
 }
 @media (min-width: 1200px) {
-  .homepage-content {
+  #homepage .homepage-content {
     min-height: 40vh;
   }
 }
 @media (min-width: 1400px) {
-  .homepage-content {
+  #homepage .homepage-content {
     min-height: 40vh;
   }
 }
 @media (min-width: 1600px) {
-  .homepage-content {
+  #homepage .homepage-content {
     min-height: 40vh;
   }
 }
 @media (min-width: 2000px) {
-  .homepage-content {
+  #homepage .homepage-content {
     min-height: 40vh;
   }
 }
-.homepage-content .homepage-header {
+#homepage .homepage-content .homepage-header {
   text-align: center;
 }
-.homepage-content .homepage-header h1 {
+#homepage .homepage-content .homepage-header h1 {
   font-size: clamp(1.5rem, 3vw, 2.5rem);
   margin-bottom: 1rem;
 }
-.homepage-content .homepage-header .subtitle {
+#homepage .homepage-content .homepage-header .subtitle {
   text-align: center;
   font-family: "Comic Sans MS", "Raleway", cursive;
   font-weight: bold;
   font-size: clamp(1rem, 5vw, 1.3rem);
   margin-bottom: 0.5rem;
 }
-.homepage-content .homepage-header .description {
+#homepage .homepage-content .homepage-header .description {
   font-size: clamp(0.9rem, 1.5vw, 1.1rem);
   color: #333;
   margin-bottom: 2rem;
 }
-.homepage-content .auth {
+#homepage .homepage-content .auth {
   text-align: center;
   background-color: #fff;
   border-radius: 30px;
@@ -1854,71 +1884,71 @@ main {
   max-width: 900px;
   margin: 0 auto;
 }
-.homepage-content .auth .auth-images {
+#homepage .homepage-content .auth .auth-images {
   display: flex;
   justify-content: center;
   gap: 1rem;
 }
-.homepage-content .auth .auth-images img {
+#homepage .homepage-content .auth .auth-images img {
   max-height: 100px;
   height: auto;
   transition: transform 0.2s ease;
 }
-.homepage-content .auth .auth-images img:hover {
+#homepage .homepage-content .auth .auth-images img:hover {
   transform: scale(1.05);
 }
-.homepage-content .auth .auth-text {
+#homepage .homepage-content .auth .auth-text {
   text-align: center;
 }
-.homepage-content .auth .auth-text p {
+#homepage .homepage-content .auth .auth-text p {
   margin: 0.5rem 0;
   font-size: clamp(0.9rem, 1.5vw, 1.1rem);
 }
-.homepage-content .auth .auth-text a {
+#homepage .homepage-content .auth .auth-text a {
   color: #d6336c;
   font-weight: bold;
   text-decoration: none;
 }
-.homepage-content .auth .auth-text a:hover {
+#homepage .homepage-content .auth .auth-text a:hover {
   text-decoration: underline;
 }
-.homepage-content {
+#homepage .homepage-content {
   /* ✅ Ajout pour mobile : marges latérales */
 }
 @media (min-width: 431px) {
-  .homepage-content {
+  #homepage .homepage-content {
     margin: 2vh 1rem;
     width: calc(100% - 2rem);
   }
 }
 @media (min-width: 768px) {
-  .homepage-content .auth {
+  #homepage .homepage-content .auth {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
     padding: 2rem;
   }
-  .homepage-content .auth .auth-images {
+  #homepage .homepage-content .auth .auth-images {
     justify-content: flex-start;
   }
-  .homepage-content .auth .auth-text {
+  #homepage .homepage-content .auth .auth-text {
     text-align: left;
     max-width: 60%;
   }
 }
 @media (min-width: 992px) {
-  .homepage-content .auth {
+  #homepage .homepage-content .auth {
     max-width: 1000px;
   }
 }
 @media (min-width: 1600px) {
-  .homepage-content .auth {
+  #homepage .homepage-content .auth {
     max-width: 1200px;
     padding: 3rem;
   }
 }
 @media (min-width: 2000px) {
-  .homepage-content .auth {
+  #homepage .homepage-content .auth {
     max-width: 1400px;
     padding: 4rem;
   }
@@ -2125,7 +2155,6 @@ main {
   right: clamp(0.8rem, 3vw, 1.2rem);
   top: 50%;
   transform: translateY(-50%);
-  cursor: pointer;
   color: #5C5454;
   font-size: clamp(1.1rem, 2.5vw, 1.3rem);
   pointer-events: auto;
@@ -2173,7 +2202,6 @@ main {
   font-family: "Comic Sans MS", "Raleway", cursive;
   background-color: #5C5454;
   color: #ffffff;
-  cursor: pointer;
   border: 2px solid #3d3434;
   box-sizing: border-box;
   transition: all 0.3s ease;
@@ -2319,7 +2347,7 @@ main {
   }
 }
 
-.register-content {
+#register .register-content {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -2330,7 +2358,7 @@ main {
   box-sizing: border-box;
   position: relative;
 }
-.register-content .sr-only {
+#register .register-content .sr-only {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -2341,8 +2369,7 @@ main {
   white-space: nowrap;
   border: 0;
 }
-
-#register-form {
+#register #register-form {
   width: 100%;
   max-width: clamp(320px, 90vw, 450px);
   display: flex;
@@ -2350,7 +2377,7 @@ main {
   align-items: stretch;
   margin: 0 auto;
 }
-#register-form h3 {
+#register #register-form h3 {
   background-color: #5C5454;
   color: #ffffff;
   text-align: center;
@@ -2370,19 +2397,19 @@ main {
   line-height: 1.3;
 }
 @media (min-width: 431px) {
-  #register-form h3 br {
+  #register #register-form h3 br {
     display: inline;
   }
 }
 @media (min-width: 850px) {
-  #register-form h3 br {
+  #register #register-form h3 br {
     display: none;
   }
-  #register-form h3 br::before {
+  #register #register-form h3 br::before {
     content: " ";
   }
 }
-#register-form .container-register {
+#register #register-form .container-register {
   background-color: antiquewhite;
   background-image: url("../../img/Miaou/chatAuth.png");
   background-size: contain;
@@ -2402,11 +2429,11 @@ main {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 @media (max-width: 430px) {
-  #register-form .container-register {
+  #register #register-form .container-register {
     background-position: top;
   }
 }
-#register-form .container-register::before {
+#register #register-form .container-register::before {
   content: "";
   position: absolute;
   top: 0;
@@ -2417,7 +2444,7 @@ main {
   border-radius: 0 0 15px 15px;
   pointer-events: none;
 }
-#register-form legend {
+#register #register-form legend {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -2428,7 +2455,7 @@ main {
   white-space: nowrap;
   border-width: 0;
 }
-#register-form label {
+#register #register-form label {
   font-size: clamp(0.9rem, 2vw, 1rem);
   font-weight: bold;
   color: #333;
@@ -2439,9 +2466,9 @@ main {
   text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
   font-family: "Comic Sans MS", "Raleway", cursive;
 }
-#register-form input[type=email],
-#register-form input[type=text],
-#register-form input[type=number] {
+#register #register-form input[type=email],
+#register #register-form input[type=text],
+#register #register-form input[type=number] {
   width: 100%;
   max-width: clamp(280px, 85vw, 350px);
   height: clamp(40px, 6vh, 50px);
@@ -2456,29 +2483,29 @@ main {
   position: relative;
   z-index: 1;
 }
-#register-form input[type=email]:hover,
-#register-form input[type=text]:hover,
-#register-form input[type=number]:hover {
+#register #register-form input[type=email]:hover,
+#register #register-form input[type=text]:hover,
+#register #register-form input[type=number]:hover {
   outline: 2px solid #B239ED;
   outline-offset: 2px;
   background-color: #ffffff;
   box-shadow: 0 2px 8px rgba(178, 57, 237, 0.3);
 }
-#register-form input[type=email]:focus,
-#register-form input[type=text]:focus,
-#register-form input[type=number]:focus {
+#register #register-form input[type=email]:focus,
+#register #register-form input[type=text]:focus,
+#register #register-form input[type=number]:focus {
   outline: 3px solid #B239ED;
   outline-offset: 2px;
   background-color: #ffffff;
   box-shadow: 0 2px 8px rgba(178, 57, 237, 0.3);
 }
-#register-form input[type=email]::placeholder,
-#register-form input[type=text]::placeholder,
-#register-form input[type=number]::placeholder {
+#register #register-form input[type=email]::placeholder,
+#register #register-form input[type=text]::placeholder,
+#register #register-form input[type=number]::placeholder {
   color: #999;
   font-style: italic;
 }
-#register-form .avatar {
+#register #register-form .avatar {
   width: 100%;
   background-color: rgba(255, 255, 255, 0.65);
   border: 1px solid black;
@@ -2486,13 +2513,13 @@ main {
   padding: 2vh;
   margin-top: 0vh;
 }
-#register-form .avatar:hover {
+#register #register-form .avatar:hover {
   outline: 2px solid #B239ED;
   outline-offset: 2px;
   background-color: #ffffff;
   box-shadow: 0 2px 8px rgba(178, 57, 237, 0.3);
 }
-#register-form .avatar ul {
+#register #register-form .avatar ul {
   list-style: none;
   padding: 0;
   margin: clamp(0.8rem, 2vh, 1.2rem) 0 0 0;
@@ -2501,36 +2528,35 @@ main {
   gap: clamp(0.8rem, 2vw, 1.2rem);
   justify-items: center;
 }
-#register-form .avatar ul li {
+#register #register-form .avatar ul li {
   margin: 0;
 }
-#register-form .avatar .avatars {
+#register #register-form .avatar .avatars {
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-#register-form .avatar .avatars input[type=radio] {
+#register #register-form .avatar .avatars input[type=radio] {
   position: absolute;
   opacity: 0;
   width: 0;
   height: 0;
 }
-#register-form .avatar .avatars input[type=radio]:checked + label img {
+#register #register-form .avatar .avatars input[type=radio]:checked + label img {
   border: 4px solid #B239ED;
   box-shadow: 0 0 0 2px #ffffff, 0 0 15px rgba(178, 57, 237, 0.6);
   transform: scale(1.1);
 }
-#register-form .avatar .avatars input[type=radio]:focus-visible + label img {
+#register #register-form .avatar .avatars input[type=radio]:focus-visible + label img {
   outline: 3px solid #B239ED;
   outline-offset: 4px;
 }
-#register-form .avatar .avatars label {
-  cursor: pointer;
+#register #register-form .avatar .avatars label {
   margin: 0;
   display: block;
 }
-#register-form .avatar .avatars label img {
+#register #register-form .avatar .avatars label img {
   width: clamp(65px, 15vw, 85px);
   height: clamp(65px, 15vw, 85px);
   border-radius: 50%;
@@ -2540,12 +2566,12 @@ main {
   background-color: #ffffff;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
-#register-form .avatar .avatars label img:hover {
+#register #register-form .avatar .avatars label img:hover {
   transform: scale(1.05);
   border-color: #D998FA;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
-#register-form .error-message {
+#register #register-form .error-message {
   color: #d32f2f;
   font-size: clamp(0.8rem, 1.8vw, 0.9rem);
   font-weight: bold;
@@ -2560,10 +2586,10 @@ main {
   text-shadow: none;
   display: none;
 }
-#register-form .error-message:not(:empty) {
+#register #register-form .error-message:not(:empty) {
   display: block;
 }
-#register-form .submit-button {
+#register #register-form .submit-button {
   display: block;
   align: center;
   width: 100%;
@@ -2571,16 +2597,16 @@ main {
   margin-left: 5vh;
 }
 @media (min-width: 431px) {
-  #register-form .submit-button {
+  #register #register-form .submit-button {
     margin-left: 6vh;
   }
 }
 @media (min-width: 576px) {
-  #register-form .submit-button {
+  #register #register-form .submit-button {
     margin-left: 7vh;
   }
 }
-#register-form .submit-button input[type=submit] {
+#register #register-form .submit-button input[type=submit] {
   width: 100%;
   max-width: clamp(220px, 70vw, 300px);
   height: clamp(45px, 7vh, 55px);
@@ -2591,7 +2617,6 @@ main {
   font-family: "Comic Sans MS", "Raleway", cursive;
   background-color: #5C5454;
   color: #ffffff;
-  cursor: pointer;
   border: 2px solid #3d3434;
   box-sizing: border-box;
   transition: all 0.3s ease;
@@ -2599,31 +2624,31 @@ main {
   position: relative;
   z-index: 1;
 }
-#register-form .submit-button input[type=submit]:hover {
+#register #register-form .submit-button input[type=submit]:hover {
   background-color: #6d6060;
   transform: translate(2px, 2px);
   box-shadow: 2px 4px 0px #3d3434;
 }
-#register-form .submit-button input[type=submit]:active {
+#register #register-form .submit-button input[type=submit]:active {
   transform: translate(4px, 4px);
   box-shadow: 1px 2px 0px #3d3434;
 }
-#register-form .submit-button input[type=submit]:focus-visible {
+#register #register-form .submit-button input[type=submit]:focus-visible {
   outline: 3px solid #B239ED;
   outline-offset: 3px;
 }
-#register-form .submit-button input[type=submit]:disabled {
+#register #register-form .submit-button input[type=submit]:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
-#register-form .submit-button input[type=submit]:disabled:hover {
+#register #register-form .submit-button input[type=submit]:disabled:hover {
   transform: none;
   box-shadow: 4px 6px 0px #3d3434;
 }
-#register-form input[type=hidden] {
+#register #register-form input[type=hidden] {
   display: none;
 }
-#register-form .register-links {
+#register #register-form .register-links {
   display: flex;
   flex-direction: column;
   gap: clamp(0.5rem, 1.5vh, 0.8rem);
@@ -2632,7 +2657,7 @@ main {
   margin-top: clamp(1rem, 2vh, 1.5rem);
   align-items: center;
 }
-#register-form .register-links a {
+#register #register-form .register-links a {
   font-size: clamp(0.85rem, 1.8vw, 0.95rem);
   color: #5C5454;
   text-decoration: none;
@@ -2641,107 +2666,106 @@ main {
   text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
   font-family: "Comic Sans MS", "Raleway", cursive;
 }
-#register-form .register-links a:hover {
+#register #register-form .register-links a:hover {
   color: #B239ED;
   text-decoration: underline;
 }
-#register-form .register-links a:focus-visible {
+#register #register-form .register-links a:focus-visible {
   outline: 2px solid #B239ED;
   outline-offset: 2px;
   border-radius: 4px;
   padding: 0.2rem 0.4rem;
 }
-#register-form .register-links .forgot-password-link {
+#register #register-form .register-links .forgot-password-link {
   font-style: italic;
 }
-#register-form .register-links .register-link {
+#register #register-form .register-links .register-link {
   font-weight: bold;
   color: #FF7438;
 }
-#register-form .register-links .register-link:hover {
+#register #register-form .register-links .register-link:hover {
   color: #FD1616;
 }
-#register-form .required {
+#register #register-form .required {
   color: #d32f2f;
   font-weight: bold;
   margin-left: 0.2rem;
 }
-
 @media (max-width: 374px) {
-  #register-form h3 {
+  #register #register-form h3 {
     font-size: 0.95rem;
     padding: 0.7rem 0.8rem;
   }
-  #register-form .container-register {
+  #register #register-form .container-register {
     min-height: 380px;
     padding: 1.2rem 0.8rem;
   }
-  #register-form input[type=submit] {
+  #register #register-form input[type=submit] {
     font-size: 0.95rem;
   }
 }
 @media (min-width: 431px) {
-  .register-content {
+  #register .register-content {
     min-height: 75vh;
     padding-top: 2rem;
     padding-bottom: 2rem;
   }
 }
 @media (min-width: 768px) {
-  .register-content {
+  #register .register-content {
     min-height: 70vh;
   }
-  #register-form {
+  #register #register-form {
     max-width: 450px;
   }
-  #register-form .container-register {
+  #register #register-form .container-register {
     min-height: 450px;
   }
 }
 @media (min-width: 850px) {
-  .register-content {
+  #register .register-content {
     min-height: 65vh;
     padding-top: 3rem;
   }
-  #register-form {
+  #register #register-form {
     max-width: 480px;
   }
-  #register-form h3 {
+  #register #register-form h3 {
     font-size: 1.3rem;
   }
-  #register-form .container-register {
+  #register #register-form .container-register {
     min-height: 500px;
   }
 }
 @media (min-width: 992px) {
-  #register-form {
+  #register #register-form {
     max-width: 500px;
   }
-  #register-form .container-register {
+  #register #register-form .container-register {
     min-height: 520px;
   }
 }
 @media (prefers-contrast: high) {
-  #register-form input[type=email],
-  #register-form input[type=text],
-  #register-form input[type=password] {
+  #register #register-form input[type=email],
+  #register #register-form input[type=text],
+  #register #register-form input[type=password] {
     border-width: 3px;
   }
-  #register-form input[type=submit] {
+  #register #register-form input[type=submit] {
     border-width: 3px;
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  #register-form input,
-  #register-form .eyes {
+  #register #register-form input,
+  #register #register-form .eyes {
     transition: none !important;
   }
 }
-.alert-success, #session-message, .alert-error, #session-error {
+
+#modifyPassword .alert-success, #modifyPassword #session-message, #modifyPassword .alert-error, #modifyPassword #session-error {
   color: #FF7675;
 }
-
-.modifyPassword-content {
+#modifyPassword .modifyPassword-content {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -2752,7 +2776,7 @@ main {
   box-sizing: border-box;
   position: relative;
 }
-.modifyPassword-content .sr-only {
+#modifyPassword .modifyPassword-content .sr-only {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -2763,8 +2787,7 @@ main {
   white-space: nowrap;
   border: 0;
 }
-
-#modifyPassword-form {
+#modifyPassword #modifyPassword-form {
   width: 100%;
   max-width: clamp(320px, 90vw, 450px);
   display: flex;
@@ -2772,7 +2795,7 @@ main {
   align-items: stretch;
   margin: 0 auto;
 }
-#modifyPassword-form h3 {
+#modifyPassword #modifyPassword-form h3 {
   background-color: #5C5454;
   color: #ffffff;
   text-align: center;
@@ -2792,19 +2815,19 @@ main {
   line-height: 1.3;
 }
 @media (min-width: 431px) {
-  #modifyPassword-form h3 br {
+  #modifyPassword #modifyPassword-form h3 br {
     display: inline;
   }
 }
 @media (min-width: 850px) {
-  #modifyPassword-form h3 br {
+  #modifyPassword #modifyPassword-form h3 br {
     display: none;
   }
-  #modifyPassword-form h3 br::before {
+  #modifyPassword #modifyPassword-form h3 br::before {
     content: " ";
   }
 }
-#modifyPassword-form .container-modifyPassword {
+#modifyPassword #modifyPassword-form .container-modifyPassword {
   background-color: antiquewhite;
   background-image: url("../../img/Miaou/chatAuth.png");
   background-size: contain;
@@ -2823,7 +2846,7 @@ main {
   box-sizing: border-box;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
-#modifyPassword-form .container-modifyPassword::before {
+#modifyPassword #modifyPassword-form .container-modifyPassword::before {
   content: "";
   position: absolute;
   top: 0;
@@ -2834,7 +2857,7 @@ main {
   border-radius: 0 0 15px 15px;
   pointer-events: none;
 }
-#modifyPassword-form legend {
+#modifyPassword #modifyPassword-form legend {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -2845,7 +2868,7 @@ main {
   white-space: nowrap;
   border-width: 0;
 }
-#modifyPassword-form label {
+#modifyPassword #modifyPassword-form label {
   font-size: clamp(0.9rem, 2vw, 1rem);
   font-weight: bold;
   color: #333;
@@ -2856,8 +2879,8 @@ main {
   text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
   font-family: "Comic Sans MS", "Raleway", cursive;
 }
-#modifyPassword-form input[type=email],
-#modifyPassword-form input[type=text] {
+#modifyPassword #modifyPassword-form input[type=email],
+#modifyPassword #modifyPassword-form input[type=text] {
   width: 100%;
   max-width: clamp(280px, 85vw, 350px);
   height: clamp(40px, 6vh, 50px);
@@ -2872,31 +2895,31 @@ main {
   position: relative;
   z-index: 1;
 }
-#modifyPassword-form input[type=email]:hover,
-#modifyPassword-form input[type=text]:hover {
+#modifyPassword #modifyPassword-form input[type=email]:hover,
+#modifyPassword #modifyPassword-form input[type=text]:hover {
   outline: 2px solid #B239ED;
   outline-offset: 2px;
   background-color: #ffffff;
   box-shadow: 0 2px 8px rgba(178, 57, 237, 0.3);
 }
-#modifyPassword-form input[type=email]:focus,
-#modifyPassword-form input[type=text]:focus {
+#modifyPassword #modifyPassword-form input[type=email]:focus,
+#modifyPassword #modifyPassword-form input[type=text]:focus {
   outline: 3px solid #B239ED;
   outline-offset: 2px;
   background-color: #ffffff;
   box-shadow: 0 2px 8px rgba(178, 57, 237, 0.3);
 }
-#modifyPassword-form input[type=email]::placeholder,
-#modifyPassword-form input[type=text]::placeholder {
+#modifyPassword #modifyPassword-form input[type=email]::placeholder,
+#modifyPassword #modifyPassword-form input[type=text]::placeholder {
   color: #999;
   font-style: italic;
 }
-#modifyPassword-form .password-container {
+#modifyPassword #modifyPassword-form .password-container {
   position: relative;
   width: 100%;
   max-width: clamp(280px, 85vw, 350px);
 }
-#modifyPassword-form .password-container input[type=password] {
+#modifyPassword #modifyPassword-form .password-container input[type=password] {
   width: 100%;
   height: clamp(40px, 6vh, 50px);
   border-radius: 25px;
@@ -2908,43 +2931,42 @@ main {
   box-sizing: border-box;
   transition: all 0.3s ease;
 }
-#modifyPassword-form .password-container input[type=password]:hover {
+#modifyPassword #modifyPassword-form .password-container input[type=password]:hover {
   outline: 2px solid #B239ED;
   outline-offset: 2px;
   background-color: #ffffff;
   box-shadow: 0 2px 8px rgba(178, 57, 237, 0.3);
 }
-#modifyPassword-form .password-container input[type=password]:focus {
+#modifyPassword #modifyPassword-form .password-container input[type=password]:focus {
   outline: 3px solid #B239ED;
   outline-offset: 2px;
   background-color: #ffffff;
   box-shadow: 0 2px 8px rgba(178, 57, 237, 0.3);
 }
-#modifyPassword-form .password-container .eyes {
+#modifyPassword #modifyPassword-form .password-container .eyes {
   position: absolute;
   right: clamp(0.8rem, 3vw, 1.2rem);
   top: 50%;
   transform: translateY(-50%);
-  cursor: pointer;
   color: #5C5454;
   font-size: clamp(1.1rem, 2.5vw, 1.3rem);
   pointer-events: auto;
   z-index: 2;
   transition: all 0.3s ease;
 }
-#modifyPassword-form .password-container .eyes:hover {
+#modifyPassword #modifyPassword-form .password-container .eyes:hover {
   color: #B239ED;
   transform: translateY(-50%) scale(1.1);
 }
-#modifyPassword-form .password-container .eyes:focus-visible {
+#modifyPassword #modifyPassword-form .password-container .eyes:focus-visible {
   outline: 2px solid #B239ED;
   outline-offset: 2px;
   border-radius: 50%;
 }
-#modifyPassword-form .password-container .eyes .eyesImag {
+#modifyPassword #modifyPassword-form .password-container .eyes .eyesImag {
   pointer-events: none;
 }
-#modifyPassword-form .error-message {
+#modifyPassword #modifyPassword-form .error-message {
   color: #d32f2f;
   font-size: clamp(0.8rem, 1.8vw, 0.9rem);
   font-weight: bold;
@@ -2959,10 +2981,10 @@ main {
   text-shadow: none;
   display: none;
 }
-#modifyPassword-form .error-message:not(:empty) {
+#modifyPassword #modifyPassword-form .error-message:not(:empty) {
   display: block;
 }
-#modifyPassword-form input[type=submit] {
+#modifyPassword #modifyPassword-form input[type=submit] {
   width: 100%;
   max-width: clamp(220px, 70vw, 300px);
   height: clamp(45px, 7vh, 55px);
@@ -2973,7 +2995,6 @@ main {
   font-family: "Comic Sans MS", "Raleway", cursive;
   background-color: #5C5454;
   color: #ffffff;
-  cursor: pointer;
   border: 2px solid #3d3434;
   box-sizing: border-box;
   transition: all 0.3s ease;
@@ -2981,31 +3002,31 @@ main {
   position: relative;
   z-index: 1;
 }
-#modifyPassword-form input[type=submit]:hover {
+#modifyPassword #modifyPassword-form input[type=submit]:hover {
   background-color: #6d6060;
   transform: translate(2px, 2px);
   box-shadow: 2px 4px 0px #3d3434;
 }
-#modifyPassword-form input[type=submit]:active {
+#modifyPassword #modifyPassword-form input[type=submit]:active {
   transform: translate(4px, 4px);
   box-shadow: 1px 2px 0px #3d3434;
 }
-#modifyPassword-form input[type=submit]:focus-visible {
+#modifyPassword #modifyPassword-form input[type=submit]:focus-visible {
   outline: 3px solid #B239ED;
   outline-offset: 3px;
 }
-#modifyPassword-form input[type=submit]:disabled {
+#modifyPassword #modifyPassword-form input[type=submit]:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
-#modifyPassword-form input[type=submit]:disabled:hover {
+#modifyPassword #modifyPassword-form input[type=submit]:disabled:hover {
   transform: none;
   box-shadow: 4px 6px 0px #3d3434;
 }
-#modifyPassword-form input[type=hidden] {
+#modifyPassword #modifyPassword-form input[type=hidden] {
   display: none;
 }
-#modifyPassword-form .mofifyPassword-links {
+#modifyPassword #modifyPassword-form .mofifyPassword-links {
   display: flex;
   flex-direction: column;
   gap: clamp(0.5rem, 1.5vh, 0.8rem);
@@ -3014,7 +3035,7 @@ main {
   margin-top: clamp(1rem, 2vh, 1.5rem);
   align-items: center;
 }
-#modifyPassword-form .mofifyPassword-links a {
+#modifyPassword #modifyPassword-form .mofifyPassword-links a {
   font-size: clamp(0.85rem, 1.8vw, 0.95rem);
   color: #5C5454;
   text-decoration: none;
@@ -3023,102 +3044,106 @@ main {
   text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
   font-family: "Comic Sans MS", "Raleway", cursive;
 }
-#modifyPassword-form .mofifyPassword-links a:hover {
+#modifyPassword #modifyPassword-form .mofifyPassword-links a:hover {
   color: #B239ED;
   text-decoration: underline;
 }
-#modifyPassword-form .mofifyPassword-links a:focus-visible {
+#modifyPassword #modifyPassword-form .mofifyPassword-links a:focus-visible {
   outline: 2px solid #B239ED;
   outline-offset: 2px;
   border-radius: 4px;
   padding: 0.2rem 0.4rem;
 }
-#modifyPassword-form .mofifyPassword-links .forgot-password-link {
+#modifyPassword #modifyPassword-form .mofifyPassword-links .forgot-password-link {
   font-style: italic;
 }
-#modifyPassword-form .mofifyPassword-links .register-link {
+#modifyPassword #modifyPassword-form .mofifyPassword-links .register-link {
   font-weight: bold;
   color: #FF7438;
 }
-#modifyPassword-form .mofifyPassword-links .register-link:hover {
+#modifyPassword #modifyPassword-form .mofifyPassword-links .register-link:hover {
   color: #FD1616;
 }
-#modifyPassword-form .required {
+#modifyPassword #modifyPassword-form .required {
   color: #d32f2f;
   font-weight: bold;
   margin-left: 0.2rem;
 }
-
 @media (max-width: 374px) {
-  #mofifyPassword-form h3 {
+  #modifyPassword #mofifyPassword-form h3 {
     font-size: 0.95rem;
     padding: 0.7rem 0.8rem;
   }
-  #mofifyPassword-form .container-mofifyPassword {
+  #modifyPassword #mofifyPassword-form .container-mofifyPassword {
     min-height: 380px;
     padding: 1.2rem 0.8rem;
   }
-  #mofifyPassword-form input[type=submit] {
+  #modifyPassword #mofifyPassword-form input[type=submit] {
     font-size: 0.95rem;
   }
 }
 @media (min-width: 431px) {
-  .mofifyPassword-content {
+  #modifyPassword .mofifyPassword-content {
     min-height: 75vh;
     padding-top: 2rem;
     padding-bottom: 2rem;
   }
 }
 @media (min-width: 768px) {
-  .mofifyPassword-content {
+  #modifyPassword .mofifyPassword-content {
     min-height: 70vh;
   }
-  #mofifyPassword-form {
+  #modifyPassword #mofifyPassword-form {
     max-width: 450px;
   }
-  #mofifyPassword-form .container-mofifyPassword {
+  #modifyPassword #mofifyPassword-form .container-mofifyPassword {
     min-height: 450px;
   }
 }
 @media (min-width: 850px) {
-  .mofifyPassword-content {
+  #modifyPassword .mofifyPassword-content {
     min-height: 65vh;
     padding-top: 3rem;
   }
-  #mofifyPassword-form {
+  #modifyPassword #mofifyPassword-form {
     max-width: 480px;
   }
-  #mofifyPassword-form h3 {
+  #modifyPassword #mofifyPassword-form h3 {
     font-size: 1.3rem;
   }
-  #mofifyPassword-form .container-mofifyPassword {
+  #modifyPassword #mofifyPassword-form .container-mofifyPassword {
     min-height: 500px;
   }
 }
 @media (min-width: 992px) {
-  #mofifyPassword-form {
+  #modifyPassword #mofifyPassword-form {
     max-width: 500px;
   }
-  #mofifyPassword-form .container-mofifyPassword {
+  #modifyPassword #mofifyPassword-form .container-mofifyPassword {
     min-height: 520px;
   }
 }
 @media (prefers-contrast: high) {
-  #mofifyPassword-form input[type=email],
-  #mofifyPassword-form input[type=text],
-  #mofifyPassword-form input[type=password] {
+  #modifyPassword #mofifyPassword-form input[type=email],
+  #modifyPassword #mofifyPassword-form input[type=text],
+  #modifyPassword #mofifyPassword-form input[type=password] {
     border-width: 3px;
   }
-  #mofifyPassword-form input[type=submit] {
+  #modifyPassword #mofifyPassword-form input[type=submit] {
     border-width: 3px;
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  #mofifyPassword-form input,
-  #mofifyPassword-form .eyes {
+  #modifyPassword #mofifyPassword-form input,
+  #modifyPassword #mofifyPassword-form .eyes {
     transition: none !important;
   }
 }
+
+main {
+  margin-top: 10vh;
+}
+
 .alert-success, #session-message, .alert-error, #session-error, #session-alert, .alert {
   color: #FF7675;
 }
@@ -3247,7 +3272,6 @@ main {
   justify-content: center;
   gap: 0.5rem;
   transition: all 0.3s ease;
-  cursor: pointer;
   box-sizing: border-box;
 }
 .activite-action-button:focus-visible {
@@ -3275,73 +3299,73 @@ main {
   margin-bottom: 2vh;
 }
 
-.story-content {
+#story .story-content {
   margin: 10vh 2vh 1vh 2vh;
   display: flex;
   flex-direction: column;
   gap: 2rem;
 }
 @media (min-width: 431px) {
-  .story-content {
+  #story .story-content {
     padding: 3vh;
   }
 }
 @media (min-width: 576px) {
-  .story-content {
+  #story .story-content {
     padding-top: 10vh;
   }
 }
 @media (min-width: 768px) {
-  .story-content {
+  #story .story-content {
     padding: 0;
   }
 }
-.story-content h2 {
+#story .story-content h2 {
   font-size: clamp(1.5rem, 3vw, 2rem);
   font-weight: bold;
   text-align: center;
   margin-bottom: 0;
 }
 @media (max-width: 430px) {
-  .story-content {
+  #story .story-content {
     padding-bottom: 6rem;
   }
 }
 @media (min-width: 431px) {
-  .story-content {
+  #story .story-content {
     padding-bottom: 25vh;
   }
 }
 @media (min-width: 576px) {
-  .story-content {
+  #story .story-content {
     padding-bottom: 25vh;
     padding-top: 2vh;
   }
 }
 @media (min-width: 768px) {
-  .story-content {
+  #story .story-content {
     padding-bottom: 25vh;
     padding-top: 10vh;
   }
 }
-.story-content .entity-form fieldset {
+#story .story-content .entity-form fieldset {
   border: none;
   padding: 0;
 }
-.story-content .entity-form .select-group {
+#story .story-content .entity-form .select-group {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
   margin: auto;
 }
 @media (min-width: 431px) {
-  .story-content .entity-form .select-group {
+  #story .story-content .entity-form .select-group {
     gap: 2vh;
     padding: 0 0 0 13vw;
   }
 }
 @media (min-width: 576px) {
-  .story-content .entity-form .select-group {
+  #story .story-content .entity-form .select-group {
     flex-direction: row;
     justify-content: space-around;
     margin: auto;
@@ -3350,7 +3374,7 @@ main {
   }
 }
 @media (min-width: 1100px) {
-  .story-content .entity-form .select-group {
+  #story .story-content .entity-form .select-group {
     flex-direction: row;
     justify-content: space-around;
     margin: auto;
@@ -3359,7 +3383,7 @@ main {
   }
 }
 @media (min-width: 1200px) {
-  .story-content .entity-form .select-group {
+  #story .story-content .entity-form .select-group {
     flex-direction: row;
     justify-content: space-around;
     margin: auto;
@@ -3367,7 +3391,7 @@ main {
     padding: 0 15vw 0 15vw;
   }
 }
-.story-content .entity-form .select-box {
+#story .story-content .entity-form .select-box {
   background-color: #77CDFF;
   border-radius: 30px;
   padding: 1rem;
@@ -3381,33 +3405,32 @@ main {
   max-width: 230px;
   marge: auto;
 }
-.story-content .entity-form .select-box label {
+#story .story-content .entity-form .select-box label {
   font-weight: bold;
   font-family: "Comic Sans MS", "Raleway", cursive;
   color: #161616;
   text-align: center;
   width: 100%;
 }
-.story-content .entity-form .select-box select {
+#story .story-content .entity-form .select-box select {
   padding: 0.5rem 1rem;
   border-radius: 30px;
   border: 2px solid #5AA1CA;
   font-size: clampe 1.5vh, 2vh, 3vh;
   font-family: "Comic Sans MS", "Raleway", cursive;
   background-color: #ffffff;
-  cursor: pointer;
   transition: border-color 0.3s ease;
   max-width: 150px;
 }
-.story-content .entity-form .select-box select:hover {
+#story .story-content .entity-form .select-box select:hover {
   border-color: #758BFF;
 }
-.story-content .entity-form .select-box select:focus {
+#story .story-content .entity-form .select-box select:focus {
   border-color: #758BFF;
   outline: none;
   box-shadow: 0 0 0 3px rgba(117, 139, 255, 0.3);
 }
-.story-content .entity-form .select-box .image-preview {
+#story .story-content .entity-form .select-box .image-preview {
   width: 100%;
   height: 120px;
   border-radius: 30px;
@@ -3418,13 +3441,13 @@ main {
   justify-content: center;
   align-items: center;
 }
-.story-content .entity-form .select-box .image-preview img {
+#story .story-content .entity-form .select-box .image-preview img {
   max-height: 100%;
   max-width: 100%;
   object-fit: contain;
   animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.story-content .entity-form .bouton-3d {
+#story .story-content .entity-form .bouton-3d {
   background-color: #758BFF;
   border: 1px solid rgb(66, 96.1304347826, 255);
   box-shadow: 6px 6px 0px #5AA1CA;
@@ -3438,52 +3461,51 @@ main {
   justify-content: center;
   gap: 0.5rem;
   transition: all 0.3s ease;
-  cursor: pointer;
   box-sizing: border-box;
 }
-.story-content .entity-form .bouton-3d:focus-visible {
+#story .story-content .entity-form .bouton-3d:focus-visible {
   outline: 3px solid #B239ED;
   outline-offset: 2px;
 }
-.story-content .entity-form .bouton-3d:hover {
+#story .story-content .entity-form .bouton-3d:hover {
   transform: translate(2px, 2px);
   box-shadow: 4px 4px 0px #5AA1CA;
 }
-.story-content .entity-form .bouton-3d:active {
+#story .story-content .entity-form .bouton-3d:active {
   transform: translate(4px, 4px);
   box-shadow: 2px 2px 0px #5AA1CA;
 }
-.story-content .entity-form .bouton-3d:disabled, .story-content .entity-form .bouton-3d[aria-disabled=true] {
+#story .story-content .entity-form .bouton-3d:disabled, #story .story-content .entity-form .bouton-3d[aria-disabled=true] {
   opacity: 0.6;
   cursor: not-allowed;
 }
-.story-content .entity-form .bouton-3d:disabled:hover, .story-content .entity-form .bouton-3d:disabled:active, .story-content .entity-form .bouton-3d[aria-disabled=true]:hover, .story-content .entity-form .bouton-3d[aria-disabled=true]:active {
+#story .story-content .entity-form .bouton-3d:disabled:hover, #story .story-content .entity-form .bouton-3d:disabled:active, #story .story-content .entity-form .bouton-3d[aria-disabled=true]:hover, #story .story-content .entity-form .bouton-3d[aria-disabled=true]:active {
   transform: none;
   box-shadow: 6px 6px 0px #5AA1CA;
 }
-.story-content .entity-form .bouton-3d {
+#story .story-content .entity-form .bouton-3d {
   font-size: clamp(1rem, 2vw, 1.2rem);
   border-radius: 30px;
   margin: 2rem auto 0 auto;
   display: block;
 }
-.story-content .entity-form .bouton-3d::after {
+#story .story-content .entity-form .bouton-3d::after {
   content: " ✨";
 }
-.story-content .entity-form .bouton-3d:hover {
+#story .story-content .entity-form .bouton-3d:hover {
   border: 1px solid #ffffff;
 }
-.story-content #story-section {
+#story .story-content #story-section {
   display: none;
   opacity: 0;
   transition: opacity 1s ease-in-out;
   position: relative;
 }
-.story-content #story-section.visible {
+#story .story-content #story-section.visible {
   display: block;
   opacity: 1;
 }
-.story-content #story-section.visible::after {
+#story .story-content #story-section.visible::after {
   content: "✨✨✨";
   position: absolute;
   top: -20px;
@@ -3506,14 +3528,14 @@ main {
     transform: translateX(-50%) scale(0.8);
   }
 }
-.story-content .story-display {
+#story .story-content .story-display {
   background-color: rgba(255, 255, 255, 0.9);
   border-radius: 30px;
   padding: 2rem;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   position: relative;
 }
-.story-content .story-display h3 {
+#story .story-content .story-display h3 {
   font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 1rem;
@@ -3521,34 +3543,40 @@ main {
   color: #5AA1CA;
   text-align: center;
 }
-.story-content .story-display #play-audio {
+#story .story-content .story-display #play-audio {
   height: 0;
   background: none;
   border: none;
-  cursor: pointer;
   padding: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
-.story-content .story-display #play-audio img {
-  width: 100px;
-  height: 100px;
+#story .story-content .story-display #play-audio img {
+  width: 40px;
+  height: 40px;
   transition: transform 0.3s ease;
 }
-.story-content .story-display #play-audio:hover img {
+@media (min-width: 431px) {
+  #story .story-content .story-display #play-audio img {
+    width: 50px;
+    height: 50px;
+    transition: transform 0.3s ease;
+  }
+}
+#story .story-content .story-display #play-audio:hover img {
   transform: scale(1.1);
 }
-.story-content .story-display #play-audio:active img {
+#story .story-content .story-display #play-audio:active img {
   transform: scale(0.95);
 }
-.story-content .story-display #story-content {
+#story .story-content .story-display #story-content {
   margin-bottom: 2rem;
   font-size: 1rem;
   line-height: 1.6;
   color: #161616;
 }
-.story-content .story-display .download-section {
+#story .story-content .story-display .download-section {
   margin-top: 1rem;
   display: flex;
   gap: 1rem;
@@ -3566,38 +3594,37 @@ main {
   justify-content: center;
   gap: 0.5rem;
   transition: all 0.3s ease;
-  cursor: pointer;
   box-sizing: border-box;
 }
-.story-content .story-display .download-section:focus-visible {
+#story .story-content .story-display .download-section:focus-visible {
   outline: 3px solid #B239ED;
   outline-offset: 2px;
 }
-.story-content .story-display .download-section:hover {
+#story .story-content .story-display .download-section:hover {
   transform: translate(2px, 2px);
   box-shadow: 4px 4px 0px #5AA1CA;
 }
-.story-content .story-display .download-section:active {
+#story .story-content .story-display .download-section:active {
   transform: translate(4px, 4px);
   box-shadow: 2px 2px 0px #5AA1CA;
 }
-.story-content .story-display .download-section:disabled, .story-content .story-display .download-section[aria-disabled=true] {
+#story .story-content .story-display .download-section:disabled, #story .story-content .story-display .download-section[aria-disabled=true] {
   opacity: 0.6;
   cursor: not-allowed;
 }
-.story-content .story-display .download-section:disabled:hover, .story-content .story-display .download-section:disabled:active, .story-content .story-display .download-section[aria-disabled=true]:hover, .story-content .story-display .download-section[aria-disabled=true]:active {
+#story .story-content .story-display .download-section:disabled:hover, #story .story-content .story-display .download-section:disabled:active, #story .story-content .story-display .download-section[aria-disabled=true]:hover, #story .story-content .story-display .download-section[aria-disabled=true]:active {
   transform: none;
   box-shadow: 6px 6px 0px #5AA1CA;
 }
-.story-content .story-display .download-section:hover {
+#story .story-content .story-display .download-section:hover {
   border: 1px solid #ffffff;
 }
-.story-content .story-display .download-section a {
+#story .story-content .story-display .download-section a {
   font-weight: bold;
   color: #ffffff;
   text-decoration: none;
 }
-.story-content .story-display .download-section a:hover {
+#story .story-content .story-display .download-section a:hover {
   text-decoration: none;
 }
 @keyframes fadeIn {

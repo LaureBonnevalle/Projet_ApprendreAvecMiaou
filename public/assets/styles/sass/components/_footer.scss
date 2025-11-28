@@ -50,7 +50,7 @@
         height: 10vh;
         min-height: 80px; // Hauteur minimale pour éviter que ce soit trop petit
         max-height: 10vh;
-        cursor: pointer;
+        ;
         position: relative;
         z-index: 10;
         background-color: black;
@@ -58,6 +58,34 @@
         // Effet hover
         &:hover {
             background-color: #1a1a1a;
+            cursor: url('../../img/Miaou/mainGrande.svg') 5 0, pointer;
+            #cursor-halo {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            pointer-events: none;
+            /* Dégradé plus foncé pour ressortir sur fond noir */
+            background: radial-gradient(
+                circle,
+                rgba(255, 255, 255, 0.9) 0%,      /* blanc plus dense au centre */
+                rgba(255, 105, 180, 0.5) 60%,     /* rose plus marqué */
+                rgba(0, 0, 0, 0.4) 100%           /* fondu sombre vers l’extérieur */
+            );
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+            transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+            z-index: 9999;
+            }
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -10vh;   // Décale la zone vers le bas
+            height: 10vh;    // Hauteur de la zone invisible
         }
 
         .timer {
@@ -106,13 +134,14 @@
             #backToTopButton {
                 height: clamp(30px, 4vh, 50px); // Taille responsive du bouton
                 width: auto;
-                cursor: pointer;
+                ;
                 transition: transform 0.3s ease, opacity 0.3s ease;
                 opacity: 0.8;
 
                 &:hover {
                     transform: translateY(-3px);
                     opacity: 1;
+                    cursor: url('../../img/Miaou/mainGrande.svg') 5 0, pointer;
                 }
 
                 &:active {

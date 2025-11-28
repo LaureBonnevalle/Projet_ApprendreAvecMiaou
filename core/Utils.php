@@ -146,6 +146,16 @@ class Utils {
         // The function returns 1 if a match is found, otherwise 0.
         return preg_match('/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/', $password);
     }
+
+    private function clearSessionMessages(): void
+    {
+        $messageKeys = ['messages', 'error', 'success', 'warning', 'info', 'flash', 'error_message', 'success_message', 'error_message', 'success_message'];
+        foreach ($messageKeys as $key) {
+            if (isset($_SESSION[$key])) {
+                unset($_SESSION[$key]);
+            }
+        }
+    }
             
         
 

@@ -11,6 +11,21 @@
   border: 0;
 }
 
+html {
+  width: 100%;
+  cursor: url("../../img/Miaou/main.svg") 4 0, pointer;
+}
+html a:hover, html button:hover, html input:hover, html select:hover, html .action-button:hover, html #backToTopButton img, html .retour-haut, html .retour-haut div {
+  cursor: url("../../img/Miaou/mainGrande.svg") 5 0, pointer;
+}
+
+body {
+  cursor: url("../../img/Miaou/main.svg") 4 0, pointer;
+}
+body a:hover, body button:hover, body input:hover, body select:hover, body .action-button:hover, body #backToTopButton img, body .retour-haut {
+  cursor: url("../../img/Miaou/mainGrande.svg") 5 0, pointer;
+}
+
 #header {
   position: fixed;
   top: 0;
@@ -118,7 +133,6 @@
   justify-content: center;
   gap: 0.5rem;
   transition: all 0.3s ease;
-  cursor: pointer;
   box-sizing: border-box;
 }
 #header .header-actions .action-button:focus-visible {
@@ -180,7 +194,6 @@
   left: 1vh;
   width: 0;
   height: 0;
-  cursor: pointer;
   z-index: 10;
 }
 #header .burger-btn:hover {
@@ -985,13 +998,34 @@ main {
   height: 10vh;
   min-height: 80px;
   max-height: 10vh;
-  cursor: pointer;
   position: relative;
   z-index: 10;
   background-color: black;
 }
 #footer .foot-box:hover {
   background-color: #1a1a1a;
+  cursor: url("../../img/Miaou/mainGrande.svg") 5 0, pointer;
+}
+#footer .foot-box:hover #cursor-halo {
+  position: fixed;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  pointer-events: none;
+  /* Dégradé plus foncé pour ressortir sur fond noir */
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(255, 105, 180, 0.5) 60%, rgba(0, 0, 0, 0.4) 100%);
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+  z-index: 9999;
+}
+#footer .foot-box::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -10vh;
+  height: 10vh;
 }
 #footer .foot-box .timer {
   display: flex;
@@ -1035,13 +1069,13 @@ main {
 #footer .foot-box .retour-haut #backToTopButton {
   height: clamp(30px, 4vh, 50px);
   width: auto;
-  cursor: pointer;
   transition: transform 0.3s ease, opacity 0.3s ease;
   opacity: 0.8;
 }
 #footer .foot-box .retour-haut #backToTopButton:hover {
   transform: translateY(-3px);
   opacity: 1;
+  cursor: url("../../img/Miaou/mainGrande.svg") 5 0, pointer;
 }
 #footer .foot-box .retour-haut #backToTopButton:active {
   transform: translateY(-1px);
@@ -1399,6 +1433,10 @@ main {
     font-size: 18px;
   }
 }
+main {
+  margin-top: 10vh;
+}
+
 .alert-success, #session-message, .alert-error, #session-error, #session-alert, .alert {
   color: #FF7675;
 }
@@ -1527,7 +1565,6 @@ main {
   justify-content: center;
   gap: 0.5rem;
   transition: all 0.3s ease;
-  cursor: pointer;
   box-sizing: border-box;
 }
 .activite-action-button:focus-visible {

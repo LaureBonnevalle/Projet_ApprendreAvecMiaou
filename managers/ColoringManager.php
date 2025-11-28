@@ -1,96 +1,84 @@
 <?php
-/*require_once('models/ColoriageCategories.php');
-require_once('models/Coloriages.php');*/
 
-class ColoriageManager extends AbstractManager {
-public function __construct()
-    {
-        parent::__construct();
-    }
+class ColoringManager extends AbstractManager {
 
-    public function create(Coloriages $coloring): bool {
-        $query = $this->db->prepare("INSERT INTO coloring_sheets (categorie_dessin, dessin_DateHeure, fichier) VALUES (?, ?, ?)");
-        return $query->execute([
-            $coloring->getCategorieDessin(),
-            $coloring->getDessinDateHeure()->format('Y-m-d H:i:s'),
-            $coloring->getFichier()
+    public function create(ColoringSheet $sheet): bool {
+        $stmt = $this->db->prepare("
+            INSERT INTO coloring_sheets (name, description, url, categorie_coloring)
+            VALUES (?, ?, ?, ?)
+        ");
+        return $stmt->execute([
+            $sheet->getName(),
+            $sheet->getDescription(),
+            $sheet->getUrl(),
+            $sheet->getCategorieColoring()
         ]);
     }
 
-    public function read(int $id): ?Coloriages {
-        $query = $this->db->prepare("SELECT * FROM coloring_sheets WHERE id = ?");
-        $query->execute([$id]);
-        $data = $query->fetch();
-        if ($data) {
-            return new Coloriages($data['id'], $data['categorie_coloring'],  $data['url']);
+    public function read(int $id): ?ColoringSheet {
+        $stmt = $this->db->prepare("SELECT id, name, description, url, categorie_coloring FROM coloring_sheets WHERE id = ?");
+        $stmt->execute([$id]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (!$row) return null;
+
+        return new ColoringSheet(
+            (int)$row['id'],
+            $row['categorie_coloring'] !== null ? (int)$row['categorie_coloring'] : null,
+            $row['name'],
+            $row['description'],
+            $row['url']
+        );
+    }
+
+    public function update(ColoringSheet $sheet): bool {
+        $stmt = $this->db->prepare("
+            UPDATE coloring_sheets
+            SET name = ?, description = ?, url = ?, categorie_coloring = ?
+            WHERE id = ?
+        ");
+        return $stmt->execute([
+            $sheet->getName(),
+            $sheet->getDescription(),
+            $sheet->getUrl(),
+            $sheet->getCategorieColoring(),
+            $sheet->getId()
+        ]);
+    }
+
+    public function delete(int $id): bool {
+        $stmt = $this->db->prepare("DELETE FROM coloring_sheets WHERE id = ?");
+        return $stmt->execute([$id]);
+    }
+
+    public function getAllCategories(): array {
+        $stmt = $this->db->prepare("SELECT id, name, description FROM coloring_categories");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getAllByCategorie(int $categorieId): array {
+        $stmt = $this->db->prepare("
+            SELECT cs.id, cs.name, cs.description, cs.url, cs.categorie_coloring
+            FROM coloring_sheets cs
+            WHERE cs.categorie_coloring = :categorie_id
+        ");
+        $stmt->execute(['categorie_id' => $categorieId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function toJSONByCategorie(int $categorieId): void {
+        if (ob_get_level()) {
+            ob_end_clean();
         }
-        return null;
+        $sheets = $this->getAllByCategorie($categorieId);
+        header('Content-Type: application/json');
+        echo json_encode($sheets);
+        exit;
     }
 
-    public function update(Coloriages $coloring): bool {
-        $query = $this->db->prepare("UPDATE coloring_sheets SET categorie_coloring = ?, dessin_DateHeure = ?, fichier = ? WHERE id = ?");
-        return $query->execute([
-            $coloring->getCategorieColoriage(),
-            $coloring->getUrl(),
-            $coloring->getId()
-        ]);
+    public function existsByUrl(string $url): bool {
+        $stmt = $this->db->prepare("SELECT COUNT(*) FROM coloring_sheets WHERE url = :url");
+        $stmt->execute(['url' => $url]);
+        return (int)$stmt->fetchColumn() > 0;
     }
-
-    public function delete(Coloriages $coloring): bool {
-        $query = $this->db->prepare("DELETE FROM coloring_sheets WHERE id = ?");
-        return $query->execute([$coloring->getId()]);
-    }
-    
-    public function getAllCategoriesColoriages(): array {
-        $query = $this->db->prepare("SELECT * FROM coloring_categories");
-        $query->execute([]);
-        return $query->fetchAll(PDO::FETCH_ASSOC);
-        
-        
-    }
-     
-    
-    public function getAllColoriagesByCategorie(int $categorieId): array { 
-        $sql = $this->db->prepare('SELECT c.* FROM coloring_sheets c
-        INNER JOIN coloring_categories cc ON c.categorie_coloring = cc.id
-        WHERE cc.id = :categorie_id');
-    
-        $sql->execute(['categorie_id' => $categorieId]);
-        $coloring_sheets = $sql->fetchAll(PDO::FETCH_ASSOC);
-        return $coloring_sheets;
-    }
-    
-    public function jSON($categorieId) {
-    $coloringManager = new ColoriageManager();
-    $coloring_sheets = $this->getAllColoriagesByCategorie($categorieId);
-
-    header('Content-Type: application/json');
-    echo json_encode($coloring_sheets);
-    exit;
-    }
-    
-    public function addColoriage(array $data): void
-{
-    $sql = $this->db->prepare('INSERT INTO coloring_sheets (name, description, url, categorie_coloring) VALUES (:name, :description, :url, :categorie_coloring)');
-    $sql->execute([
-        'name' => $data['name'],
-        'description' => $data['description'],
-        'url' => $data['url'],
-        'categorie_coloring' => $data['categorie_coloring']
-    ]);
-}
-
-public function deleteColoriageById(int $id): void
-{
-    $sql = $this->db->prepare("DELETE FROM coloring_sheets WHERE id = :id");
-    $sql->execute(['id' => $id]);
-}
-
-public function existByUrl(string $url): bool
-{
-    $sql = $this->db->prepare("SELECT COUNT(*) FROM coloring_sheets WHERE url = :url");
-    $sql->execute(['url' => $url]);
-    return $sql->fetchColumn() > 0;
-}
-
 }

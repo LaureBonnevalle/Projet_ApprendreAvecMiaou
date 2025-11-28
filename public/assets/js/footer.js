@@ -115,7 +115,7 @@ const modalActions = document.getElementById("modal-actions");
 const modalIllustration = document.getElementById("modal-illustration");
 
 // URL de redirection pour la pédagogie
-const PEDAGOGIE_URL = "?route=notre-pedagogie-dangers-ecrans";
+const PEDAGOGIE_URL = "?route=pedagogie";
 
 // ✅ CLASSES CSS pour les illustrations
 const ILLUSTRATION_CLASSES = {

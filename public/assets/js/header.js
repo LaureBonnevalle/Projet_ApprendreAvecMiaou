@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     initializeBurgerMenu();
     highlightActiveLink();
+    initHalo();
 });
 
 function initializeBurgerMenu() {
@@ -166,3 +167,54 @@ function highlightActiveLink() {
 
 // Appeler au chargement
 document.addEventListener('DOMContentLoaded', highlightActiveLink);
+
+/**
+ * Initialise un halo lumineux autour du curseur
+ */
+function initHalo() {
+  const halo = document.createElement('div');
+  halo.id = 'cursor-halo';
+  document.body.appendChild(halo);
+
+  // Styles de base
+  Object.assign(halo.style, {
+    position: 'fixed',
+    width: '40px',
+    height: '40px',
+    borderRadius: '50%',
+    pointerEvents: 'none',
+    background: 'radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,192,203,0.4) 70%, transparent 100%)',
+    transform: 'translate(-50%, -50%) scale(0)',
+    opacity: '0',
+    transition: 'opacity 0.3s ease-out, transform 0.3s ease-out',
+    zIndex: '9999'
+  });
+
+  // Décalage en pixels
+  const offsetX = 13; // vers la droite
+  const offsetY = 13; // vers le bas
+
+  // Suivi du curseur (instantané)
+  document.addEventListener('mousemove', e => {
+    halo.style.left = (e.clientX + offsetX) + 'px';
+    halo.style.top = (e.clientY + offsetY) + 'px';
+  });
+
+  // Activer halo uniquement sur les éléments interactifs
+  document.addEventListener('mouseover', e => {
+    if (e.target.matches('a, button, input, select, textarea, [role="button"], [tabindex]')) {
+      halo.style.opacity = '1';
+      halo.style.transform = 'translate(-50%, -50%) scale(1)';
+    }
+  });
+
+  document.addEventListener('mouseout', e => {
+    if (e.target.matches('a, button, input, select, textarea, [role="button"], [tabindex]')) {
+      halo.style.opacity = '0';
+      halo.style.transform = 'translate(-50%, -50%) scale(0)';
+    }
+  });
+}
+
+
+

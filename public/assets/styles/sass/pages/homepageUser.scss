@@ -4,7 +4,11 @@
 @use '../components/footer';
 
 
+main {
 
+  @include mixins.breakpoint(mobile);
+  margin-top : 10vh;
+}
 .alert-success, #session-message, .alert-error, #session-error, #session-alert, .alert {
   color : varcolors.$pink_Glamour;
 }

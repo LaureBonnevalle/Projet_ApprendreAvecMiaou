@@ -30,7 +30,16 @@ class StoryController extends AbstractController {
         $characters = $pm->getAllCharacters();
         $locations = $lm->getAllLocations();
         $items = $om->getAllItems();
+        
+        if (isset($_SESSION['error'])) {
+        unset($_SESSION['error']);
+        }
+            if (isset($_SESSION['success_message'])) {
+        unset($_SESSION['success_message']);
+        }
 
+
+        
         //var_dump ($characters, $items, $locations, $_SESSION);
         //exit;
 

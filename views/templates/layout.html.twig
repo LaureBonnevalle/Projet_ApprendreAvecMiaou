@@ -64,7 +64,7 @@
         {% include "subpages/_footer.html.twig" %}
     {% endblock %}
     {% block modal %}
-        {% if isValidateUser %}
+        {% if isValidateUser or isUser %}
             {% include "subpages/_modal.html.twig" %}
         {% endif %}
     {% endblock %}

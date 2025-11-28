@@ -1,44 +1,21 @@
 <?php
 
-require_once('managers/ColoringManager.php');
-require_once('managers/ColoringCategoriesManager.php');
-
-
-
-
-class ColoringCategories {
+class ColoringCategory {
     private ?int $id;
-    private string $categorie_name;
-    private string $categorie_description;
+    private string $name;
+    private string $description;
 
-    public function __construct(?int $id, string $categorie_name, string $categorie_description) {
+    public function __construct(?int $id, string $name, string $description) {
         $this->id = $id;
-        $this->categorie_name = $categorie_name;
-        $this->categorie_description = $categorie_description;
+        $this->name = $name;
+        $this->description = $description;
     }
 
-    public function getId(): ?int {
-        return $this->id;
-    }
+    public function getId(): ?int { return $this->id; }
+    public function getName(): string { return $this->name; }
+    public function getDescription(): string { return $this->description; }
 
-    public function getCategorieName(): string {
-        return $this->categorieName;
-    }
-
-    public function getCategorieDescription(): string {
-        return $this->categorieDescription;
-    }
-
-    public function setId(?int $id): void {
-        $this->id = $id;
-    }
-
-    public function setCategorieName(string $categorieName): void {
-        $this->categorieName = $categorieName;
-    }
-
-    public function setCategorieDescription(string $categorieDescription): void {
-        $this->categorieDescription = $categorieDescription;
-    }
+    public function setId(?int $id): void { $this->id = $id; }
+    public function setName(string $name): void { $this->name = $name; }
+    public function setDescription(string $description): void { $this->description = $description; }
 }
-?>

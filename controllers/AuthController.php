@@ -179,39 +179,7 @@ $_SESSION["account_status"] = [
 $this->redirectTo('homepage');
 }
 
-/*// 3. VÉRIFIEZ VOTRE MÉTHODE displayModify() :
-public function displayModify() : void
-{
-    $am = new AvatarManager(); // Corrigez "avatarManager" en "AvatarManager"
-    
-    // Récupération de l'avatar
-    if(isset($_SESSION['user']['avatar'])) {
-        $avatar = $am->getById($_SESSION['user']['avatar']);
-    } else {
-        $avatar = $am->getById(4);
-    }
-    
-    $scripts = $this->addScripts(['public/assets/js/common.js','public/assets/js/formController.js','public/assets/js/formFunction.js']);
-    $timesModels = new TimesModels();
-    $elapsedTime = $timesModels->getElapsedTime();
-    
-    // Générer le token CSRF
-    $tm = new CSRFTokenManager();
-    $token = $tm->generateCSRFToken();
-    $_SESSION['csrf_token'] = $token;
-    
-    // Le message d'erreur devrait déjà être défini par checkLogin()
-    if (!isset($_SESSION['error_message'])) {
-        $_SESSION['error_message'] = "Vous devez modifier votre mot de passe";
-    }
-    
-    $this->render("modifypassword.html.twig", [
-        "elapsed_time" => $elapsedTime, 
-        "token" => $token, 
-        "error_message" => $_SESSION['error_message'],
-        "avatar" => $avatar
-    ], $scripts);
-}*/
+
 
     
 
@@ -494,8 +462,7 @@ public function displayProfile() {
             'connected' => $_SESSION['user'],
             $scripts]);
             
-        // $template = "register";
-        // require "templates/layout.phtml";
+       
 
 
 

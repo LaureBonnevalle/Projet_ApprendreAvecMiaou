@@ -18,50 +18,51 @@
     {% block error %}
     {% endblock %}
 
-        <section class="homeUser-content">
+        <section class="homeUser-content" id="#homeUser">
             <header class="homepageUser-header">
                 <h1>Bienvenue sur ta page d'activités !</h1>
                 <p>Que veux-tu faire maintenant ?</p>
                 </header>
+            <div class="card-container">
+                <article class="card-article">
+                    <div class="card card-color-vert">
+                        <div class="card-image-container card-coloring">
+                        </div>
+                        <div class="card-title">
+                            <h2 class ="sr-only">Activité coloriages</h2>
+                        </div>
+                        <a href="?route=colorings" class="activite-action-button" id="colorings" aria-label="Je colorie">
+                            Je colorie
+                        </a>
+                    </div>
+                </article>
 
-            <article class="card-article">
-                <div class="card card-color-vert">
-                    <div class="card-image-container card-coloring">
+                <article class="card-article">
+                    <div class="card card-color-bleu">
+                        <div class="card-image-container card-story">
+                                                </div>
+                        <div class="card-title">
+                            <h2 class ="sr-only">Activité histoire</h2>
+                        </div>
+                        <a href="?route=stories" class="activite-action-button" id="stories" aria-label="J'écoute une histoire">
+                            J'écoute l'histoire
+                        </a>
                     </div>
-                    <div class="card-title">
-                        <h2 class ="sr-only">Activité coloriages</h2>
-                    </div>
-                    <a href="?route=colorings" class="activite-action-button" id="colorings" aria-label="Je colorie">
-                        Je colorie
-                    </a>
-                </div>
-            </article>
+                </article>
 
-            <article class="card-article">
-                <div class="card card-color-bleu">
-                    <div class="card-image-container card-story">
-                                            </div>
-                    <div class="card-title">
-                        <h2 class ="sr-only">Activité histoire</h2>
+                <article class="card-article">
+                    <div class="card card-color-jaune">
+                        <div class="card-image-container card-game">
+                                                </div>
+                        <div class="card-title">
+                            <h2 class="sr-only">Acitvité jeux</h2>
+                        </div>
+                        <a href="?route=displayGames" class="activite-action-button" id="games" aria-label="Je joue">
+                            Je joue
+                        </a>
                     </div>
-                    <a href="?route=stories" class="activite-action-button" id="stories" aria-label="J'écoute une histoire">
-                        J'écoute l'histoire
-                    </a>
+                </article>
                 </div>
-            </article>
-
-            <article class="card-article">
-                <div class="card card-color-jaune">
-                    <div class="card-image-container card-game">
-                                            </div>
-                    <div class="card-title">
-                        <h2 class="sr-only">Acitvité jeux</h2>
-                    </div>
-                    <a href="?route=displayGames" class="activite-action-button" id="games" aria-label="Je joue">
-                        Je joue
-                    </a>
-                </div>
-            </article>
         </section>       
         
          {% block modal %}

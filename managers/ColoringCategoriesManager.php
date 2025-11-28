@@ -1,34 +1,46 @@
 <?php
 
-//require_once('models/ColoriageCategories.php');
+class ColoringCategoriesManager extends AbstractManager {
 
-class ColoriageCategoriesManager extends AbstractManager {
+    public function getAll(): array {
+    $stmt = $this->db->prepare("SELECT id, categorie_name, categorie_description FROM coloring_categories");
+    $stmt->execute();
+    $datas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    public function getAllCategoriesColoriages(): array {
-        
-        $query = $this->db->prepare("SELECT * FROM coloring_categories");
-        $query->execute([]);
-        $results = $query->fetchAll(PDO::FETCH_ASSOC);
-        
-        return $results;
-        
-        
-        
+    $categories = [];
+    foreach ($datas as $data) {
+        $categories[] = new ColoringCategory(
+            $data['id'],
+            $data['categorie_name'],
+            $data['categorie_description']
+        );
+    
+
+    return $categories;
+    }
+}
+    
+
+
+    public function getById(int $id): ?array {
+        $stmt = $this->db->prepare("SELECT id, name, description FROM coloring_categories WHERE id = ?");
+        $stmt->execute([$id]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row ?: null;
     }
 
-    
-    function createThumbnailFromPDF($pdfFilePath, $thumbnailPath) {
-    $imagick = new \Imagick();
-    $imagick->setResolution(150, 150);
-    $imagick->readImage($pdfFilePath . '[0]');
-    $imagick->setImageFormat('jpg');
-    $imagick->writeImage($thumbnailPath);
-    $imagick->clear();
-    $imagick->destroy();
-        }
+    public function create(ColoringCategory $cat): bool {
+        $stmt = $this->db->prepare("INSERT INTO coloring_categories (name, description) VALUES (?, ?)");
+        return $stmt->execute([$cat->getName(), $cat->getDescription()]);
+    }
 
-// Utilisation
-       // $pdfFilePath = 'path/to/your/pdf/file.pdf';
-       // $thumbnailPath = 'path/to/save/thumbnail.jpg';
-       // createThumbnailFromPDF($pdfFilePath, $thumbnailPath);
+    public function update(ColoringCategory $cat): bool {
+        $stmt = $this->db->prepare("UPDATE coloring_categories SET name = ?, description = ? WHERE id = ?");
+        return $stmt->execute([$cat->getName(), $cat->getDescription(), $cat->getId()]);
+    }
+
+    public function delete(int $id): bool {
+        $stmt = $this->db->prepare("DELETE FROM coloring_categories WHERE id = ?");
+        return $stmt->execute([$id]);
+    }
 }

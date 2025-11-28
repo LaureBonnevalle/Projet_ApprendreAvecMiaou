@@ -1,98 +1,77 @@
 <?php
 
-/*require_once('managers/ColoringeManager.php');
-require_once('managers/ColoringCategoriesManager.php');*/
-
-
 class ColoringController extends AbstractController
 {
     public function displayDraw()
     {
         $avatarManager = new AvatarManager();
         $timesModels = new TimesModels();
-        $cm = new ColoringCategoriesManager();
-        $categories= $cm->getAllCategoriesColorings();
-        //var_dump($categories);
-        $scripts = $this->addScripts(['public/assets/js/ajaxColoring.js']);
-        
-        //var_dump($categories);
-        //var_dump($_SESSION);
+        $categoriesManager = new ColoringCategoriesManager();
 
+        $categories = $categoriesManager->getAll();
+        
         $avatar = $avatarManager->getById($_SESSION['user']['avatar']);
-        $errorMessage = $_SESSION['error_message'] ?? null;
         $elapsedTime = $timesModels->getElapsedTime();
-        
-        //var_dump($categories, $avatar);
-        
-        $colorings = [];
-    if (isset($_GET['categorie_id'])) {
-        $cm = new ColoringManager();
-        $colorings = $cm->getAllColoringsByCategorie((int)$_GET['categorie_id']);
-        
-        
-        /*foreach ($colorings as &$coloring) {
-            $thumbnailPath = 'public/assets/img/coloringSheets/' . $coloring['id'] . '.jpg';
-            if (!file_exists($thumbnailPath)) {
-                createThumbnailFromPDF($coloring['url'], $thumbnailPath);
-            }
-            $coloring['thumbnail_url'] = $thumbnailPath;
-        }*/
+
+        $scripts = $this->addScripts(['assets/js/ajaxColoring.js']);
+
+        $this->clearSessionMessages();
+        unset($_SESSION['error'], $_SESSION['success_message']);
+
+        return $this->render('coloring.html.twig', [
+            'titre' => 'Coloriages',
+            'user' => $_SESSION['user'] ?? null,
+            'avatar' => [$avatar],
+            'categories' => $categories,
+            'elapsed_time' => $elapsedTime,
+            'session' => $_SESSION,
+            'connected' => true,
+            'isUser' => true,
+            'start_time' => $_SESSION['start_time']
+        ], $scripts);
     }
 
-    return $this->render('coloring.html.twig', [
-        'user' => $_SESSION['user'] ?? null,
-        'avatar' => $avatar,
-        'categories' => $categories,
-        'error_message' => $errorMessage,
-        'elapsed_time' => $elapsedTime,
-        'colorings' => $colorings,
-    ], $scripts);
-        
-        
-    }
-    
-    public function getColoringsByCategorieJson(){
-        
-        ob_clean(); // Clean the output buffer
+    public function getColoringsByCategorieJson()
+    {
+        if (ob_get_level()) {
+            ob_end_clean();
+        }
 
         $content = file_get_contents("php://input");
         $data = json_decode($content, true);
-        
-        $coloringManager = new ColoringManager();
-        $colorings = $coloringManager->getAllColoringsByCategorie($data['id']);        
-    
-        header('Content-Type: application/json');
-        echo json_encode($colorings);
-        
-        exit;
+
+        if (!isset($data['id']) || empty($data['id'])) {
+            http_response_code(400);
+            header('Content-Type: application/json');
+            echo json_encode(['error' => 'Missing category ID']);
+            exit;
+        }
+
+        $categorieId = (int)$data['id'];
+
+        try {
+            $coloringManager = new ColoringManager();
+            $colorings = $coloringManager->getAllByCategorie($categorieId);
+
+            header('Content-Type: application/json');
+            echo json_encode($colorings);
+            exit;
+
+        } catch (Exception $e) {
+            http_response_code(500);
+            header('Content-Type: application/json');
+            echo json_encode(['error' => $e->getMessage()]);
+            exit;
+        }
     }
-   
-    
-    function createThumbnailFromPDF($pdfFilePath, $thumbnailPath) {
-        
-        $pdfFilePath = "public/assets/img/coloringSheets/";
-        $thumbnailPath = "public/assets/img/coloringSheets/thumbnails/";
-    $imagick = new \Imagick();
-    $imagick->setResolution(150, 150);
-    $imagick->readImage($pdfFilePath . '[0]');
-    $imagick->setImageFormat('jpg');
-    $imagick->writeImage($thumbnailPath);
-    $imagick->clear();
-    $imagick->destroy();
-    }
-    
-    /*public function downloadFile(Request $request): Response
+
+    private function clearSessionMessages(): void
     {
-        $fileId = $cm->getId($id);
-        // Logique pour récupérer le chemin du fichier basé sur l'ID
-        $filePath = '/path/to/files/' . $fileId . '.pdf';
-
-        $response = new BinaryFileResponse($filePath);
-        $response->setContentDisposition(
-            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            basename($filePath)
-        );
-
-        return $response;
-    }*/
+        $messageKeys = ['messages', 'error', 'success', 'warning', 'info', 'flash', 'error_message', 'success_message'];
+        foreach ($messageKeys as $key) {
+            if (isset($_SESSION[$key])) {
+                unset($_SESSION[$key]);
+            }
+        }
+    }
 }

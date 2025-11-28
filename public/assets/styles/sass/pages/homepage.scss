@@ -1,185 +1,185 @@
 @use '../abstracts/mixins';
-@use '../components/header';
-@use '../components/footer';
 
 
-.homepage-content {
-  //width: 100%;
-  //max-width: 100%; // limite la largeur pour éviter de dépasser
-  margin: 8vh auto;
-  padding:0;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-
-  // 📱 Mobile & tablette portrait
-  // Header = 25vh + Footer = 25vh → reste = 50vh
-  min-height: calc(100vh - 50vh);
-
-  // 📲 Tablette paysage et au-dessus
-  // Header = 25vh + Nav = 10vh + Footer = 25vh → reste = 40vh
-  
-  @include mixins.breakpoint(custom) {
-    min-height: calc(100vh - 60vh);
-    
-  }
-  @include mixins.breakpoint(mobile) {
-    min-height: calc(100vh - 60vh);
+#homepage {
     .homepage-content {
-       padding: 25vh;
-    }
-  }
-  @include mixins.breakpoint(small) {
-    min-height: calc(100vh - 60vh);
-  }
-  @include mixins.breakpoint(medium) {
-    min-height: calc(100vh - 60vh);
-  }
-  @include mixins.breakpoint(medium-large) {
-    min-height: calc(100vh - 60vh);
-  }
-  @include mixins.breakpoint(large) {
-    min-height: calc(100vh - 60vh);
-  }
-  @include mixins.breakpoint(larger) {
-    min-height: calc(100vh - 60vh);
-  }
-  @include mixins.breakpoint(extra) {
-    min-height: calc(100vh - 60vh);
-  }
-  @include mixins.breakpoint(extra-large) {
-    min-height: calc(100vh - 60vh);
-  }
-  @include mixins.breakpoint(ultra) {
-    min-height: calc(100vh - 60vh);
-  }
-  @include mixins.breakpoint(huge) {
-    min-height: calc(100vh - 60vh);
-  }
-
-  // ===========================
-  // HEADER DE LA SECTION
-  // ===========================
-  .homepage-header {
-    text-align: center;
-
-    h1 {
-      font-size: clamp(1.5rem, 3vw, 2.5rem);
-      margin-bottom: 1rem;
-    }
-
-    .subtitle {
-      text-align: center;
-      font-family: 'Comic Sans MS', 'Raleway', cursive;
-      font-weight: bold;
-      font-size: clamp(1rem, 5vw, 1.3rem);
-      margin-bottom: 0.5rem;
-    }
-
-    .description {
-      font-size: clamp(0.9rem, 1.5vw, 1.1rem);
-      color: #333;
-      margin-bottom: 2rem;
-    }
-  }
-
-  // ===========================
-  // ENCARt AUTH (connexion/inscription)
-  // ===========================
-  .auth {
-    text-align: center;
-    background-color: #fff;
-    border-radius: 30px;
-    padding: 2vh;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1); // effet highlight doux
-    border: 2px solid #f0f0f0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.5rem;
-    max-width: 900px;
-    margin: 0 auto;
-
-    .auth-images {
+      //width: 100%;
+      //max-width: 100%; // limite la largeur pour éviter de dépasser
+      margin: 8vh auto;
+      padding:0;
       display: flex;
-      justify-content: center;
-      gap: 1rem;
+      flex-direction: column;
+      justify-content: flex-start;
 
-      img {
-        max-height: 100px;
-        height: auto;
-        transition: transform 0.2s ease;
+      // 📱 Mobile & tablette portrait
+      // Header = 25vh + Footer = 25vh → reste = 50vh
+      min-height: calc(100vh - 50vh);
+
+      // 📲 Tablette paysage et au-dessus
+      // Header = 25vh + Nav = 10vh + Footer = 25vh → reste = 40vh
+      
+      @include mixins.breakpoint(custom) {
+        min-height: calc(100vh - 60vh);
         
-        &:hover {
-          transform: scale(1.05);
+      }
+      @include mixins.breakpoint(mobile) {
+        min-height: calc(100vh - 60vh);
+        .homepage-content {
+          padding: 25vh;
+        }
+      }
+      @include mixins.breakpoint(small) {
+        min-height: calc(100vh - 60vh);
+      }
+      @include mixins.breakpoint(medium) {
+        min-height: calc(100vh - 60vh);
+      }
+      @include mixins.breakpoint(medium-large) {
+        min-height: calc(100vh - 60vh);
+      }
+      @include mixins.breakpoint(large) {
+        min-height: calc(100vh - 60vh);
+      }
+      @include mixins.breakpoint(larger) {
+        min-height: calc(100vh - 60vh);
+      }
+      @include mixins.breakpoint(extra) {
+        min-height: calc(100vh - 60vh);
+      }
+      @include mixins.breakpoint(extra-large) {
+        min-height: calc(100vh - 60vh);
+      }
+      @include mixins.breakpoint(ultra) {
+        min-height: calc(100vh - 60vh);
+      }
+      @include mixins.breakpoint(huge) {
+        min-height: calc(100vh - 60vh);
+      }
+
+      // ===========================
+      // HEADER DE LA SECTION
+      // ===========================
+      .homepage-header {
+        text-align: center;
+
+        h1 {
+          font-size: clamp(1.5rem, 3vw, 2.5rem);
+          margin-bottom: 1rem;
+        }
+
+        .subtitle {
+          text-align: center;
+          font-family: 'Comic Sans MS', 'Raleway', cursive;
+          font-weight: bold;
+          font-size: clamp(1rem, 5vw, 1.3rem);
+          margin-bottom: 0.5rem;
+        }
+
+        .description {
+          font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+          color: #333;
+          margin-bottom: 2rem;
+        }
+      }
+
+      // ===========================
+      // ENCARt AUTH (connexion/inscription)
+      // ===========================
+      .auth {
+        text-align: center;
+        background-color: #fff;
+        border-radius: 30px;
+        padding: 2vh;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1); // effet highlight doux
+        border: 2px solid #f0f0f0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+        max-width: 900px;
+        margin: 0 auto;
+
+        .auth-images {
+          display: flex;
+          justify-content: center;
+          gap: 1rem;
+
+          img {
+            max-height: 100px;
+            height: auto;
+            transition: transform 0.2s ease;
+            
+            &:hover {
+              transform: scale(1.05);
+            }
+          }
+        }
+
+        .auth-text {
+          text-align: center;
+
+          p {
+            margin: 0.5rem 0;
+            font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+          }
+
+          a {
+            color: #d6336c; // rouge/rose pour attirer l’œil
+            font-weight: bold;
+            text-decoration: none;
+
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+        }
+      }
+
+      // ===========================
+      // RESPONSIVE LAYOUT
+      // ===========================
+      /* ✅ Ajout pour mobile : marges latérales */
+      @include mixins.breakpoint(mobile) {
+          margin: 2vh 1rem;   // espace en haut/bas et 1rem à gauche/droite
+          width: calc(100% - 2rem); // évite que ça colle aux bords
+      }
+
+      @include mixins.breakpoint(medium) {
+        .auth {
+          flex-direction: row; // images à gauche, texte à droite
+          align-items: center;
+          justify-content: space-between;
+          padding: 2rem;
+
+          .auth-images {
+            justify-content: flex-start;
+          }
+
+          .auth-text {
+            text-align: left;
+            max-width: 60%;
+          }
+        }
+      }
+
+      @include mixins.breakpoint(large) {
+        .auth {
+          max-width: 1000px;
+        }
+      }
+
+      @include mixins.breakpoint(ultra) {
+        .auth {
+          max-width: 1200px;
+          padding: 3rem;
+        }
+      }
+
+      @include mixins.breakpoint(huge) {
+        .auth {
+          max-width: 1400px;
+          padding: 4rem;
         }
       }
     }
-
-    .auth-text {
-      text-align: center;
-
-      p {
-        margin: 0.5rem 0;
-        font-size: clamp(0.9rem, 1.5vw, 1.1rem);
-      }
-
-      a {
-        color: #d6336c; // rouge/rose pour attirer l’œil
-        font-weight: bold;
-        text-decoration: none;
-
-        &:hover {
-          text-decoration: underline;
-        }
-      }
-    }
-  }
-
-  // ===========================
-  // RESPONSIVE LAYOUT
-  // ===========================
-  /* ✅ Ajout pour mobile : marges latérales */
-  @include mixins.breakpoint(mobile) {
-      margin: 2vh 1rem;   // espace en haut/bas et 1rem à gauche/droite
-      width: calc(100% - 2rem); // évite que ça colle aux bords
-  }
-
-  @include mixins.breakpoint(medium) {
-    .auth {
-      flex-direction: row; // images à gauche, texte à droite
-      align-items: center;
-      justify-content: space-between;
-      padding: 2rem;
-
-      .auth-images {
-        justify-content: flex-start;
-      }
-
-      .auth-text {
-        text-align: left;
-        max-width: 60%;
-      }
-    }
-  }
-
-  @include mixins.breakpoint(large) {
-    .auth {
-      max-width: 1000px;
-    }
-  }
-
-  @include mixins.breakpoint(ultra) {
-    .auth {
-      max-width: 1200px;
-      padding: 3rem;
-    }
-  }
-
-  @include mixins.breakpoint(huge) {
-    .auth {
-      max-width: 1400px;
-      padding: 4rem;
-    }
-  }
 }

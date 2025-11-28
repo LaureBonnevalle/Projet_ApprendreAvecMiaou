@@ -1,7 +1,5 @@
 @use '../abstracts/varcolors';
 @use '../abstracts/mixins';
-@use '../components/header';
-@use '../components/footer';
 
 main {
   padding-top :10vh;
@@ -11,6 +9,7 @@ main {
 // =================================
 // CONTENEUR PRINCIPAL LOGIN
 // =================================
+
 .login-content {
   display: flex;
   flex-direction: column;
@@ -234,7 +233,7 @@ main {
       right: clamp(0.8rem, 3vw, 1.2rem);
       top: 50%;
       transform: translateY(-50%);
-      cursor: pointer;
+      ;
       color: #5C5454;
       font-size: clamp(1.1rem, 2.5vw, 1.3rem);
       pointer-events: auto;
@@ -292,7 +291,7 @@ main {
     font-family: 'Comic Sans MS', 'Raleway', cursive;
     background-color: #5C5454;
     color: varcolors.$blanc;
-    cursor: pointer;
+    ;
     border: 2px solid #3d3434;
     box-sizing: border-box;
     transition: all varcolors.$transition-normal;

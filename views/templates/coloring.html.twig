@@ -1,0 +1,64 @@
+{% extends "layout.html.twig" %}
+
+{# Titre de la page #}
+{% block title %}
+         | Page Coloriages
+{% endblock %}
+
+{% block body %}
+
+        {% block header %}
+            {{ parent() }}
+        {% endblock %}
+
+        
+    
+    {% block content %}
+    
+    {% block error %}
+    {% endblock %}
+
+            <section id="coloring">
+            <h2>Choisis un coloriage</h2>
+
+            <div class="coloring-container">
+                {# Sélection de catégorie #}
+                <aside class="category-selector">
+                    <h3>Choisissez une catégorie</h3>
+                    <select name="categorie_id" id="categorie-select">
+                        <option value="">-- Sélectionner --</option>
+                        {% for categorie in categories %}
+                            {{ categorie.getId() }}">{{ categorie.getName() }}
+                        {% endfor %}
+                    </select>
+                </aside>
+
+                {# Liste des coloriages #}
+                <aside class="colorings-list-container">
+                    <div id="colorings-list-header">
+                        <h3>Liste des coloriages</h3>
+                    </div>
+                    <ul id="colorings-list" class="colorings-list">
+                        {# Rempli dynamiquement par JS #}
+                    </ul>
+                </aside>
+
+                {# Aperçu et téléchargement #}
+                <article class="preview-container">
+                    <div id="preview-section">
+                        <p class="placeholder-text">
+                            👆 Sélectionnez une catégorie puis un coloriage pour voir l'aperçu
+                        </p>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+         {% block modal %}
+            {{ parent() }}
+         {% endblock %}
+
+{% endblock %}  
+
+
+{% endblock %}
