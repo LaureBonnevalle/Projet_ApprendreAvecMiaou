@@ -15,9 +15,9 @@ class ColoringCategoriesManager extends AbstractManager {
             $data['categorie_description']
         );
     
-
+        }
     return $categories;
-    }
+    
 }
     
 

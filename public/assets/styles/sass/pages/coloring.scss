@@ -1,0 +1,399 @@
+@use "sass:color";
+@use '../abstracts/varcolors';
+@use '../abstracts/mixins';
+
+#coloring {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px 20px;
+
+  h2 {
+    text-align: center;
+    color: varcolors.$noir;
+    font-size: 5h;
+    margin-bottom: 40px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  // ====================================
+  // LAYOUT PRINCIPAL
+  // ====================================
+  
+  .coloring-container {
+    display: grid;
+    gap: 20px;
+    min-height: 600px;
+    width: 80vw;
+
+
+    // 🖥️ DESKTOP/TABLET - Layout avec sidebar gauche
+    @media (min-width: 769px) {
+      grid-template-columns: 300px 1fr;
+      grid-template-rows: auto 1fr;
+      
+      .category-selector {
+        grid-column: 1;
+        grid-row: 1;
+      }
+      
+      .colorings-list-container {
+        grid-column: 1;
+        grid-row: 2;
+      }
+      
+      .preview-container {
+        grid-column: 2;
+        grid-row: 1 / 3;
+      }
+    }
+
+    // 📱 MOBILE - Layout vertical
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto auto;
+      
+      .category-selector {
+        grid-column: 1;
+        grid-row: 1;
+      }
+      
+      .colorings-list-container {
+        grid-column: 1;
+        grid-row: 2;
+        max-height: 300px;
+      }
+      
+      .preview-container {
+        grid-column: 1;
+        grid-row: 3;
+        min-height: 500px;
+      }
+    }
+  }
+
+  // ====================================
+  // SÉLECTEUR DE CATÉGORIE (en haut à gauche)
+  // ====================================
+  
+  .category-selector {
+    background: rgba(255, 255, 255, 0.4);
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border: 3px solid transparent;
+    transition: all 0.3s ease;
+
+    &:hover {
+      
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    h3 {
+      font-size: 1.2rem;
+      color:  varcolors.$noir;
+      margin-bottom: 15px;
+      display: none;
+    }
+
+    select {
+      width: 100%;
+      padding: 12px 15px;
+      font-size: 1rem;
+      border: 1px solid  varcolors.$noir;
+      border-radius: 30px;
+      background: rgba(255, 255, 255, 1);
+      color:  varcolors.$noir;
+      //;
+      transition: all 0.3s ease;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath fill='%2347b972' d='M0 0l6 8 6-8z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 40px;
+
+      &:hover {
+        outline: 4px solid color.adjust( varcolors.$vert-main, $lightness: -10%);
+        outline-offset: 4px;
+      }
+
+      &:focus {
+        outline: none;
+        border-color:  varcolors.$vert-main;
+        box-shadow: 0 0 0 4px rgba(71, 185, 114, 0.2);
+      }
+
+      option {
+        padding: 10px;
+      }
+    }
+  }
+
+  // ====================================
+  // LISTE DES COLORIAGES (à gauche, sous le select)
+  // ====================================
+  
+  .colorings-list-container {
+    background: rgba(255, 255, 255, 0.4);
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    //overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: auto;
+
+    #colorings-list-header {
+      padding-bottom: 15px;
+      //border-bottom: 2px solid  varcolors.$vert-main;
+      margin-bottom: 15px;
+
+      h3 {
+        font-size: 1.1rem;
+        color: varcolors.$noir;
+        margin: 0;
+        display: none;
+      }
+    }
+  }
+
+  .colorings-list {
+    list-style: none;
+    padding-bottom:5vh;
+    margin: 0;
+    //overflow-y: auto;
+    flex: 1;
+    max-width: 400px;
+
+
+      &:hover {
+        //background: color.adjust( varcolors.$vert-main, $lightness: -10%);
+      }
+    }
+  }
+
+  .coloring-item {
+    padding: 1vh 1vw;
+    margin-bottom: 2vh;
+    margin-top: 2vh;
+    width: 90%;
+    background: #f8f9fa;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+    color:  varcolors.$noir;
+    border: 1px solid varcolors.$noir;
+
+    &:hover {
+      //background: color.adjust( varcolors.$vert-main, $lightness: 40%);
+      border-color: 1 px solid varcolors.$vert-main;
+      transform: translateX(5px);
+      border-color: 1px solid color.adjust( varcolors.$vert-main, $lightness: -10%);
+      outline: 4px solid varcolors.$vert-main;
+      outline-offset: 4px;
+    }
+
+    &.active {
+      //background:  varcolors.$vert-main;
+      color: varcolors.$noir;
+      
+      border-color: 1px solid color.adjust( varcolors.$vert-main, $lightness: -10%);
+    }
+  }
+
+  .empty,
+  .error {
+    padding: 20px;
+    text-align: center;
+    color: #999;
+    font-style: italic;
+  }
+
+  .error {
+    color: #dc3545;
+  }
+
+  // ====================================
+  // APERÇU DU COLORIAGE (à droite)
+  // ====================================
+  
+  .preview-container {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #preview-section {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .placeholder-text {
+    text-align: center;
+    color: #999;
+    font-size: 1.2rem;
+    padding: 40px;
+  }
+
+  .preview-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .preview-title {
+    text-align: center;
+    color:  varcolors.$noir;
+    font-size: 1.8rem;
+    margin: 0;
+  }
+
+  .preview-image-container {
+    flex: 1;
+    border: 3px solid  varcolors.$vert-main;
+    border-radius: 15px;
+    //overflow: hidden;
+    background: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+
+    &:hover {
+      border-color: color.adjust( varcolors.$vert-main, $lightness: -10%);
+      box-shadow: 0 8px 25px rgba(71, 185, 114, 0.3);
+    }
+
+    .pdf-preview {
+      width: 100%;
+      height: 100%;
+      max-height: 400px;
+      border: none;
+    }
+
+    #toolbarContainer {
+        display: none;
+    }
+  }
+
+  // ====================================
+  // BOUTON DE TÉLÉCHARGEMENT
+  // ====================================
+  
+  .download-container {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+  }
+
+  .download-button {
+
+    @include mixins.button-3d(varcolors.$vert-main, color.adjust(varcolors.$vert-main, $lightness: -15%), varcolors.$noir);
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px 30px;
+    background:  varcolors.$vert-main;
+    color: white;
+    text-decoration: none;
+    border-radius: 15px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(71, 185, 114, 0.3);
+    border: 3px solid transparent;
+
+    &:hover {
+      background: color.adjust( varcolors.$vert-main, $lightness: -10%);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(71, 185, 114, 0.4);
+      border-color: color.adjust( varcolors.$vert-main, $lightness: -15%);
+
+      .download-icon {
+        transform: scale(1.1);
+      }
+    }
+
+    &:active {
+      transform: translateY(-1px);
+    }
+
+    &.downloading {
+      animation: pulse 1s ease-in-out;
+    }
+  }
+
+  .download-icon {
+    width: 32px;
+    height: 32px;
+    transition: transform 0.3s ease;
+    // L'icône SVG sera déjà verte, pas besoin de filter
+  }
+
+  // ====================================
+  // ANIMATIONS
+  // ====================================
+  
+  @keyframes pulse {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .preview-content {
+    animation: fadeIn 0.5s ease-out;
+  }
+
+  // ====================================
+  // RESPONSIVE
+  // ====================================
+  
+  @media (max-width: 768px) {
+    //padding: 20px 10px;
+
+    h2 {
+      font-size: 2rem;
+    }
+
+    .coloring-container {
+      gap: 15px;
+    }
+
+    .category-selector,
+    .colorings-list-container,
+    .preview-container {
+      padding: 15px;
+    }
+
+    .preview-title {
+      font-size: 1.4rem;
+    }
+
+    .pdf-preview {
+      min-height: 400px;
+    }
+  }

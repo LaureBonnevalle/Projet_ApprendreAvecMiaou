@@ -7,16 +7,18 @@ class ColoringController extends AbstractController
         $avatarManager = new AvatarManager();
         $timesModels = new TimesModels();
         $categoriesManager = new ColoringCategoriesManager();
-
+        $func= new Utils();
         $categories = $categoriesManager->getAll();
         
         $avatar = $avatarManager->getById($_SESSION['user']['avatar']);
         $elapsedTime = $timesModels->getElapsedTime();
 
         $scripts = $this->addScripts(['assets/js/ajaxColoring.js']);
-
-        $this->clearSessionMessages();
-        unset($_SESSION['error'], $_SESSION['success_message']);
+        
+        $func= new Utils();
+        $func->clearSessionMessages();
+        unset($_SESSION['error'], $_SESSION['success_message']);  
+        
 
         return $this->render('coloring.html.twig', [
             'titre' => 'Coloriages',
@@ -65,13 +67,4 @@ class ColoringController extends AbstractController
         }
     }
 
-    private function clearSessionMessages(): void
-    {
-        $messageKeys = ['messages', 'error', 'success', 'warning', 'info', 'flash', 'error_message', 'success_message'];
-        foreach ($messageKeys as $key) {
-            if (isset($_SESSION[$key])) {
-                unset($_SESSION[$key]);
-            }
-        }
-    }
 }

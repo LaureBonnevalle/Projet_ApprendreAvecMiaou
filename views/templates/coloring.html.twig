@@ -1,24 +1,16 @@
 {% extends "layout.html.twig" %}
 
-{# Titre de la page #}
-{% block title %}
-         | Page Coloriages
-{% endblock %}
+{% block title %}Miaou | Coloriages{% endblock %}
 
 {% block body %}
-
-        {% block header %}
-            {{ parent() }}
-        {% endblock %}
-
-        
-    
-    {% block content %}
-    
-    {% block error %}
+    {% block header %}
+        {{ parent() }}
     {% endblock %}
 
-            <section id="coloring">
+    {% block content %}
+        {% block error %}{% endblock %}
+
+        <section id="coloring">
             <h2>Choisis un coloriage</h2>
 
             <div class="coloring-container">
@@ -28,7 +20,7 @@
                     <select name="categorie_id" id="categorie-select">
                         <option value="">-- Sélectionner --</option>
                         {% for categorie in categories %}
-                            {{ categorie.getId() }}">{{ categorie.getName() }}
+                            <option value="{{ categorie.getId() }}">{{ categorie.getName() }}</option>
                         {% endfor %}
                     </select>
                 </aside>
@@ -54,11 +46,8 @@
             </div>
         </section>
 
-         {% block modal %}
+        {% block modal %}
             {{ parent() }}
-         {% endblock %}
-
-{% endblock %}  
-
-
+        {% endblock %}
+    {% endblock %}
 {% endblock %}

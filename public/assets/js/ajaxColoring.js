@@ -1,180 +1,115 @@
-/*document.addEventListener('DOMContentLoaded', function() {
-    const selectElement = document.querySelector('select[name="categorie_id"]');
-    const coloriagesContainer = document.getElementById('coloriages-container');
-
-    selectElement.addEventListener('change', function() {
-        const categorieId = this.value;
-
-        fetch(`/path/to/getColoriagesByCategorie/${categorieId}`)
-            .then(response => response.json())
-            .then(coloriages => {
-                coloriagesContainer.innerHTML = ''; // Clear the container
-
-                coloriages.forEach(coloriage => {
-                    const coloriageElement = document.createElement('div');
-                    coloriageElement.innerHTML = `
-                        <a href="${coloriage.url}" download="${coloriage.name}.pdf">${coloriage.name}</a>
-                        <img src="${coloriage.thumbnail_url}" alt="${coloriage.name}">
-                    `;
-                    coloriagesContainer.appendChild(coloriageElement);
-                });
-            })
-            .catch(error => console.error('Error:', error));
-    });
-});*/
-
-
-
 document.addEventListener('DOMContentLoaded', function() {
-    const selectElement = document.getElementById('categorie-select');
-    //const fetchButton = document.getElementById('fetch-coloring');
-    const coloringList = document.getElementById('colorings-list');
+    console.log('🎨 Coloring JS chargé');
+    
+    const categorieSelect = document.getElementById('categorie-select');
+    const coloringsList = document.getElementById('colorings-list');
     const previewSection = document.getElementById('preview-section');
-    const preview = document.getElementById('preview');
 
-    selectElement.addEventListener('change', function() {
-        
-        const categorieId = selectElement.value;
-        previewSection.innerHTML = "";
-        preview.innerHTML = "";
-        
-        let myRequest = new Request('?route=coloringsListe', {
-            method: 'POST',
-            body: JSON.stringify({ 
-                id: categorieId
-            }),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        
-        // On attend la réponse de PHP pour obtenir la liste des coloriages en fonction de la catégorie demandée
-        
-        fetch(myRequest)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok ');
-                }
-                return response.json();
-            })
-            .then(data => {
-                //console.log("Fetched Data:", data);  
-                render(data);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        
-        
-       function render(data) {
-           
-            coloringList.innerHTML = ''; // Vider la liste
-            const listing = document.createElement('listing');
-            
-            // Créer un élément <li>        
-            const h3 = document.createElement('h3');
-            h3.textContent = "Choisis un coloriage pour pouvoir le télécharger et l'imprimer";
-            
-            // Ajouter le lien à l'élément <h3>
-            listing.appendChild(h3);
-             
-            data.forEach(element => {
-                
-                
-                
-                const coloriageElement = document.createElement('li');
-                
-                // Créer un élément <a>
-                const linkElement = document.createElement('a');
-                linkElement.textContent = element.name;             // Nom du lien
-                linkElement.href = "../" + element.url;             // URL du lien
-                linkElement.setAttribute('data-id', element.id);    // Ajouter l'ID en tant qu'attribut data
-                
-                // Ajouter l'événement 'click' pour prévisualiser
-                linkElement.addEventListener('click', function(e) {
-                    e.preventDefault(); // Empêcher la navigation par défaut
-                    showUpload(element.url, element.id);            // Appel de la fonction showUpload
-                    showPreview("../old/" + element.url, element.id);   // Appel de la fonction showPreview
-                });
-        
-                
-                // Ajouter le lien à l'élément <li>
-                coloriageElement.appendChild(linkElement);
-                
-                // Ajouter l'élément <li> à la liste
-                coloringList.appendChild(coloriageElement);
-            });
-        }      
-    });
-    
-    
-    // Fonction permettant de créé un lien de téléchargement et de le mettre dans la div
-    function showUpload(url, id) {
-        previewSection.innerHTML = `
-            <a href="${url}" download>Télécharger</a>
-            <div class="progress-bar" id="progress-bar"></div>
-            <img src="path/to/thumbnails/${id}.jpg" alt="Aperçu du coloriage">
-        `;        
+    if (!categorieSelect || !coloringsList || !previewSection) {
+        console.error('❌ Éléments manquants dans le DOM');
+        return;
     }
-    
-    // Fonction permettant d'afficher la préview du document dans la div
-    function showPreview(url, id) {
-        // Sélectionner ou créer un conteneur pour la prévisualisation (par exemple un <div>)
-        const previewContainer = document.getElementById('preview'); // Assurez-vous d'avoir un div avec cet ID dans votre HTML
+
+    // 🎯 Changement de catégorie
+    categorieSelect.addEventListener('change', function() {
+        const categorieId = this.value;
         
-        // Si le conteneur n'existe pas encore, en créer un
-        if (!previewContainer) {
-            const newPreviewContainer = document.createElement('div');
-            newPreviewContainer.id = 'preview';
-            document.body.appendChild(newPreviewContainer); // Ajouter le conteneur à la fin du body (ou ailleurs)
+        // Réinitialiser
+        coloringsList.innerHTML = '';
+        previewSection.innerHTML = '<p class="placeholder-text">Chargement...</p>';
+
+        if (!categorieId) {
+            previewSection.innerHTML = '<p class="placeholder-text">👆 Sélectionnez une catégorie</p>';
+            return;
         }
-        
-        // Vider le contenu précédent
-        previewContainer.innerHTML = ''; 
-        
-        // Créer un élément iframe pour afficher le PDF
-        const iframe = document.createElement('iframe');
-        iframe.src = url; // URL du PDF
-        iframe.width = '600'; // Largeur de l'iframe
-        iframe.height = '400'; // Hauteur de l'iframe
-        iframe.setAttribute('frameborder', '0'); // Optionnel : supprimer la bordure
-        iframe.setAttribute('allowfullscreen', true); // Optionnel : autoriser le plein écran
-        
-        // Ajouter l'iframe au conteneur
-        previewContainer.appendChild(iframe);
-    }
-    
-    
-    /*
 
-        const downloadLink = previewSection.querySelector('a');
-        const progressBar = document.getElementById('progress-bar');
+        console.log('📂 Catégorie sélectionnée:', categorieId);
 
-        downloadLink.addEventListener('click', function(e) {
-            e.preventDefault();
-
-            const xhr = new XMLHttpRequest();
-            xhr.open('GET', url, true);
-            xhr.responseType = 'blob';
-
-            xhr.onprogress = function(event) {
-                if (event.lengthComputable) {
-                    const percentComplete = (event.loaded / event.total) * 100;
-                    progressBar.style.width = `${percentComplete}%`;
-                }
-            };
-
-            xhr.onload = function() {
-                if (xhr.status === 200) {
-                    const blob = xhr.response;
-                    const link = document.createElement('a');
-                    link.href = window.URL.createObjectURL(blob);
-                    link.download = `${id}.pdf`;
-                    link.click();
-                }
-            };
-
-            xhr.send();
+        // Appel AJAX pour récupérer les coloriages
+        fetch('?route=coloringsListe', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: categorieId })
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Erreur réseau');
+            return response.json();
+        })
+        .then(colorings => {
+            console.log('✅ Coloriages reçus:', colorings);
+            displayColoringsList(colorings);
+        })
+        .catch(error => {
+            console.error('❌ Erreur:', error);
+            coloringsList.innerHTML = '<li class="error">Erreur de chargement</li>';
+            previewSection.innerHTML = '<p class="error">⚠️ Impossible de charger les coloriages</p>';
         });
-    }*/
+    });
+
+    /**
+     * Affiche la liste des coloriages
+     */
+    function displayColoringsList(colorings) {
+        coloringsList.innerHTML = '';
+
+        if (!colorings || colorings.length === 0) {
+            coloringsList.innerHTML = '<li class="empty">Aucun coloriage disponible</li>';
+            previewSection.innerHTML = '<p class="placeholder-text">😕 Aucun coloriage dans cette catégorie</p>';
+            return;
+        }
+
+        colorings.forEach(coloring => {
+            const li = document.createElement('li');
+            li.classList.add('coloring-item');
+            li.textContent = coloring.name || 'Sans nom';
+
+            // ✅ Aperçu au survol
+            li.addEventListener('mouseover', function() {
+                showPreview(coloring);
+            });
+
+            coloringsList.appendChild(li);
+        });
+
+        // ✅ Afficher automatiquement le premier coloriage
+        showPreview(colorings[0]);
+    }
+
+    /**
+     * Affiche l'aperçu du coloriage avec bouton de téléchargement
+     */
+    function showPreview(coloring) {
+        console.log('🖼️ Affichage aperçu:', coloring.name);
+
+        const pdfUrl = coloring.url;
+        const thumbnailUrl = coloring.thumbnail_url; // ✅ on utilise le PNG
+        const downloadFilename = (coloring.name || 'coloriage').replace(/[^a-z0-9]/gi, '_') + '.pdf';
+
+        previewSection.innerHTML = `
+            <div class="preview-content">
+                <h3 class="preview-title">${coloring.name}</h3>
+                
+                <div class="preview-image-container">
+                    <img 
+                        src="${thumbnailUrl}" 
+                        alt="Aperçu de ${coloring.name}" 
+                        class="coloring-thumbnail">
+                </div>
+
+                <div class="download-container">
+                    <a 
+                        href="${pdfUrl}" 
+                        download="${downloadFilename}"
+                        class="download-button"
+                        title="Télécharger le coloriage">
+                        <img 
+                            src="assets/img/Miaou/Telechargement.svg" 
+                            alt="Télécharger"
+                            class="download-icon">
+                        <span>Télécharger</span>
+                    </a>
+                </div>
+            </div>
+        `;
+    }
 });

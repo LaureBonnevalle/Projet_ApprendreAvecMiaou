@@ -131,7 +131,7 @@ body {
         margin-bottom: 1vh;
 
         .action-button {
-            @include mixins.button-3d(varcolors.$rouge-main, varcolors.$rouge-dark, /*varcolors.$noir*/);
+            @include mixins.button-3d(varcolors.$rouge-main, varcolors.$rouge-dark, varcolors.$noir);
             font-family: 'Comic Sans MS', 'Raleway', cursive;
             font-size: clamp(0.9rem, 1.5vw, 1.1rem);
             padding: clamp(0.4rem, 0.5vw, 0.8rem) clamp(1rem, 1vw, 1.5rem);

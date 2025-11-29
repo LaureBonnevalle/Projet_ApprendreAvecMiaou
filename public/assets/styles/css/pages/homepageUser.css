@@ -121,7 +121,7 @@ body a:hover, body button:hover, body input:hover, body select:hover, body .acti
 }
 #header .header-actions .action-button {
   background-color: #FD1616;
-  border: 1px solid rgb(222.0936170213, 1.9063829787, 1.9063829787);
+  border: 1px solid #000000;
   box-shadow: 6px 6px 0px #B71B10;
   border-radius: 500px;
   padding: 0.8rem 1rem;

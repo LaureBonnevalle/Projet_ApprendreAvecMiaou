@@ -147,13 +147,42 @@ class Utils {
         return preg_match('/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/', $password);
     }
 
-    private function clearSessionMessages(): void
+    public function clearSessionMessages(): void
     {
         $messageKeys = ['messages', 'error', 'success', 'warning', 'info', 'flash', 'error_message', 'success_message', 'error_message', 'success_message'];
         foreach ($messageKeys as $key) {
             if (isset($_SESSION[$key])) {
                 unset($_SESSION[$key]);
             }
+        }
+    }
+
+    function createThumbnailFromPDF(string $pdfFilePath, int $coloringId): ?string {
+    try {
+        $imagick = new \Imagick();
+        $imagick->setResolution(150, 150);
+        $imagick->readImage($pdfFilePath . '[0]');
+        $imagick->setImageFormat('png');
+        $imagick->thumbnailImage(300, 0);
+
+        // Générer le chemin du thumbnail basé sur l'ID
+        $thumbnailDir = __DIR__ . '/../public/assets/img/coloringSheets/thumbnails/';
+        if (!is_dir($thumbnailDir)) {
+            mkdir($thumbnailDir, 0777, true);
+        }
+
+        $thumbnailPath = $thumbnailDir . 'coloring_' . $coloringId . '.png';
+        $imagick->writeImage($thumbnailPath);
+
+        $imagick->clear();
+        $imagick->destroy();
+
+        // Retourner le chemin relatif utilisable côté front
+        return 'assets/img/coloringSheets/thumbnails/coloring_' . $coloringId . '.png';
+
+        } catch (Exception $e) {
+        error_log("Erreur génération thumbnail: " . $e->getMessage());
+        return null;
         }
     }
             
