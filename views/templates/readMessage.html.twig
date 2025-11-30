@@ -1,0 +1,149 @@
+{% extends "layout.html.twig" %}
+
+{% block description %}
+    {{ parent() }} 
+    
+   Gestion d'un message
+    
+{% endblock %}
+
+{% block body %}
+        {% block header %}
+        <section id="header" class="container">
+    <div class="rect">
+    {% block avatar %}
+                <img class="avatar" name="Chat administrateur" src="assets/img/avatars/admin.png" alt="chat en costume cravate">
+            {% endblock %}
+              {% block header_titrePerso %}
+                <h1>Administration</h1>
+            {% endblock %} 
+              
+        {% block buttonAdmin %}
+                <div class="button">
+                    <button class="action-button">
+                        <a href="?route=logout">Se déconnecter</a>
+                    </button>
+                    <button class="action-button">
+                        <a href="?route=dashboard">Admin</a>
+                    </button>
+                </div>
+            {% endblock %}
+            </div>
+            <div class="cache"></div>
+    
+    <div class="burger-img">
+        <img id="openBtn" class="burger-icon" src="assets/img/Miaou/menuBurger2.png" alt="Menu burger">  
+    </div>
+</section>
+{% block navAdmin %}
+        <nav id="navAdmin">
+            <div id="mySidenav" class="sidenav">
+                <ul id="nav-links-container">
+                    <li id="homepageTime" class="action-button">
+                        <a href="index.php?route=homepage">Accueil</a>
+                    </li>
+                    <li class="action-button">
+                        <a href="index.php?route=games">Jeux</a>
+                    </li>
+                    <li class="action-button">
+                        <a href="index.php?route=coloriages">Coloriages</a>
+                    </li>
+                    <li class="action-button">
+                        <a href="index.php?route=stories">Histoires</a>
+                    </li>
+                    <li class="action-button">
+                        <a href="index.php?route=dashboard">Dashboard</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    {% endblock %}
+    {% endblock %}
+    
+{% block content %}
+    <main id="messagerie">
+    
+<section id="messagerie" class ="messagerie-content">
+    
+    <h2>Contenu du message</h2> 
+
+    <table>
+        <thead>
+            <tr>
+                <th>Date de réception</th>
+                <th>Identité</th>
+                <th>Email</th>
+                <th>subject</th>
+                <th>contenu</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <!-- Affiche la date de réception formatée -->
+                <td>{{ message.receptedDate}}</td>
+                <!-- Affiche le prénom de l'expéditeur -->
+                <td>{{ message.firstname|e }}</td>
+                <!-- Affiche l'email de l'expéditeur -->
+                <td>{{ message.email|e }}</td>
+                <td>{{ message.subject|e }}</td>
+                <td>{{ message.content|e }}</td>
+                <!-- Lien pour supprimer le message -->
+                <td>                
+                    <form method="POST" action="?route=deleteMessage">
+                        <input type="hidden" name="id" value="{{ id }}"> 
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token }}"> 
+                        <input type="submit" name="soumettre" value="Supprimer">
+                    </form>
+                </td>
+            </tr>
+            <tr>
+                <!-- Affiche le contenu du message en conservant les sauts de ligne -->
+                <td colspan="4">{{ message.content|e|nl2br }}</td>
+            </tr>   
+        </tbody>
+    </table>
+
+</section>
+
+<section id="form">
+    <h3>Formulaire de réponse !</h3>
+
+    <!-- Formulaire pour répondre au message -->
+    <form method="POST" action="?route=response">
+
+        <fieldset>
+            <!-- Champ pour saisir le contenu de la réponse -->
+            <textarea id="response" name="response" rows="5" cols="33" aria-describedby="Suggestions"></textarea>
+            <div class="error-message" id="error-content"></div>
+            
+            <input type="hidden" name="firstname" id="firstname" value="{{ message.firstname|e }}">                        
+            <input type="hidden" name="receptedDate" id="receptedDate" value="{{ message.receptedDate|e }}">
+            <input type="hidden" name="subject" id="subject" value="{{ message.subject|e }}">
+            <input type="hidden" name="content" id="content" value="{{ message.content|e }}">
+            
+            <input type="hidden" name="email" id="email" value="{{ message.email|e }}">
+
+            <!-- Champ caché pour le token CSRF -->
+            <input type="hidden" name="csrf_token" id="csrf_token" value="{{ csrf_token }}">
+            <div class="error-message" id="error-token"></div>
+
+            <!-- Bouton pour soumettre le formulaire -->
+            <input type="submit" name="soumettre" value="Envoyer">
+        </fieldset>
+    </form>
+</section>
+ </main>
+{% endblock %}
+        
+            
+           
+        
+        {% block footer %}
+            {{ parent() }}
+        {% endblock %}
+        
+    
+        {% block java%}
+          {{ parent() }}
+        {% endblock %}
+{% endblock %}

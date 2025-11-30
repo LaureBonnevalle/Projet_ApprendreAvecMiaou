@@ -1,0 +1,103 @@
+{% block title %}
+Ma page
+{{ parent() }}
+{% endblock %}
+{% block header %}
+{{ parent() }}
+{% endblock %}
+{% block nav%}
+{{ parent() }}
+{% endblock %}
+
+{% block content %}
+
+{% block error %}
+{{ parent() }}
+{% endblock %}   
+      
+<main>
+
+<h1>Pixel Art</h1>
+<div id="pixelArtContainer"></div>
+<div id="colorPalette"></div>
+<button id="resetButton">Réinitialiser</button>
+
+<style>
+#pixelArtContainer {
+    display: grid;
+    grid-template-columns: repeat(12, 20px);
+    grid-template-rows: repeat(12, 20px);
+    gap: 1px;
+}
+
+.pixel {
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    border: 1px solid #ddd;
+}
+
+#colorPalette {
+    display: flex;
+    margin-top: 10px;
+}
+
+.color {
+    width: 20px;
+    height: 20px;
+    margin: 2px;
+    cursor: pointer;
+    border: 1px solid #ddd;
+}
+
+</style>
+</main>
+<script>
+const colors = [
+    "#FF5733", "#33FF57", "#3357FF", "#FFFF33", "#FF33FF", "#33FFFF",
+    "#FF8800", "#8800FF", "#0088FF", "#00FF88", "#FF0088", "#888888",
+    "#000000", "#FFFFFF", "#FF5733", "#33FF57", "#3357FF", "#FFFF33",
+    "#FF33FF", "#33FFFF"
+];
+
+const container = document.getElementById('pixelArtContainer');
+const colorPalette = document.getElementById('colorPalette');
+const resetButton = document.getElementById('resetButton');
+let selectedColor = colors[0];
+
+// Create pixels
+for (let i = 0; i < 12 * 12; i++) {
+    const pixel = document.createElement('div');
+    pixel.classList.add('pixel');
+    pixel.addEventListener('click', () => {
+        pixel.style.backgroundColor = selectedColor;
+    });
+    container.appendChild(pixel);
+}
+
+// Create color palette
+colors.forEach(color => {
+    const colorDiv = document.createElement('div');
+    colorDiv.classList.add('color');
+    colorDiv.style.backgroundColor = color;
+    colorDiv.addEventListener('click', () => {
+        selectedColor = color;
+    });
+    colorPalette.appendChild(colorDiv);
+});
+
+// Reset button
+resetButton.addEventListener('click', () => {
+    const pixels = document.querySelectorAll('.pixel');
+    pixels.forEach(pixel => {
+        pixel.style.backgroundColor = 'white';
+    });
+});
+</script>
+{% block footer %}
+{% if app.session.get('connected') %}
+        <p>Temps écoulé:  <span id="time">00:00:00</span></p>
+        {% set elapsed_time = 0 %}
+        {% endif %}
+{{ parent() }}
+{% endblock %}   

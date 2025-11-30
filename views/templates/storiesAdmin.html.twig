@@ -1,0 +1,358 @@
+{% extends "layout.html.twig" %}
+
+{% block description %}
+    {{ parent() }} 
+    
+   Gestion des histoires
+    
+{% endblock %}
+
+{% block body %}
+        {% block header %}
+        <section id="header" class="container">
+    <div class="rect">
+    {% block avatar %}
+                <img class="avatar" name="Chat administrateur" src="assets/img/avatars/admin.png" alt="chat en costume cravate">
+            {% endblock %}
+              {% block header_titrePerso %}
+                <h1>Administration</h1>
+            {% endblock %} 
+              
+        {% block buttonAdmin %}
+                <div class="button">
+                    <button class="action-button">
+                        <a href="?route=logout">Se déconnecter</a>
+                    </button>
+                    <button class="action-button">
+                        <a href="?route=dashboard">Admin</a>
+                    </button>
+                </div>
+            {% endblock %}
+            </div>
+            <div class="cache"></div>
+    
+    <div class="burger-img">
+        <img id="openBtn" class="burger-icon" src="assets/img/Miaou/menuBurger2.png" alt="Menu burger">  
+    </div>
+</section>
+{% block navAdmin %}
+        <nav id="navAdmin">
+            <div id="mySidenav" class="sidenav">
+                <ul id="nav-links-container">
+                    <li id="homepageTime" class="action-button">
+                        <a href="index.php?route=homepage">Accueil</a>
+                    </li>
+                    <li class="action-button">
+                        <a href="index.php?route=games">Jeux</a>
+                    </li>
+                    <li class="action-button">
+                        <a href="index.php?route=coloriages">Coloriages</a>
+                    </li>
+                    <li class="action-button">
+                        <a href="index.php?route=stories">Histoires</a>
+                    </li>
+                    <li class="action-button">
+                        <a href="index.php?route=dashboard">Dashboard</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    {% endblock %}
+    {% endblock %}
+            {% block error %}
+                {{ parent() }}
+            {% endblock %} 
+
+            {% block content %}
+                <div class="container">
+                    <h1>Tableau de bord Administrateur - Gestion des Histoires</h1>
+                    
+                    <p class="logout">
+                       <a href="index.php?route=logout">🔓 Déconnexion</a>
+                    </p>
+
+                    {# Affichage des messages #}
+                    {% if message %}
+                        <div class="message {% if 'succès' in message or 'ajouté avec succès' in message or 'créée(s) avec succès' in message %}success{% else %}error{% endif %}">
+                            {{ message }}
+                        </div>
+                    {% endif %}
+
+                    {# Statistiques actuelles #}
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                    <div class="current-counts">
+                        <h2>📊 Statut actuel</h2>
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <h3>{{ O_actuel }}</h3>
+                                <p>Objets</p>
+                            </div>
+                            <div class="stat-card">
+                                <h3>{{ L_actuel }}</h3>
+                                <p>Lieux</p>
+                            </div>
+                            <div class="stat-card">
+                                <h3>{{ P_actuel }}</h3>
+                                <p>Personnages</p>
+                            </div>
+                            <div class="stat-card">
+                                <h3>{{ H_existantes }}</h3>
+                                <p>Histoires existantes</p>
+                            </div>
+                            <div class="stat-card">
+                                <h3>{{ total_combinaisons_possibles }}</h3>
+                                <p>Combinaisons possibles</p>
+                            </div>
+                            <div class="stat-card">
+                                <h3>{{ total_combinaisons_possibles - H_existantes }}</h3>
+                                <p>Histoires manquantes</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# Formulaire d'ajout d'élément #}
+                    <div style="background: #fff; padding: 20px; border: 1px solid #ddd; border-radius: 5px; margin: 20px 0;">
+                        <h2>➕ Ajouter un nouvel élément</h2>
+                        <form method="POST" action="index.php?route=StoriesAdmin">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                            
+                            {% if message is not empty %}
+                                <div class="message-container {{ messageType }}">
+                                    <div class="message-content">
+                                        {% if messageType == 'success' %}
+                                            <span class="message-icon">✅</span>
+                                        {% else %}
+                                            <span class="message-icon">❌</span>
+                                        {% endif %}
+                                        <span class="message-text">{{ message|escape }}</span>
+                                        <button class="message-close" onclick="this.parentElement.parentElement.style.display='none'">×</button>
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                            <div class="form-row">
+                                <label for="type_ajout">Type d'élément à ajouter :</label>
+                                <select id="type_ajout" name="type_ajout" required>
+                                    <option value="">-- Choisir --</option>
+                                    <option value="objet">🔧 Objet</option>
+                                    <option value="lieu">🏞️ Lieu</option>
+                                    <option value="personnage">👤 Personnage</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-row">
+                                <label for="nom_nouvel_element">Nom du nouvel élément :</label>
+                                <input type="text" id="nom_nouvel_element" name="nom_nouvel_element" required 
+                                       placeholder="Ex: Épée magique, Forêt Enchantée, Dragon sage">
+                            </div>
+                            
+                            <div class="form-row">
+                                <label for="description">Description (optionnelle) :</label>
+                                <textarea id="description" name="description" rows="3" 
+                                          placeholder="Description détaillée de l'élément..."></textarea>
+                            </div>
+                            
+                            <div class="form-row">
+                                <label for="url">Chemin de l'image (optionnel) :</label>
+                                <input type="text" id="url" name="url" 
+                                       placeholder="Ex: images/objets/epee-magique.jpg">
+                            </div>
+                            
+                            <div class="form-row">
+                                <label for="alt">Texte alternatif image :</label>
+                                <input type="text" id="alt" name="alt" 
+                                       placeholder="Description de l'image pour l'accessibilité">
+                            </div>
+                            
+                            <button type="submit" name="submit_add" class="btn">
+                                🧮 Calculer et Ajouter
+                            </button>
+                        </form>
+                    </div>
+
+                    {# Section des nouvelles histoires à créer #}
+                    {% if nb_textareas_to_display > 0 %}
+                        <div style="background: #e8f5e8; padding: 20px; border: 1px solid #28a745; border-radius: 5px; margin: 20px 0;">
+                            <h2>📚 Nouvelles Histoires à Ajouter ({{ nb_textareas_to_display }})</h2>
+                            <p><strong>Instructions :</strong> Vous pouvez ajouter les histoires une à une ou toutes en même temps.</p>
+                            
+                            {# Boutons de choix du mode #}
+                            <div style="margin-bottom: 20px; text-align: center;">
+                                <button type="button" id="toggle-single-mode" class="btn btn-primary" style="margin-right: 10px;">
+                                    🔄 Mode : Une par une
+                                </button>
+                                <button type="button" id="toggle-multiple-mode" class="btn btn-secondary">
+                                    📚 Mode : Toutes en même temps
+                                </button>
+                            </div>
+
+                            {# Formulaire pour soumission multiple (caché par défaut) #}
+                            <div id="multiple-stories-form" style="display: none;">
+                                <form method="POST" action="index.php?route=StoriesAdmin" id="form-multiple-stories">
+                                    <input type="hidden" name="action" value="add_multiple_stories">
+                                    {% if csrf_token is defined %}
+                                        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                                    {% endif %}
+                                    
+                                    <div style="background: #fff3cd; padding: 15px; border: 1px solid #ffeaa7; border-radius: 5px; margin-bottom: 20px;">
+                                        <h4>📝 Remplissez toutes les histoires puis cliquez sur "Ajouter toutes les histoires"</h4>
+                                    </div>
+     
+                                    {% for combo in new_combinations %}
+                                        <div style="border: 1px solid #ddd; padding: 15px; margin-bottom: 20px; border-radius: 5px; background: #fafafa;">
+                                            <h4>📖 Histoire #{{ loop.index }} - 🔧 {{ combo.objet_nom }} | 🏞️ {{ combo.lieu_nom }} | 👤 {{ combo.personnage_nom }}</h4>
+                                            
+                                            <input type="text" name="stories[{{ loop.index0 }}][histoire_titre]" 
+                                                   placeholder="Titre (optionnel)" 
+                                                   style="width: 100%; margin-bottom: 10px; padding: 8px;">
+                                            
+                                            <textarea name="stories[{{ loop.index0 }}][histoire_content]" rows="6" required 
+                                                      style="width: 100%; padding: 8px; margin-bottom: 10px;"
+                                                      placeholder="Rédigez ici l'histoire mettant en scène {{ combo.personnage_nom }} avec {{ combo.objet_nom }} dans {{ combo.lieu_nom }}..."></textarea>
+                                            
+                                            {% if categories %}
+                                                <select name="stories[{{ loop.index0 }}][histoire_categorie]" style="width: 100%; margin-bottom: 10px; padding: 8px;">
+                                                    <option value="">-- Catégorie (optionnelle) --</option>
+                                                    {% for category in categories %}
+                                                        <option value="{{ category.id }}">{{ category.category_name }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            {% endif %}
+                                            
+                                            <input type="text" name="stories[{{ loop.index0 }}][audio]" 
+                                                   placeholder="Fichier audio (optionnel)" 
+                                                   style="width: 100%; margin-bottom: 10px; padding: 8px;">
+                                            
+                                            <input type="text" name="stories[{{ loop.index0 }}][url]" 
+                                                   placeholder="Fichier PDF (optionnel)" 
+                                                   style="width: 100%; margin-bottom: 10px; padding: 8px;">
+                                            
+                                            {# IDs selon la structure attendue par le PHP #}
+                                            <input type="hidden" name="stories[{{ loop.index0 }}][objet]" value="{{ combo.objet_id }}">
+                                            <input type="hidden" name="stories[{{ loop.index0 }}][lieu]" value="{{ combo.lieu_id }}">
+                                            <input type="hidden" name="stories[{{ loop.index0 }}][personnage]" value="{{ combo.personnage_id }}">
+                                        </div>
+                                    {% endfor %}
+                                    
+                                    <div style="text-align: center; margin-top: 20px;">
+                                        <button type="submit" style="padding: 15px 30px; background: #28a745; color: white; border: none; border-radius: 5px; font-size: 16px; font-weight: bold;">
+                                            ✅ Ajouter toutes les histoires ({{ nb_textareas_to_display }})
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+<!--
+<input name="story[titre]">              →    $data['titre']
+<textarea name="story[histoire_content]">→    $data['histoire_content']
+<select name="story[categorie]">         →    $data['categorie']
+<input name="story[audio]">              →    $data['audio']
+<input name="story[url]">                →    $data['url']
+<input name="story[objet_id]">           →    $data['objet_id']
+<input name="story[lieu_id]">            →    $data['lieu_id']
+<input name="story[personnage_id]">      →    $data['personnage_id']
+-->
+
+                            {# Formulaires individuels (visible par défaut) #}
+                            <div id="single-stories-forms">
+                                                           {% if app.session.get('success_message') %}
+    <div style="margin: 10px 0; background: #d4edda; color: #155724; padding: 10px; border-radius: 4px;">
+        {{ app.session.get('success_message') }}
+    </div>
+{% endif %}
+
+{% if app.session.get('error_message') %}
+    <div style="margin: 10px 0; background: #f8d7da; color: #721c24; padding: 10px; border-radius: 4px;">
+        {{ app.session.get('error_message') }}
+    </div>
+{% endif %}
+                                {% for combo in new_combinations %}
+                                    <form method="POST" action="index.php?route=StoriesAdmin" style="margin-bottom: 30px; border: 1px solid #ccc; padding: 15px; border-radius: 5px;">
+    <input type="hidden" name="action" value="add_single_story">
+    
+    {% if csrf_token is defined %}
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    {% endif %}
+
+    <label>📖 <strong>Histoire #{{ loop.index }}</strong> pour :</label>
+    <p>🔧 {{ combo.objet_nom }} | 🏞️ {{ combo.lieu_nom }} | 👤 {{ combo.personnage_nom }}</p>
+
+    <input type="text" name="story[titre]" 
+           placeholder="Titre (optionnel)" 
+           style="width: 100%; margin-bottom: 10px; padding: 8px;">
+
+    <textarea name="story[histoire_content]" rows="6" required 
+              style="width: 100%; padding: 8px; margin-bottom: 10px;"
+              placeholder="Rédigez ici l'histoire mettant en scène {{ combo.personnage_nom }} avec {{ combo.objet_nom }} dans {{ combo.lieu_nom }}..."></textarea>
+
+    {% if categories %}
+        <select name="story[categorie]" style="width: 100%; margin-bottom: 10px; padding: 8px;">
+            <option value="">-- Catégorie (optionnelle) --</option>
+            {% for category in categories %}
+                <option value="{{ category.id }}">{{ category.category_name }}</option>
+            {% endfor %}
+        </select>
+    {% endif %}
+
+    <input type="text" name="story[audio]" 
+           placeholder="Fichier audio (optionnel)" 
+           style="width: 100%; margin-bottom: 10px; padding: 8px;">
+
+    <input type="text" name="story[url]" 
+           placeholder="Fichier PDF (optionnel)" 
+           style="width: 100%; margin-bottom: 10px; padding: 8px;">
+
+    <input type="hidden" name="story[objet_id]" value="{{ combo.objet_id }}">
+    <input type="hidden" name="story[lieu_id]" value="{{ combo.lieu_id }}">
+    <input type="hidden" name="story[personnage_id]" value="{{ combo.personnage_id }}">
+
+    <button type="submit" style="margin-top: 15px; padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 3px;">
+        ✅ Ajouter cette histoire uniquement
+    </button>
+    {% if app.session.get('success_message') %}
+    <div style="margin: 10px 0; background: #d4edda; color: #155724; padding: 10px; border-radius: 4px;">
+        {{ app.session.get('success_message') }}
+    </div>
+{% endif %}
+
+{% if app.session.get('error_message') %}
+    <div style="margin: 10px 0; background: #f8d7da; color: #721c24; padding: 10px; border-radius: 4px;">
+        {{ app.session.get('error_message') }}
+    </div>
+{% endif %}
+</form>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% elseif request_method == 'POST' and nb_textareas_to_display == 0 %}
+                        <div class="message success">
+                            ✅ <strong>Parfait !</strong> Aucune nouvelle histoire à ajouter pour le moment. 
+                            {% if 'ajouté avec succès' in message %}
+                                L'élément a été ajouté mais toutes les combinaisons correspondantes ont déjà des histoires.
+                            {% else %}
+                                Soit l'élément existait déjà, soit toutes les combinaisons possibles ont déjà leurs histoires.
+                            {% endif %}
+                        </div>
+                    {% endif %}
+
+                    {# Informations supplémentaires #}
+                    {% if total_combinaisons_possibles > 0 %}
+                        <div style="background: #f8f9fa; padding: 15px; border-radius: 5px; margin-top: 20px; text-align: center;">
+                            <h3>📈 Progression</h3>
+                            {% set pourcentage = (H_existantes / total_combinaisons_possibles * 100) | round(1) %}
+                            <p>
+                                <strong>{{ pourcentage }}%</strong> des histoires possibles ont été créées
+                                <br>
+                                <small>({{ H_existantes }} sur {{ total_combinaisons_possibles }} combinaisons)</small>
+                            </p>
+                            <div style="background: #e9ecef; height: 20px; border-radius: 10px; overflow: hidden;">
+                                <div style="background: #28a745; height: 100%; width: {{ pourcentage }}%; transition: width 0.3s ease;"></div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endblock %}
+
+            {% block footer %}
+                {{ parent() }}
+            {% endblock %}
+            {% endblock %}

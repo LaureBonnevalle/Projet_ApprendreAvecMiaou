@@ -1,0 +1,90 @@
+{% extends "layout.html.twig" %}
+
+{% block description %}
+    {{ parent() }}
+    {% block title %}
+        |Page Personnelle
+    {% endblock %}
+{% endblock %}
+
+
+
+{% block body %}
+
+        {% block header %}
+            {{ parent() }}
+        {% endblock %}
+
+        
+    
+    {% block content %}
+    <main id="profile">
+    
+    {% block error %}
+        {{ parent() }}
+    {% endblock %}
+        <section class ="homepage-content">
+        
+         <h2>Bienvenue sur ta page personnelle</h2>
+
+  <!-- Affichage de l’avatar actuel -->
+  <section>
+    <h3>Ton avatar actuel :</h3>
+    <img src="assets/img/avatars/{{ session_user.avatar }}.png" alt="avatar de {{ session_user.firstname }}" width="150">
+  </section>
+
+  <!-- Formulaire pour changer d’avatar -->
+  <section>
+    <h3>Changer d’avatar</h3>
+    <form method="POST" action="index.php?route=updateUserAvatar">
+  <fieldset class="avatar">
+    <legend>Choisir un avatar :</legend>
+    <ul class="avatar-list">
+      {% for avatar in avatars %}
+        <li>
+          <div class="avatars">
+            <input 
+              type="radio" 
+              id="avatar{{ avatar.id }}" 
+              name="avatar" 
+              value="{{ avatar.id }}"
+              {% if avatar.id == session_user.avatar %}checked{% endif %}
+            >
+            <label for="avatar{{ avatar.id }}">
+              <img src="{{ avatar.url }}" alt="{{ avatar.description }}">
+            </label>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+  </fieldset>
+
+  <div class="error-message" id="error-avatar"></div>
+
+  <button type="submit">Changer d’avatar</button>
+</form>
+  </section>
+
+  <!-- Lien pour modifier le mot de passe -->
+  <section style="margin-top: 2em;">
+    <img src="assets/img/Miaou/ClefCoeur.png" alt="image de clef" width="40" style="vertical-align: middle;">
+    <a href="?route=modifyPassword" style="margin-left: 0.5em;">Modifier votre mot de passe</a>
+  </section>
+
+</main>
+        
+        
+        
+        <section>
+    <main>
+        
+ {% endblock %}
+
+    {% block footer %}
+        {{ parent() }}
+    {% endblock %}
+
+    {% block java %}
+        {{ parent() }}
+    {% endblock %}
+{% endblock %}

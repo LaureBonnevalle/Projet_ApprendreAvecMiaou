@@ -98,6 +98,23 @@ main {
       }
     }
   }
+    @include mixins.breakpoint(large) {
+      .login-content #login-form .container-login {
+        min-height: 400px;
+      }
+   }
+
+   @include mixins.breakpoint(larger) {
+      .login-content #login-form .container-login {
+        min-height: 400px;
+      }
+   }
+
+   @include mixins.breakpoint(extra) {
+      .login-content #login-form .container-login {
+        min-height: 400px;
+      }
+   }
 
   // ✅ Container du formulaire avec image de fond
   .container-login {

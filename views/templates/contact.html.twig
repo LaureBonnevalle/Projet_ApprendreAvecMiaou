@@ -1,0 +1,100 @@
+{% extends "layout.html.twig" %}
+
+{% block description %}
+
+{{ parent() }}
+  |page Contact 
+{% endblock %}
+
+{% block body %}
+    <body>
+    <div class="rect">
+{% block header %}
+    {{ parent() }}
+{% endblock %}
+
+
+{% block error %}
+    {{ parent() }}
+{% endblock %} 
+    
+{% block content %}
+<main id="contact">
+<section id="contact-content">
+        
+        <h2>Une demande ? Une suggestion ? signalez un bug ? Contactez Miaou</h2>
+        <article id="login-form" class="form">
+         <h3>Pour nous contacter, remplissez le formulaire
+        <form method="POST" action="?route=contact" class ="form-control">
+
+             <div class='container-contact'>  
+
+                <fieldset>
+                        <legend>Merci de renseigner les informations suivantes :</legend>
+
+                        <label  for        = "firstname">Prénom :</label>
+                        <input  type       = "text"
+                                id         = "firstname"
+                                name       = "firstname"
+                                aria-label = "firstname field"
+                                value      = "">
+                        <div class="error-message" id="error-firstname"></div>
+
+                        <label  for        = "email">Email :</label>
+                        <input  type       = "email"
+                                id         = "email"
+                                name       = "email"
+                                aria-label = "Email field"
+                                value      = "">
+                        <div class="error-message" id="error-email"></div>
+
+                        <label  for        = "subject">Sujet:</label>
+                        <input  type       = "subject"
+                                id         = "subject"
+                                name       = "subject"
+                                aria-label = "Subject field"
+                                value      = "">
+                        <div class="error-message" id="error-subject"></div>
+
+                        <label for="content">Contenu</label>
+                        <textarea       id               = "content" 
+                                        name             = "content" 
+                                        rows             = "5" 
+                                        cols             = "33"
+                                        aria-describedby = ""></textarea>
+                        <div class="error-message" id="error-content"></div>
+
+
+                        <input  type    = "hidden"
+                                name    = "csrf_token"
+                                id      = "csrf_token"
+                                value   = "{{ csrf_token }}">
+                        <div class="error-message" id="error-token"></div>                        
+
+                        <input  type    = "submit"
+                                name    = "soumettre"
+                                value   = "Envoyer"
+                                class = "btn-primary">
+                </fieldset>
+                </div>
+        </form>
+</article>
+        </section>
+    </main>
+{% endblock %}
+
+{% block footer %}
+    {% include "subpages/_footer.html.twig" %}
+{% endblock %}
+
+
+{% endblock %}
+   
+{% block java %}
+    {% if scripts is defined %}
+        {% for script in scripts %}
+            <script src="{{ script }}"></script>
+        {% endfor %}
+    {% endif %}
+{% endblock %}
+

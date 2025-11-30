@@ -29,18 +29,77 @@ class DashboardController extends AbstractController {
 
  /*********************************PAGE ADMIN*****************************/   
     public function displayDashboard(): void {
-        $avatar = new AvatarManager();
-        $scripts = $this->addScripts(['public/assets/js/common.js', 'public/assets/js/global.js', 'public/assets/js/home.js','public/assets/js/formController.js']);
-        $nbrMessages = (new ContactsManager())->getAllNotRead();    
+        
+    
+    try {
+        error_log("=== DÉBUT displayDashboard ===");
+        error_log("1. Vérification admin");
+        $func = new Utils();
+        if (!$func->isAdmin()) {
+            throw new Exception("Accès refusé - Administrateur requis");
+        }
 
-        // Render the 'home' view with the 'layout' layout and pass the necessary data to the view
-        $this->render('dashboard.html.twig', [
-            'sesssion_user' =>$_SESSION['user'],
+        error_log("2. Récupération avatar");
+        $avatarManager = new AvatarManager();
+        $avatar = $avatarManager->getById($_SESSION['user']['avatar']);
+        error_log("Avatar récupéré: " . print_r($avatar, true));
+
+        error_log("3. Récupération messages");
+        $contactsManager = new ContactsManager();
+        $nbrMessages = $contactsManager->getAllNotRead();
+        error_log("Messages: $nbrMessages");
+
+        error_log("4. Récupération temps");
+        $timesModels = new TimesModels();
+        $elapsedTime = $timesModels->getElapsedTime();
+        
+
+
+        error_log("5. Scripts");
+        $scripts = $this->addScripts([
+            'https://kit.fontawesome.com/3c515cc4da.js',
+            'assets/js/common.js', 
+            'assets/js/formController.js',
+            'assets/js/formFunction.js',
+            'assets/js/adminjs/ajaxOneUser.js',
+            'assets/js/adminjs/ajaxSearchUsers.js',
+            'assets/js/adminjs/coloringAdmin.js',
+            'assets/js/adminjs/storyAdmin.js',
+            'assets/js/adminjs/modifyAvatarAdmin.js',
             
-            'nbrMessages'   => $nbrMessages,
             
-        ], $scripts);
+        ]);
+
+        error_log("6. Nettoyage session");
+        $func->clearSessionMessages();
+
+        error_log("7. Préparation données render");
+        $data = [
+            'user' => $_SESSION['user'] ?? null,
+            'avatar' => [$avatar],
+            'session' => $_SESSION,
+            'connected' => true,
+            'isUser' => false,
+            'isAdmin' => true,
+            'elapsed_time' => $elapsedTime,
+            'start_time' => $_SESSION['start_time'] ?? time(),
+            'nbrMessages' => $nbrMessages,
+            'titre' => 'Dashboard Admin'
+        ];
+        error_log("Données: " . print_r($data, true));
+
+        error_log("8. Appel render");
+        $this->render('dashboard.html.twig', $data, $scripts);
+        
+        error_log("=== FIN displayDashboard (succès) ===");
+        
+    } catch (Exception $e) {
+        error_log("❌ ERREUR displayDashboard: " . $e->getMessage());
+        error_log("Stack trace: " . $e->getTraceAsString());
+        $_SESSION['error'] = "Impossible de charger le tableau de bord";
+        $this->redirectTo("homepage");
     }
+}
 
    
    
@@ -55,7 +114,17 @@ public function displayMessages() {
     $tm = new CSRFTokenManager();
     $token = $tm->generateCSRFToken();
     $_SESSION['csfr_token'] = $token;
-    $scripts = $this->addScripts(['public/assets/js/common.js','public/assets/js/formController.js']);
+    $scripts = $this->addScripts([
+            'https://kit.fontawesome.com/3c515cc4da.js',
+            'assets/js/common.js', 
+            'assets/js/formController.js',
+            'assets/js/formFunction.js',
+            'assets/js/adminjs/ajaxOneUser.js',
+            'assets/js/adminjs/ajaxSearchUsers.js',
+            'assets/js/adminjs/coloringAdmin.js',
+            'assets/js/adminjs/storyAdmin.js',
+            'assets/js/adminjs/modifyAvatarAdmin.js',
+    ]);
     
     // Vérifier si les messages existent dans la session avant de les utiliser
     $errorMessage = $_SESSION['error_message'] ?? null;
@@ -65,7 +134,17 @@ public function displayMessages() {
         'messages' => $messages, 
         'error_message' => $errorMessage, 
         'success_message' => $successMessage, 
-        'csrf_token' => $token
+        'csrf_token' => $token,
+        'user' => $_SESSION['user'] ?? null,
+        'avatar' => [$avatar],
+        'session' => $_SESSION,
+        'connected' => true,
+        'isUser' => false,
+        'isAdmin' => true,
+        'elapsed_time' => $elapsedTime,
+        'start_time' => $_SESSION['start_time'] ?? time(),
+        'nbrMessages' => $nbrMessages,
+        'titre' => 'Liste messages'
     ], $scripts);
     
     // Optionnel : supprimer les messages après affichage pour éviter qu'ils persistent
@@ -93,6 +172,16 @@ public function displayMessages() {
             'message'   => $message,   
             'csrf_token'     => $token,
             "session_tokenVerify"=> $token,
+            'user' => $_SESSION['user'] ?? null,
+            'avatar' => [$avatar],
+            'session' => $_SESSION,
+            'connected' => true,
+            'isUser' => false,
+            'isAdmin' => true,
+            'elapsed_time' => $elapsedTime,
+            'start_time' => $_SESSION['start_time'] ?? time(),
+            'nbrMessages' => $nbrMessages,
+            'titre' => 'lecture message'
         ]);
         
         return;
@@ -150,7 +239,20 @@ public function displayMessages() {
                 }
                 else {
                     $_SESSION['error_çmessage']="Token Invalid";
-                   $this->render("readMessage.html.twig", ['error_message'=> $_SESSION['error_message'], 'csrf_token' => $token], [$scripts]); 
+                   $this->render("readMessage.html.twig", [
+                    'error_message'=> $_SESSION['error_message'], 
+                    'csrf_token' => $token,
+                    'user' => $_SESSION['user'] ?? null,
+                    'avatar' => [$avatar],
+                    'session' => $_SESSION,
+                    'connected' => true,
+                    'isUser' => false,
+                    'isAdmin' => true,
+                    'elapsed_time' => $elapsedTime,
+                    'start_time' => $_SESSION['start_time'] ?? time(),
+                    'nbrMessages' => $nbrMessages,
+                    'titre' => 'Repondre au message'
+                ], [$scripts]); 
                 }
                 
         }
@@ -169,7 +271,21 @@ public function displayMessages() {
         
         if (!$func->checkPostKeys(['id','csrf_token'])) {   
             $_SESSION['error_message'] = "Les champs n'existent pas.";
-            $this->render("readMessage.html.twig", ['error_message'=> $_SESSION['error_message'], 'csrf_token' => $token], $scripts);
+            $this->render("readMessage.html.twig", [
+                'error_message'=> $_SESSION['error_message'],
+                'csrf_token' => $token,
+                'user' => $_SESSION['user'] ?? null,
+                'avatar' => [$avatar],
+                'session' => $_SESSION,
+                'connected' => true,
+                'isUser' => false,
+                'isAdmin' => true,
+                'elapsed_time' => $elapsedTime,
+                'start_time' => $_SESSION['start_time'] ?? time(),
+                'nbrMessages' => $nbrMessages,
+                'titre' => 'Lire message'
+                ],
+                  $scripts);
             exit();
         } else {
             
@@ -192,7 +308,17 @@ public function displayMessages() {
                     $scripts = $this->addScripts(['public/assets/js/common.js','public/assets/js/formController.js']);
                     $this->render('messages.html.twig', [
                         'page'      => "Messagerie",
-                        'messages'  => $messages
+                        'messages'  => $messages,
+                        'user' => $_SESSION['user'] ?? null,
+                        'avatar' => [$avatar],
+                        'session' => $_SESSION,
+                        'connected' => true,
+                        'isUser' => false,
+                        'isAdmin' => true,
+                        'elapsed_time' => $elapsedTime,
+                        'start_time' => $_SESSION['start_time'] ?? time(),
+                        'nbrMessages' => $nbrMessages,
+                        'titre' => 'Dashboard Admin'
                  ], $scripts);
                 } else { 
                     $tm = new CSRFTokenManager();
@@ -289,9 +415,15 @@ public function displayMessages() {
 
     // Ajout des scripts nécessaires / Add required scripts
     $scripts = $this->addScripts([
-        'public/assets/js/common.js',
-        'public/assets/js/formController.js',
-        'public/assets/js/modifyAvatarAdmin.js'
+         'https://kit.fontawesome.com/3c515cc4da.js',
+            'assets/js/common.js', 
+            'assets/js/formController.js',
+            'assets/js/formFunction.js',
+            'assets/js/adminjs/ajaxOneUser.js',
+            'assets/js/adminjs/ajaxSearchUsers.js',
+            'assets/js/adminjs/coloringAdmin.js',
+            'assets/js/adminjs/storyAdmin.js',
+            'assets/js/adminjs/modifyAvatarAdmin.js',
     ]);
 
     // Rendu de la vue / Render view
@@ -299,7 +431,17 @@ public function displayMessages() {
         'avatars'         => $avatars,
         'error_message'   => $error,
         'success_message' => $success,
-        'csrf_token'      => $token
+        'csrf_token'      => $token,
+        'user' => $_SESSION['user'] ?? null,
+        'avatar' => [$avatar],
+        'session' => $_SESSION,
+        'connected' => true,
+        'isUser' => false,
+        'isAdmin' => true,
+        'elapsed_time' => $elapsedTime,
+        'start_time' => $_SESSION['start_time'] ?? time(),
+        'nbrMessages' => $nbrMessages,
+        'titre' => 'Admin Modification Avatar'
     ], $scripts);
 }
     
@@ -455,14 +597,34 @@ if ($existing2 !== null) {
     $success = $_SESSION['success_message'] ?? null;
     unset($_SESSION['error_message'], $_SESSION['success_message']);
     
-        $scripts = $this->addScripts(['public/assets/js/common.js', 'public/assets/js/formController.js', 'public/assets/js/modifyAvatarAdmin.js']);
+        $scripts = $this->addScripts([
+            'https://kit.fontawesome.com/3c515cc4da.js',
+            'assets/js/common.js', 
+            'assets/js/formController.js',
+            'assets/js/formFunction.js',
+            'assets/js/adminjs/ajaxOneUser.js',
+            'assets/js/adminjs/ajaxSearchUsers.js',
+            'assets/js/adminjs/coloringAdmin.js',
+            'assets/js/adminjs/storyAdmin.js',
+            'assets/js/adminjs/modifyAvatarAdmin.js',
+        ]);
         
         // Rendu de la vue / Render view
         $this->render("modifAvatarAdmin.html.twig", [
             'avatars' => $avatars, 
             'error_message' => $error,
             'success_message' => $success,
-            'csrf_token' => $token
+            'csrf_token' => $token,
+            'user' => $_SESSION['user'] ?? null,
+            'avatar' => [$avatar],
+            'session' => $_SESSION,
+            'connected' => true,
+            'isUser' => false,
+            'isAdmin' => true,
+            'elapsed_time' => $elapsedTime,
+            'start_time' => $_SESSION['start_time'] ?? time(),
+            'nbrMessages' => $nbrMessages,
+            'titre' => 'Dashboard Admin'
         ], $scripts);
         
         exit();
@@ -482,12 +644,34 @@ if ($existing2 !== null) {
      * @return void
      */
 public function allUsers() {
-        $scripts = $this->addScripts(['public/assets/js/ajaxSearchUsers.js']);
+        $scripts = $this->addScripts([
+          'https://kit.fontawesome.com/3c515cc4da.js',
+            'assets/js/common.js', 
+            'assets/js/formController.js',
+            'assets/js/formFunction.js',
+            'assets/js/adminjs/ajaxOneUser.js',
+            'assets/js/adminjs/ajaxSearchUsers.js',
+            'assets/js/adminjs/coloringAdmin.js',
+            'assets/js/adminjs/storyAdmin.js',
+            'assets/js/adminjs/modifyAvatarAdmin.js',
+        ]);
         $users     = (new UserManager())->getAllUsers() ;
         //var_dump($users);
       
 
-        $this->render('users.html.twig', ['users' => $users ], $scripts);
+        $this->render('users.html.twig', [
+            'users' => $users ,
+            'user' => $_SESSION['user'] ?? null,
+            'avatar' => [$avatar],
+            'session' => $_SESSION,
+            'connected' => true,
+            'isUser' => false,
+            'isAdmin' => true,
+            'elapsed_time' => $elapsedTime,
+            'start_time' => $_SESSION['start_time'] ?? time(),
+            'nbrMessages' => $nbrMessages,
+            'titre' => 'Dashboard Admin'
+        ], $scripts);
     }
 
     /**
@@ -540,7 +724,17 @@ public function allUsers() {
          $avatars= (new AvatarManager())->findAllAvatars();
          // Préparer les données de l'avatar
         $avatar= (new AvatarManager())->getById($userNow['avatar']);
-        $scripts = $this->addScripts(['public/assets/js/common.js','public/assets/js/formController.js','public/assets/js/ajaxOneUser.js']);
+        $scripts = $this->addScripts([
+             'https://kit.fontawesome.com/3c515cc4da.js',
+            'assets/js/common.js', 
+            'assets/js/formController.js',
+            'assets/js/formFunction.js',
+            'assets/js/adminjs/ajaxOneUser.js',
+            'assets/js/adminjs/ajaxSearchUsers.js',
+            'assets/js/adminjs/coloringAdmin.js',
+            'assets/js/adminjs/storyAdmin.js',
+            'assets/js/adminjs/modifyAvatarAdmin.js',
+        ]);
         
         //var_dump($avatar, $avatars);
     
@@ -555,7 +749,17 @@ public function allUsers() {
             'role'      => isset($userNow['role']) ? (int)$userNow['role'] : null,
             'statut'    => isset($userNow['statut']) ? (int)$userNow['statut'] : null,
             'createdAt' => $userNow['createdAt'] ?? null,
-            'avatars'   => $avatars
+            'avatars'   => $avatars,
+            'user' => $_SESSION['user'] ?? null,
+            'avatar' => [$avatar],
+            'session' => $_SESSION,
+            'connected' => true,
+            'isUser' => false,
+            'isAdmin' => true,
+            'elapsed_time' => $elapsedTime,
+            'start_time' => $_SESSION['start_time'] ?? time(),
+            'nbrMessages' => $nbrMessages,
+            'titre' => 'Dashboard Admin'
         ],$scripts);
     }
     
@@ -678,7 +882,7 @@ public function updateUserAvatar() {
                         'url' => $newAvatar->getUrl(),
                         'description' => $newAvatar->getDescription(),
                         'caracteristique' => $newAvatar->getCaracteristique(),
-                        'qualite' => $newAvatar->getQualite()
+                        'qualite' => $newAvatar->getQualite(),
                     ]
                 ];
                 error_log("Réponse de succès: " . json_encode($response));

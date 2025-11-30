@@ -1,0 +1,54 @@
+@use "../abstracts/varcolors";
+@use "../abstracts/mixins";
+
+body {
+
+    padding-top :18vh;
+
+    @include mixins.breakpoint(small) {
+        padding-top : 20vh;
+    }
+
+    @include mixins.breakpoint(medium) {
+        padding-top : 21vh;
+    }
+
+    @include mixins.breakpoint(mediumLarge) {
+        margin-top : 40vh;
+        padding-top : 10vh;
+    }
+
+    @include mixins.breakpoint(large) {
+        margin-top : 15vh;
+    }
+}
+
+#dashboard {
+    @include mixins.breakpoint(small) {
+        padding-top : 20vh;
+    }
+
+    @include mixins.breakpoint(medium) {
+        padding-top : 21vh;
+    }
+
+    @include mixins.breakpoint(mediumLarge) {
+        margin-top : 40vh;
+        padding-top : 10vh;
+    }
+
+    @include mixins.breakpoint(large) {
+        margin-top : 15vh;
+    }
+
+    table {
+        margin-top: 5vh;
+    }
+
+}
+
+#footer {
+
+min-width: 100vw;
+
+}

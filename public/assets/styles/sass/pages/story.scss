@@ -30,6 +30,10 @@
     //color: $color-histoires-dark;
   }
 
+  p {
+     text-align: center;
+  }
+
   // ✅ Ajout d’espace en bas pour petits écrans
   @include mixins.breakpoint(custom) {
     padding-bottom: 6rem;

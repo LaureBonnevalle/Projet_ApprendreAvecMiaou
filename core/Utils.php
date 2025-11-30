@@ -144,7 +144,7 @@ class Utils {
         // - At least one special character among #?!@$%^&*- (?=.*?[#?!@$%^&*-])
         // - A minimum length of 8 characters .{'.$nbr.',}
         // The function returns 1 if a match is found, otherwise 0.
-        return preg_match('/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/', $password);
+        return preg_match('/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,23}$/', $password);
     }
 
     public function clearSessionMessages(): void

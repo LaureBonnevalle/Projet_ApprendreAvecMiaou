@@ -1,0 +1,137 @@
+{% extends "layout.html.twig" %}
+
+{% block description %}
+    {{ parent() }} 
+    
+   Gestion des coloriages
+    
+{% endblock %}
+
+{% block body %}
+        {% block header %}
+        <section id="header" class="container">
+    <div class="rect">
+    {% block avatar %}
+                <img class="avatar" name="Chat administrateur" src="assets/img/avatars/admin.png" alt="chat en costume cravate">
+            {% endblock %}
+              {% block header_titrePerso %}
+                <h1>Administration</h1>
+            {% endblock %} 
+              
+        {% block buttonAdmin %}
+                <div class="button">
+                    <button class="action-button">
+                        <a href="?route=logout">Se déconnecter</a>
+                    </button>
+                    <button class="action-button">
+                        <a href="?route=dashboard">Admin</a>
+                    </button>
+                </div>
+            {% endblock %}
+            </div>
+            <div class="cache"></div>
+    
+    <div class="burger-img">
+        <img id="openBtn" class="burger-icon" src="assets/img/Miaou/menuBurger2.png" alt="Menu burger">  
+    </div>
+</section>
+{% block navAdmin %}
+        <nav id="navAdmin">
+            <div id="mySidenav" class="sidenav">
+                <ul id="nav-links-container">
+                    <li id="homepageTime" class="action-button">
+                        <a href="index.php?route=homepage">Accueil</a>
+                    </li>
+                    <li class="action-button">
+                        <a href="index.php?route=games">Jeux</a>
+                    </li>
+                    <li class="action-button">
+                        <a href="index.php?route=coloriages">Coloriages</a>
+                    </li>
+                    <li class="action-button">
+                        <a href="index.php?route=stories">Histoires</a>
+                    </li>
+                    <li class="action-button">
+                        <a href="index.php?route=dashboard">Dashboard</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    {% endblock %}
+    {% endblock %}
+     {% block stylesheets %}
+     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    {% endblock %}
+    {% block content %}
+         <main id="coloriageAdmin">    
+<div class="container">
+        <h1>Tableau de bord Administrateur</h1>
+        <p class="logout"><a href="{{ url('logout') }}">Déconnexion</a></p>
+
+        {% if message %}
+            <p class="message {{ 'succès' in message ? 'success' : 'error' }}">
+                {{ message }}
+            </p>
+        {% endif %}
+
+        <div class="current-counts">
+            <h2>Statut actuel :</h2>
+            <p>Nombre d'objets : **{{ O_actuel }}**</p>
+            <p>Nombre de lieux : **{{ L_actuel }}**</p>
+            <p>Nombre de personnages : **{{ P_actuel }}**</p>
+            <p>Total d'histoires existantes (combinaisons) : **{{ H_existantes }}**</p>
+        </div>
+
+        <h2>Ajouter un nouvel élément</h2>
+        <form method="POST" action="?action=StoriesAdmin">
+            <div>
+                <label for="type_ajout">Type d'élément à ajouter :</label>
+                <select id="type_ajout" name="type_ajout" required>
+                    <option value="">-- Choisir --</option>
+                    <option value="objet">Objet</option>
+                    <option value="lieu">Lieu</option>
+                    <option value="personnage">Personnage</option>
+                </select>
+            </div>
+            <div>
+                <label for="nom_nouvel_element">Nom du nouvel élément :</label>
+                <input type="text" id="nom_nouvel_element" name="nom_nouvel_element" required placeholder="Ex: Épée, Forêt Enchantée, Dragon">
+            </div>
+            {% if csrf_token is defined %}
+                {{ csrf_token() }}
+            {% endif %}
+            <input type="submit" name="submit_add" value="Calculer et Ajouter">
+        </form>
+
+        {% if nb_textareas_to_display > 0 %}
+            <h2>Nouvelles Histoires à Ajouter ({{ nb_textareas_to_display }})</h2>
+            <p>Veuillez alimenter les zones de texte ci-dessous pour les nouvelles combinaisons. Ces histoires seront insérées dans la base de données.</p>
+
+            <form method="POST" action="{{ url('process_add_stories') }}">
+                <input type="hidden" name="action" value="add_stories">
+                {% for index, combo in new_combinations %}
+                    <div class="textarea-group">
+                        <label for="story_{{ index }}">
+                            Histoire pour :
+                            **Objet** ({{ combo.objet_nom }}),
+                            **Lieu** ({{ combo.lieu_nom }}),
+                            **Personnage** ({{ combo.personnage_nom }})
+                        </label>
+                        <textarea id="story_{{ index }}" name="stories[{{ index }}][content]" rows="5" required></textarea>
+                        <input type="hidden" name="stories[{{ index }}][objet_id]" value="{{ combo.objet_id }}">
+                        <input type="hidden" name="stories[{{ index }}][lieu_id]" value="{{ combo.lieu_id }}">
+                        <input type="hidden" name="stories[{{ index }}][personnage_id]" value="{{ combo.personnage_id }}">
+                    </div>
+                {% endfor %}
+                {% if csrf_token is defined %}
+                    {{ csrf_token() }}
+                {% endif %}
+                <input type="submit" value="Enregistrer les histoires">
+            </form>
+        {% elseif app.request.method == 'POST' and nb_textareas_to_display == 0 %}
+            <p class="success">Aucune nouvelle histoire à ajouter pour le moment, ou l'élément ajouté n'a pas créé de nouvelles combinaisons uniques (peut-être l'élément existait déjà).</p>
+        {% endif %}
+    </div>
+</body>
+{% block body %}

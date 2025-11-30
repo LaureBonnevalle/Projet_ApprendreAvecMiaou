@@ -1,0 +1,135 @@
+{% extends "layout.html.twig" %}
+
+{% block description %}
+    {{ parent() }} 
+    
+   Gestion des messages des utilisateurs (contact)
+    
+{% endblock %}
+
+{% block body %}
+        {% block header %}
+        <section id="header" class="container">
+    <div class="rect">
+    {% block avatar %}
+                <img class="avatar" name="Chat administrateur" src="assets/img/avatars/admin.png" alt="chat en costume cravate">
+            {% endblock %}
+              {% block header_titrePerso %}
+                <h1>Administration</h1>
+            {% endblock %} 
+              
+        {% block buttonAdmin %}
+                <div class="button">
+                    <button class="action-button">
+                        <a href="?route=logout">Se déconnecter</a>
+                    </button>
+                    <button class="action-button">
+                        <a href="?route=dashboard">Admin</a>
+                    </button>
+                </div>
+            {% endblock %}
+            </div>
+            <div class="cache"></div>
+    
+    <div class="burger-img">
+        <img id="openBtn" class="burger-icon" src="assets/img/Miaou/menuBurger2.png" alt="Menu burger">  
+    </div>
+</section>
+{% block navAdmin %}
+        <nav id="navAdmin">
+            <div id="mySidenav" class="sidenav">
+                <ul id="nav-links-container">
+                    <li id="homepageTime" class="action-button">
+                        <a href="index.php?route=homepage">Accueil</a>
+                    </li>
+                    <li class="action-button">
+                        <a href="index.php?route=games">Jeux</a>
+                    </li>
+                    <li class="action-button">
+                        <a href="index.php?route=coloriages">Coloriages</a>
+                    </li>
+                    <li class="action-button">
+                        <a href="index.php?route=stories">Histoires</a>
+                    </li>
+                    <li class="action-button">
+                        <a href="index.php?route=dashboard">Dashboard</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    {% endblock %}
+    {% endblock %}
+        
+        {#{% block stylesheets %}
+    {#{{ parent() }}#}
+    <!--<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">-->
+    <!--<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">-->
+    <!--<link href="{#{{ asset('assets/css/user-admin-panel.css') }}#}" rel="stylesheet">-->
+       {# {% endblock %}#}
+    {% block content %}
+         <main id="homepageAdmin">      
+      
+        {% block error %}
+            {{ parent() }}
+        {% endblock %} 
+        
+
+
+
+<section id="messagerie">
+    <h2>Messagerie</h2>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Date de réception</th>
+                    <th>prénom</th>
+                    <th>Email</th>
+                    <th>sujet</th>
+                    <th>Statut</th>
+                    <th>Voir</th>
+                    <th>Supprimer</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for message in messages %}
+                <tr class="{{ message.statut == 0 ? 'unread' : '' }}">
+                    <td>{{ message.receptedDate|date('d/m/Y H:i:s') }}</td>
+                    <td>{{ message.firstname|e }}</td>
+                    
+                    <td>{{ message.email|e }}</td>
+                    <td>{{ message.subject|e }}</td>
+                    <td>{{ message.statut == 0 ? 'Non lu' : 'Lu' }}</td>
+                    <td><a href="?route=readMessage&id={{ message.id|e }}">Voir</a></td>
+                    <td>
+                        {% if message.statut != 0 %}
+                        <form method="POST" action="?route=deleteMessage&id={{ message.id|e }}">
+                        <input type="hidden" name="id" value="{{ message.id|e  }}"> 
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token }}"> 
+                        <input type="submit" name="soumettre" value="Supprimer">
+                    </form>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <p>{{ message.content }}</p>
+</section>
+ </main>
+        {% endblock %}
+
+        {% block footer %}
+           {% include "subpages/_footer.html.twig" %}  
+        {% endblock %}
+        {% block java%}
+                {% if scripts is defined %}
+                  {% for script in scripts %}
+                      <script src="{{ script }}"></script>
+                  {% endfor %}
+                {% endif %}
+        {% endblock %}
+    </body>
+{% endblock %}

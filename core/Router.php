@@ -1,316 +1,460 @@
 <?php
 
-/*require_once("controllers/DefaultController.php");
-require_once("controllers/AuthController.php");
-date_default_timezone_set('Europe/Paris');
-require_once("services/Functionality.php");
-require_once("controllers/DashboardController.php");
-require_once("controllers/GameController.php");
-require_once("controllers/ColoringController.php");
-require_once("controllers/StoryController.php");
-require_once("controllers/UserController.php");
-require_once("controllers/ContactController.php");*/
-
 class Router {
+    private $errorLog = [];
+    
     public function __construct()
     {
-
+        // Configuration des erreurs
+        error_reporting(E_ALL);
+        ini_set('display_errors', 0); // Ne pas afficher les erreurs à l'utilisateur
+        ini_set('log_errors', 1);
     }
 
     public function handleRequest(array $get)
     {
-       // ===== DEBUG COMPLET - À RETIRER APRÈS =====
-    /*echo "<div style='background: #f0f0f0; padding: 20px; margin: 10px; border: 1px solid #ccc;'>";
-    echo "<h2>🔍 DEBUG ROUTER</h2>";
-    
-    // 1. Informations de base
-    echo "<h3>1. Informations de base</h3>";
-    echo "Route demandée: <strong>" . ($get["route"] ?? "homepage") . "</strong><br>";
-    echo "Session ID: " . session_id() . "<br>";
-    echo "Session status: " . session_status() . " (2 = active)<br>";
-    
-    // 2. Contenu de la session
-    echo "<h3>2. Session complète</h3>";
-    if (empty($_SESSION)) {
-        echo "<strong style='color: red;'>❌ SESSION VIDE</strong><br>";
-    } else {
-        echo "<pre style='background: white; padding: 10px;'>" . print_r($_SESSION, true) . "</pre>";
-    }
-    
-    // 3. Utilisateur connecté
-    echo "<h3>3. Utilisateur connecté</h3>";
-    if (!isset($_SESSION['user'])) {
-        echo "<strong style='color: red;'>❌ Aucun utilisateur en session</strong><br>";
-    } else {
-        echo "✅ Utilisateur trouvé:<br>";
-        echo "- ID: " . ($_SESSION['user']['id'] ?? 'N/A') . "<br>";
-        echo "- Nom: " . ($_SESSION['user']['firstname'] ?? 'N/A') . " " . ($_SESSION['user']['lastname'] ?? 'N/A') . "<br>";
-        echo "- Role: " . ($_SESSION['user']['role'] ?? 'N/A') . "<br>";
-        echo "- Statut: " . ($_SESSION['user']['statut'] ?? 'N/A') . "<br>";
-    }
-    
-    // 4. Tests des méthodes Functionality
-    $func = new Functionality();
-    echo "<h3>4. Tests Functionality</h3>";
-    $isAuth = $func->isAuthentified();
-    $isValid = $func->isValidateUser();
-    $isUser = $func->isUser();
-    $isAdmin = $func->isAdmin();
-    
-    echo "- isAuthentified(): " . ($isAuth ? '✅ OUI' : '❌ NON') . "<br>";
-    echo "- isValidateUser(): " . ($isValid ? '✅ OUI' : '❌ NON') . "<br>";
-    echo "- isUser(): " . ($isUser ? '✅ OUI' : '❌ NON') . "<br>";
-    echo "- isAdmin(): " . ($isAdmin ? '✅ OUI' : '❌ NON') . "<br>";
-    
-    // 5. Condition finale
-    echo "<h3>5. Condition pour userRoutes</h3>";
-    $finalCondition = $isAuth && $isValid && ($isUser || $isAdmin);
-    echo "Condition (isAuth && isValid && (isUser || isAdmin)): " . ($finalCondition ? '✅ PASSE' : '❌ ÉCHOUE') . "<br>";
-    
-    echo "</div>";
-    
-    // Arrêt temporaire pour voir le debug
-    if (($get["route"] ?? "homepage") === "profile") {
-        echo "<p><strong>DEBUG ARRÊTÉ POUR ROUTE 'profile' - Cliquez sur Actualiser pour continuer</strong></p>";
-        die();
-    }*/
-    // ===== FIN DEBUG =====  
-        
-        
-        $func = new Utils();
-        $dc = new DefaultController();
-        $ac = new AuthController();
-        $dash = new DashboardController();
-        $gm = new GameController();
-        $cc = new ColoringController();
-        $sc = new StoryController();
-        $uc = new UserController();
-        $ctc = new ContactController();
-
-        $route = isset($get["route"]) ? $get["route"] : "homepage";
-
-        // Routes accessibles à tous (non connectés)
-        $publicRoutes = [
-            "homepage", "contact", "login", "check-login", 
-            "register", "check-register", "displayModify", "modifyPassword", "logout",
-            "pedagogie"
-        ];
-
-        // Routes pour utilisateurs connectés et validés (role 1 ou 2)
-        $userRoutes = [
-            "homepageUser", "profile", "games", "pixelArt", 
-            "memo", "colorings", "coloringsListe", "stories", "getImage", 
-            "getStory", "displayGame", "displayPixelArt" 
-        ];
-
-        // Routes pour administrateurs uniquement (role 2)
-        $adminRoutes = [
-            "dashboard", "ajaxSearchUsers", "allUsers", "readOneUser", 
-            "resetPassword", "updateStatus", "updateRole", "updateUserAvatar", 
-            "updateNewsletter", "response", "messagerie", "deleteMessage", 
-            "readMessage", "modifAvatar", "deleteAvatar", "addAvatar", 
-            "addstoryStoriesAd", "StoriesAdmin", "modifColoring", "addColoring", "deleteColoring", "addCategorie", "modifGame", "modifypedagogie"
-        ];
-
-        // Gestion des routes publiques
-        if (in_array($route, $publicRoutes)) {
-            switch ($route) {
-                case "homepage":
-                    $dc->homepage();
-                    break;
-                case "contact":
-                    $ctc->contactUs();
-                    break;
-                case "login":
-                    $ac->login();
-                    break;
-                case "check-login":
-                    $ac->checkLogin();
-                    break;
-                case "register":
-                    $ac->register();
-                    break;
-                case "check-register":
-                    $ac->checkRegister();
-                    break;
-                case "displayModify":
-                    $ac->displayModify();
-                    break;
-                case "modifyPassword":
-                    $ac->modifyPassword();
-                    break;
-                 case "logout":
-                    $dc->logout();
-                    break;
-                 case "pedagogie";
-                    $dc->pedagogie();
-                    break;
-            }
-        }
-        // Gestion des routes pour utilisateurs connectés et validés
-        elseif (in_array($route, $userRoutes)) {
-            // Vérification : utilisateur connecté ET validé ET (role user OU admin)
-            /*echo "isAuthentified: " . ($func->isAuthentified() ? 'OUI' : 'NON') . "<br>";
-echo "isValidateUser: " . ($func->isValidateUser() ? 'OUI' : 'NON') . "<br>";
-echo "isUser: " . ($func->isUser() ? 'OUI' : 'NON') . "<br>";
-echo "isAdmin: " . ($func->isAdmin() ? 'OUI' : 'NON') . "<br>";
-echo "Route demandée: " . $route . "<br>";
-die(); // Arrêt pour voir les valeurs*/
+        try {
+            $func = new Utils();
+            $route = isset($get["route"]) ? $get["route"] : "homepage";
             
-            if ($func->isAuthentified() && $func->isValidateUser() && ($func->isUser() || $func->isAdmin())) {
-                switch ($route) {
-                    
-                    case "homepageUser":
-                        $dc->homepage();
-                    break; 
-                    case "profile":
-                        $ac->displayProfile();
-                    break;
-                    //case "games":
-                    case "displayGame":
-                        $gm->displayGame();
-                        break;
-                    case "pixelArt":
-                    case "displayPixelArt":
-                        $gm->displayPixelArt();
-                        break;
-                    case "memo":
-                        $gm->displayMemo();
-                        break;
-                    case "colorings":
-                        $cc->displayDraw();
-                        break;
-                    case "coloringsListe":
-                        $cc->getColoringsByCategorieJson();
-                        break;
-                    case "stories":
-                        $sc->displayStories();
-                        break;
-                    case "getImage":
-                        $sc->getImage();
-                        break;
-                    case "getStory":
-                        $sc->getStory();
-                        break;
-                    case "logout":
-                        $ac->logout();
-                        break;
-                }
-            } else {
-                // Redirection intelligente selon le statut de l'utilisateur
-                if ($func->isAuthentified() && $func->isValidateUser()) {
-                    // Utilisateur validé mais pas admin -> redirection vers homepageUser
-                    $dc->redirectTo("homepager");
-                } else {
-                    // Utilisateur non connecté ou non validé -> redirection vers homepage
-                    $dc->redirectTo("homepage");
-                }
+            error_log("=== ROUTER === Route demandée: $route");
+
+            // Vérifier que la session est active
+            if (session_status() !== PHP_SESSION_ACTIVE) {
+                throw new Exception("Session non active");
             }
-        }
-        // Gestion des routes administrateur
-        elseif (in_array($route, $adminRoutes)) {
-            // Vérification : utilisateur connecté ET admin
-            if ($func->isAdmin()) {
-                switch ($route) {
-                    
-                    case "homepageAdmin":
-                        $dash->homepage();
-                    break;
-                    case "dashboard":
-                        $dash->displayDashboard();
-                        break;
-                    case "ajaxSearchUsers":
-                        $dash->ajaxSearchUsers();
-                        break;
-                    case "allUsers":
-                        $dash->allUsers();
-                        break;
-                    case "readOneUser":
-                        $dash->readOneUser();
-                        break;
-                    case "resetPassword":
-                        $dash->resetPassword();
-                        break;
-                    case "updateStatus":
-                        $dash->resetStatus();
-                        break;
-                    case "updateRole":
-                        $dash->resetRole();
-                        break;
-                    case "updateUserAvatar":
-                        $dash->updateUserAvatar();
-                        break;
-                    case "updateNewsletter":
-                        $dash->resetNewsletter();
-                        break;
-                    case "response":
-                        $dash->response();
-                        break;
-                    case "messagerie":
-                        $dash->displayMessages();
-                        break;
-                    case "deleteMessage":
-                        $dash->deleteMessage();
-                        break;
-                    case "readMessage":
-                        $dash->readMessage();
-                        break;
-                    case "modifAvatar":
-                        $dash->modifAvatarAdmin();
-                        break;
-                    case "deleteAvatar":
-                        $dash->deleteAvatar();
-                        break;
-                    case "addAvatar":
-                        $dash->addAvatar();
-                        break;
-                    case "addstoryStoriesAd":
-                        $dash->addStory();
-                        break;
-                    case "StoriesAdmin":
-                        $dash->ManageStories();
-                        break;
-                    case "modifColoring":
-                        $dash->modifColorings();
-                        break;
-                    case "addColoring":
-                        $dash->addColoring();
-                        break;
-                    case "deleteColoring":
-                        $dash->deleteColoring();
-                        break;
-                    case "addCategorie":
-                        $dash->addCategorie();
-                        break;
-                    case "modifGame":
-                        $dash->modifGames();
-                        break;
-                        case "logout":
-                        $ac->logout();
-                        break;
-                    
-                }
-            } else {
-                // Redirection intelligente selon le statut de l'utilisateur
-                if ($func->isAuthentified() && $func->isValidateUser()) {
-                    // Utilisateur validé mais pas admin -> redirection vers homepageUser
-                    $dc->redirectTo("homepage");
-                } else {
-                    // Utilisateur non connecté ou non validé -> redirection vers homepage
-                    $dc->redirectTo("homepage");
-                }
+
+            // Routes accessibles à tous (non connectés)
+            $publicRoutes = [
+                "homepage", "contact", "login", "check-login", 
+                "register", "check-register", "displayModify", "modifyPassword", "logout",
+                "pedagogie"
+            ];
+
+            // Routes pour utilisateurs connectés et validés (role 1 ou 2)
+            $userRoutes = [
+                "homepageUser", "profile", "games", "pixelArt", 
+                "memo", "colorings", "coloringsListe", "stories", "getImage", 
+                "getStory", "displayGame", "displayPixelArt" 
+            ];
+
+            // Routes pour administrateurs uniquement (role 2)
+            $adminRoutes = [
+                "dashboard", "ajaxSearchUsers", "allUsers", "readOneUser", 
+                "resetPassword", "updateStatus", "updateRole", "updateUserAvatar", 
+                "updateNewsletter", "response", "messagerie", "deleteMessage", 
+                "readMessage", "modifAvatar", "deleteAvatar", "addAvatar", 
+                "addstoryStoriesAd", "StoriesAdmin", "modifColoring", "addColoring", 
+                "deleteColoring", "addCategorie", "modifGame", "modifypedagogie"
+            ];
+
+            // ====================================
+            // GESTION DES ROUTES PUBLIQUES
+            // ====================================
+            if (in_array($route, $publicRoutes)) {
+                $this->handlePublicRoute($route);
             }
-        }
-        // Route par défaut (404)
-        else {
-            $dc->_404();
+            // ====================================
+            // GESTION DES ROUTES UTILISATEURS
+            // ====================================
+            elseif (in_array($route, $userRoutes)) {
+                $this->handleUserRoute($route, $func);
+            }
+            // ====================================
+            // GESTION DES ROUTES ADMIN
+            // ====================================
+            elseif (in_array($route, $adminRoutes)) {
+                $this->handleAdminRoute($route, $func);
+            }
+            // ====================================
+            // ROUTE PAR DÉFAUT (404)
+            // ====================================
+            else {
+                throw new Exception("Route inconnue: $route");
+            }
+
+        } catch (Exception $e) {
+            $this->handleError($e);
         }
     }
 
     /**
-     * Méthode pour rediriger vers une autre route
+     * Gère les routes publiques
      */
-    private function redirectTo($route) {
+    private function handlePublicRoute(string $route): void
+    {
+        try {
+            $dc = new DefaultController();
+            $ac = new AuthController();
+            $ctc = new ContactController();
+
+            switch ($route) {
+                case "homepage":
+                    $dc->homepage();
+                    break;
+                    
+                case "contact":
+                    $ctc->contactUs();
+                    break;
+                    
+                case "login":
+                    $ac->login();
+                    break;
+                    
+                case "check-login":
+                    $ac->checkLogin();
+                    break;
+                    
+                case "register":
+                    $ac->register();
+                    break;
+                    
+                case "check-register":
+                    $ac->checkRegister();
+                    break;
+                    
+                case "displayModify":
+                    $ac->displayModify();
+                    break;
+                    
+                case "modifyPassword":
+                    $ac->modifyPassword();
+                    break;
+                    
+                case "logout":
+                    $dc->logout();
+                    break;
+                    
+                case "pedagogie":
+                    $dc->pedagogie();
+                    break;
+                    
+                default:
+                    throw new Exception("Route publique non gérée: $route");
+            }
+        } catch (Exception $e) {
+            error_log("❌ Erreur route publique ($route): " . $e->getMessage());
+            throw new Exception("Erreur lors du chargement de la page", 0, $e);
+        }
+    }
+
+    /**
+     * Gère les routes utilisateurs
+     */
+    private function handleUserRoute(string $route, Utils $func): void
+    {
+        try {
+            // Vérification des permissions
+            if (!$func->isAuthentified()) {
+                throw new Exception("Utilisateur non authentifié");
+            }
+
+            if (!$func->isValidateUser()) {
+                throw new Exception("Compte utilisateur non validé");
+            }
+
+            if (!$func->isUser() && !$func->isAdmin()) {
+                throw new Exception("Permissions insuffisantes");
+            }
+
+            // Si toutes les vérifications passent, router vers le bon controller
+            $dc = new DefaultController();
+            $ac = new AuthController();
+            $gm = new GameController();
+            $cc = new ColoringController();
+            $sc = new StoryController();
+
+            switch ($route) {
+                case "homepageUser":
+                    $dc->homepage();
+                    break;
+                    
+                case "profile":
+                    $ac->displayProfile();
+                    break;
+                    
+                case "displayGame":
+                    $gm->displayGame();
+                    break;
+                    
+                case "pixelArt":
+                case "displayPixelArt":
+                    $gm->displayPixelArt();
+                    break;
+                    
+                case "memo":
+                    $gm->displayMemo();
+                    break;
+                    
+                case "colorings":
+                    $cc->displayDraw();
+                    break;
+                    
+                case "coloringsListe":
+                    $cc->getColoringsByCategorieJson();
+                    break;
+                    
+                case "stories":
+                    $sc->displayStories();
+                    break;
+                    
+                case "getImage":
+                    $sc->getImage();
+                    break;
+                    
+                case "getStory":
+                    $sc->getStory();
+                    break;
+                    
+                case "logout":
+                    $ac->logout();
+                    break;
+                    
+                default:
+                    throw new Exception("Route utilisateur non gérée: $route");
+            }
+
+        } catch (Exception $e) {
+            error_log("❌ Erreur route utilisateur ($route): " . $e->getMessage());
+            
+            // Redirection selon le type d'erreur
+            if (strpos($e->getMessage(), "non authentifié") !== false) {
+                $this->redirectTo("login");
+            } elseif (strpos($e->getMessage(), "non validé") !== false) {
+                $_SESSION['error'] = "Votre compte n'est pas encore validé. Veuillez vérifier vos emails.";
+                $this->redirectTo("homepage");
+            } else {
+                throw $e;
+            }
+        }
+    }
+
+    /**
+     * Gère les routes admin
+     */
+    private function handleAdminRoute(string $route, Utils $func): void
+    {
+        try {
+            // Vérification des permissions admin
+            if (!$func->isAuthentified()) {
+                throw new Exception("Utilisateur non authentifié");
+            }
+
+            if (!$func->isAdmin()) {
+                throw new Exception("Accès administrateur requis");
+            }
+
+            $dash = new DashboardController();
+            $ac = new AuthController();
+
+            switch ($route) {
+                case "homepageAdmin":
+                    $dash->homepage();
+                    break;
+                    
+                case "dashboard":
+                    $dash->displayDashboard();
+                    break;
+                    
+                case "ajaxSearchUsers":
+                    $dash->ajaxSearchUsers();
+                    break;
+                    
+                case "allUsers":
+                    $dash->allUsers();
+                    break;
+                    
+                case "readOneUser":
+                    $dash->readOneUser();
+                    break;
+                    
+                case "resetPassword":
+                    $dash->resetPassword();
+                    break;
+                    
+                case "updateStatus":
+                    $dash->resetStatus();
+                    break;
+                    
+                case "updateRole":
+                    $dash->resetRole();
+                    break;
+                    
+                case "updateUserAvatar":
+                    $dash->updateUserAvatar();
+                    break;
+                    
+                case "updateNewsletter":
+                    $dash->resetNewsletter();
+                    break;
+                    
+                case "response":
+                    $dash->response();
+                    break;
+                    
+                case "messagerie":
+                    $dash->displayMessages();
+                    break;
+                    
+                case "deleteMessage":
+                    $dash->deleteMessage();
+                    break;
+                    
+                case "readMessage":
+                    $dash->readMessage();
+                    break;
+                    
+                case "modifAvatar":
+                    $dash->modifAvatarAdmin();
+                    break;
+                    
+                case "deleteAvatar":
+                    $dash->deleteAvatar();
+                    break;
+                    
+                case "addAvatar":
+                    $dash->addAvatar();
+                    break;
+                    
+                case "addstoryStoriesAd":
+                    $dash->addStory();
+                    break;
+                    
+                case "StoriesAdmin":
+                    $dash->ManageStories();
+                    break;
+                    
+                case "modifColoring":
+                    $dash->modifColorings();
+                    break;
+                    
+                case "addColoring":
+                    $dash->addColoring();
+                    break;
+                    
+                case "deleteColoring":
+                    $dash->deleteColoring();
+                    break;
+                    
+                case "addCategorie":
+                    $dash->addCategorie();
+                    break;
+                    
+                case "modifGame":
+                    $dash->modifGames();
+                    break;
+                    
+                case "logout":
+                    $ac->logout();
+                    break;
+                    
+                default:
+                    throw new Exception("Route admin non gérée: $route");
+            }
+
+        } catch (Exception $e) {
+            error_log("❌ Erreur route admin ($route): " . $e->getMessage());
+            
+            // Redirection selon le type d'erreur
+            if (strpos($e->getMessage(), "Accès administrateur requis") !== false) {
+                $_SESSION['error'] = "Accès refusé. Vous devez être administrateur.";
+                $this->redirectTo("homepage");
+            } elseif (strpos($e->getMessage(), "non authentifié") !== false) {
+                $this->redirectTo("login");
+            } else {
+                throw $e;
+            }
+        }
+    }
+
+    /**
+     * Gère les erreurs globales
+     */
+    private function handleError(Exception $e): void
+    {
+        // Log de l'erreur
+        error_log("========================================");
+        error_log("ERREUR ROUTER");
+        error_log("Message: " . $e->getMessage());
+        error_log("Fichier: " . $e->getFile() . " (ligne " . $e->getLine() . ")");
+        error_log("Stack trace: " . $e->getTraceAsString());
+        error_log("========================================");
+
+        // Affichage d'une page d'erreur user-friendly
+        try {
+            $dc = new DefaultController();
+            
+            // Stocker le message d'erreur en session
+            $_SESSION['error'] = "Une erreur est survenue. Veuillez réessayer.";
+            
+            // Si c'est une route inconnue, afficher 404
+            if (strpos($e->getMessage(), "Route inconnue") !== false) {
+                $dc->_404();
+            } else {
+                // Sinon rediriger vers homepage
+                $this->redirectTo("homepage");
+            }
+        } catch (Exception $fallbackException) {
+            // Si même l'affichage de l'erreur échoue, montrer une erreur basique
+            http_response_code(500);
+            echo "<!DOCTYPE html>
+            <html lang='fr'>
+            <head>
+                <meta charset='UTF-8'>
+                <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+                <title>Erreur - Miaou</title>
+                <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                        background: #f5f5f5;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        height: 100vh;
+                        margin: 0;
+                    }
+                    .error-container {
+                        background: white;
+                        padding: 40px;
+                        border-radius: 20px;
+                        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+                        text-align: center;
+                        max-width: 500px;
+                    }
+                    h1 { color: #ff6b6b; margin-bottom: 20px; }
+                    p { color: #666; margin-bottom: 30px; }
+                    a {
+                        display: inline-block;
+                        padding: 12px 30px;
+                        background: #47b972;
+                        color: white;
+                        text-decoration: none;
+                        border-radius: 25px;
+                        transition: all 0.3s;
+                    }
+                    a:hover {
+                        background: #3a9d5e;
+                        transform: translateY(-2px);
+                    }
+                </style>
+            </head>
+            <body>
+                <div class='error-container'>
+                    <h1>😿 Oups !</h1>
+                    <p>Une erreur inattendue s'est produite. Nos équipes ont été notifiées.</p>
+                    <a href='?route=homepage'>Retour à l'accueil</a>
+                </div>
+            </body>
+            </html>";
+            exit;
+        }
+    }
+
+    /**
+     * Redirection vers une route
+     */
+    private function redirectTo(string $route): void
+    {
         header("Location: index.php?route=" . $route);
         exit();
     }

@@ -1,0 +1,60 @@
+{% extends "layout.html.twig" %}
+
+{% block description %}
+    {{ parent() }}
+    {% block title %}
+        |Page Accueil 
+    {% endblock %}
+{% endblock %}
+
+
+
+{% block body %}
+
+        {% block header %}
+            {{ parent() }}
+        {% endblock %}
+{% block stylesheets %}
+<link href="games/MemoryGame/memory.css" rel="stylesheet">
+{% endblock %}
+
+        {% block content %}
+       <main id="memory"> 
+       
+        <div class="game-container-memo">
+    {% for i in 1..12 %}
+        <div class="card-memo">
+            <div class="front"></div>
+            <div class="back"><img src="" alt=""></div>
+        </div>
+    {% endfor %}
+</div>
+
+<div class="bar-memo">
+    <div class="moves-memo">
+        <p>Nombre de Mouvements</p>
+        <span>0</span>
+    </div>
+
+    <div class="timer-memo">
+        <p>Temps</p>
+        <span>00:00</span>
+    </div>
+
+    <div class="start-memo">
+        <button>Démarrer</button>
+    </div>
+</div>
+
+
+    </main>
+    {% endblock %}
+
+    {% block footer %}
+        {{ parent() }}
+    {% endblock %}
+
+    {% block java %}
+        {{ parent() }}
+    {% endblock %}
+{% endblock %}

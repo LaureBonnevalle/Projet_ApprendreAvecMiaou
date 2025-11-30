@@ -2032,6 +2032,21 @@ main {
     content: " ";
   }
 }
+@media (min-width: 992px) {
+  .login-content #login-form .login-content #login-form .container-login {
+    min-height: 400px;
+  }
+}
+@media (min-width: 1100px) {
+  .login-content #login-form .login-content #login-form .container-login {
+    min-height: 400px;
+  }
+}
+@media (min-width: 1200px) {
+  .login-content #login-form .login-content #login-form .container-login {
+    min-height: 400px;
+  }
+}
 .login-content #login-form .container-login {
   background-color: antiquewhite;
   background-image: url("../../img/Miaou/chatAuth.png");
@@ -3326,6 +3341,9 @@ main {
   text-align: center;
   margin-bottom: 0;
 }
+#story p {
+  text-align: center;
+}
 @media (max-width: 430px) {
   #story {
     padding-bottom: 6rem;
@@ -3956,7 +3974,7 @@ main {
 
 .download-button {
   background-color: #3FEB79;
-  border: 1px solid #000000;
+  border: 1px solid rgb(23.3018867925, 223.6981132075, 90.8773584906);
   box-shadow: 6px 6px 0px rgb(20.8962264151, 200.6037735849, 81.4952830189);
   border-radius: 500px;
   padding: 0.8rem 1rem;
@@ -3991,11 +4009,11 @@ main {
   box-shadow: 6px 6px 0px rgb(20.8962264151, 200.6037735849, 81.4952830189);
 }
 .download-button {
-  display: inline-flex;
+  /*display: inline-flex;
   align-items: center;
   gap: 12px;
   padding: 15px 30px;
-  background: #3FEB79;
+  background:  varcolors.$vert-main;
   color: white;
   text-decoration: none;
   border-radius: 15px;
@@ -4003,19 +4021,20 @@ main {
   font-weight: 600;
   transition: all 0.3s ease;
   box-shadow: 0 4px 15px rgba(71, 185, 114, 0.3);
-  border: 3px solid transparent;
-}
-.download-button:hover {
-  background: rgb(23.3018867925, 223.6981132075, 90.8773584906);
-  transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(71, 185, 114, 0.4);
-  border-color: rgb(20.8962264151, 200.6037735849, 81.4952830189);
-}
-.download-button:hover .download-icon {
-  transform: scale(1.1);
-}
-.download-button:active {
-  transform: translateY(-1px);
+  border: 3px solid transparent;*/
+  /*&:hover {
+    background: color.adjust( varcolors.$vert-main, $lightness: -10%);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(71, 185, 114, 0.4);
+    border-color: color.adjust( varcolors.$vert-main, $lightness: -15%);
+
+    .download-icon {
+      transform: scale(1.1);
+    }
+  }*/
+  /*&:active {
+    transform: translateY(-1px);
+  }*/
 }
 .download-button.downloading {
   animation: pulse 1s ease-in-out;
@@ -4067,6 +4086,47 @@ main {
   .pdf-preview {
     min-height: 400px;
   }
+}
+body {
+  padding-top: 18vh;
+}
+@media (min-width: 576px) {
+  body {
+    padding-top: 20vh;
+  }
+}
+@media (min-width: 768px) {
+  body {
+    padding-top: 21vh;
+  }
+}
+@media (min-width: 992px) {
+  body {
+    margin-top: 15vh;
+  }
+}
+
+@media (min-width: 576px) {
+  #dashboard {
+    padding-top: 20vh;
+  }
+}
+@media (min-width: 768px) {
+  #dashboard {
+    padding-top: 21vh;
+  }
+}
+@media (min-width: 992px) {
+  #dashboard {
+    margin-top: 15vh;
+  }
+}
+#dashboard table {
+  margin-top: 5vh;
+}
+
+#footer {
+  min-width: 100vw;
 }
 
 /*# sourceMappingURL=style.css.map */

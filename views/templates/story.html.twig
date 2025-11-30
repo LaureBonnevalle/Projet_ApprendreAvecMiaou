@@ -25,7 +25,7 @@
    
             <section id="story" class="story-content">
                 <h2>Mon histoire</h2>
-
+            <p>Choisis un personnage un objet et c'est parti pour l'aventure !</p>
                 <form id="histoire-form" method="post" class="entity-form">
                     <fieldset>
                         <legend class="sr-only">Choix des éléments de l’histoire</legend>
@@ -34,7 +34,7 @@
                             <div class="select-box" id="select-character">
                                 <label for="character_id">Personnage</label>
                                 <select name="character_id" id="character_id" required>
-                                    <option value="">Choisir un personnage</option>
+                                    <option value="">Personnage</option>
                                     {% for character in characters %}
                                     <option value="{{ character.getId }}" data-image="{{ character.getUrl }}">{{ character.getCharacterName }}</option>
                                     {% endfor %}
@@ -45,7 +45,7 @@
                             <div class="select-box" id="select-item">
                                 <label for="item_id">Objet</label>
                                 <select name="item_id" id="item_id" required>
-                                    <option value="">Choisir un objet</option>
+                                    <option value="">Objet</option>
                                     {% for item in items %}
                                     <option value="{{ item.getId }}" data-image="{{ item.getUrl }}">{{ item.getItemName }}</option>
                                     {% endfor %}
@@ -56,7 +56,7 @@
                             <div class="select-box" id="select-location">
                                 <label for="location_id">Lieu</label>
                                 <select name="location_id" id="location_id" required>
-                                    <option value="">Choisir un lieu</option>
+                                    <option value="">Lieu</option>
                                     {% for location in locations %}
                                     <option value="{{ location.getId }}" data-image="{{ location.getUrl }}">{{ location.getLocationName }}</option>
                                     {% endfor %}

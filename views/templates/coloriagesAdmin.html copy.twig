@@ -1,0 +1,192 @@
+{% extends "layout.html.twig" %}
+
+{% block description %}
+    {{ parent() }} 
+    
+   Gestion des coloriages
+    
+{% endblock %}
+
+{% block body %}
+        {% block header %}
+        <section id="header" class="container">
+    <div class="rect">
+    {% block avatar %}
+                <img class="avatar" name="Chat administrateur" src="assets/img/avatars/admin.png" alt="chat en costume cravate">
+            {% endblock %}
+              {% block header_titrePerso %}
+                <h1>Administration</h1>
+            {% endblock %} 
+              
+        {% block buttonAdmin %}
+                <div class="button">
+                    <button class="action-button">
+                        <a href="?route=logout">Se déconnecter</a>
+                    </button>
+                    <button class="action-button">
+                        <a href="?route=dashboard">Admin</a>
+                    </button>
+                </div>
+            {% endblock %}
+            </div>
+            <div class="cache"></div>
+    
+    <div class="burger-img">
+        <img id="openBtn" class="burger-icon" src="assets/img/Miaou/menuBurger2.png" alt="Menu burger">  
+    </div>
+</section>
+{% block navAdmin %}
+        <nav id="navAdmin">
+            <div id="mySidenav" class="sidenav">
+                <ul id="nav-links-container">
+                    <li id="homepageTime" class="action-button">
+                        <a href="index.php?route=homepage">Accueil</a>
+                    </li>
+                    <li class="action-button">
+                        <a href="index.php?route=games">Jeux</a>
+                    </li>
+                    <li class="action-button">
+                        <a href="index.php?route=coloriages">Coloriages</a>
+                    </li>
+                    <li class="action-button">
+                        <a href="index.php?route=stories">Histoires</a>
+                    </li>
+                    <li class="action-button">
+                        <a href="index.php?route=dashboard">Dashboard</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    {% endblock %}
+    {% endblock %}
+     {% block stylesheets %}
+     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    {% endblock %}
+    {% block content %}
+         <main id="coloriageAdmin">      
+      
+        {% block error %}
+            {{ parent() }}
+        {% endblock %} 
+        
+        
+            <section id="coloriageAdmin-content">
+    <h2>Ajouter un coloriage</h2>
+<form method="post" action="?route=addColoriage" enctype="multipart/form-data">
+    <label>Nom :
+        <input type="text" name="name" required>
+    </label>
+    <br>
+    <label>Description :
+        <input type="text" name="description">
+    </label>
+    <br>
+    <label>Catégorie :
+        <select name="categorie_id" required>
+            {% for categorie in categories %}
+                <option value="{{ categorie.id }}">{{ categorie.nom }}</option>
+            {% endfor %}
+        </select>
+    </label>
+    <br>
+    <label>Fichier (image/pdf) :
+        <input type="file" name="url" accept="image/*,application/pdf" required>
+    </label>
+    <br>
+    <button type="submit">Ajouter</button>
+</form>
+
+<h2 class="mt-5">Liste des coloriages par catégorie</h2>
+
+{% for categorie in categories %}
+    <div class="mt-4">
+        <h4 class="text-primary">{{ categorie.categorie_name }}</h4>
+
+        {% set coloriages = coloriagesParCategorie[categorie.id] %}
+        {% if coloriages is not empty %}
+            <ul class="list-group">
+                {% for coloriage in coloriages %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                        <div>
+                            <strong>{{ coloriage.name }}</strong> – {{ coloriage.description }}<br>
+                            {% if coloriage.url ends with '.pdf' %}
+                                <a href="assets/img/coloriages/{{ coloriage.url }}" target="_blank" class="btn btn-sm btn-outline-secondary mt-1">Voir PDF</a>
+                            {% else %}
+                                <img src="assets/img/coloriages/{{ coloriage.url }}" alt="aperçu" class="img-thumbnail mt-1" width="100">
+                            {% endif %}
+                        </div>
+                        <a href="index.php?route=deleteColoriage&id={{ coloriage.id }}" class="btn btn-sm btn-danger" onclick="return confirm('Supprimer ce coloriage ?')">
+                            🗑 Supprimer
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="text-muted fst-italic">Aucun coloriage pour cette catégorie.</p>
+        {% endif %}
+    </div>
+{% endfor %}
+</ul>
+{% if ajoutErreur is defined %}
+    <div style="color: red; font-weight: bold; margin-bottom: 1em;">
+        {{ ajoutErreur }}
+    </div>
+{% endif %}
+<h2 class="mt-4">Ajouter un nouveau coloriage</h2>
+
+{% if ajoutErreur is defined %}
+    <div class="alert alert-danger">{{ ajoutErreur }}</div>
+{% endif %}
+
+<form method="POST" action="index.php?route=addColoriage" class="row g-3" enctype="multipart/form-data">
+    <div class="col-md-6">
+        <label for="name" class="form-label">Nom</label>
+        <input type="text" id="name" name="name" class="form-control" required>
+    </div>
+
+    <div class="col-md-6">
+        <label for="description" class="form-label">Description</label>
+        <input type="text" id="description" name="description" class="form-control">
+    </div>
+
+    <div class="col-md-6">
+        <label for="categorie" class="form-label">Catégorie</label>
+        <select name="categorie_id" id="categorie" class="form-select" required>
+            <option value="">-- Choisir une catégorie --</option>
+            {% for categorie in categories %}
+                <option value="{{ categorie.id }}">{{ categorie.categorie_name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="col-md-6">
+        <label for="url" class="form-label">Fichier (image/PDF)</label>
+        <input type="file" name="url" id="url" class="form-control" accept="image/*,application/pdf" required>
+    </div>
+
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">Ajouter</button>
+    </div>
+</form>
+
+<h2>Ajouter une catégorie</h2>
+<form method="POST" action="?route=addCategorie">
+    <label>Nom de la catégorie :
+        <input type="text" name="nom" required>
+    </label>
+    <button type="submit">Ajouter</button>
+</form>
+ <script></script>                
+            </section>
+         </main>
+        {% endblock %}
+
+        {% block footer %}
+           {% include "subpages/_footer.html.twig" %} 
+        {% endblock %}
+        {% block java %}
+            {{ parent() }}
+        {% endblock %}
+    </body>
+{% endblock %}

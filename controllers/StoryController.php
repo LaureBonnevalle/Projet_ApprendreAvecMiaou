@@ -53,7 +53,7 @@ class StoryController extends AbstractController {
             'characters' => $characters,
             'locations' => $locations,
             'items' => $items,
-            'avatar' => [$avatar],
+            'avatar' => $avatar,
             'isUser'          => true,
             'start_time'      => $_SESSION['start_time']
         ], $scripts);

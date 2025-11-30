@@ -23,7 +23,7 @@ class ColoringController extends AbstractController
         return $this->render('coloring.html.twig', [
             'titre' => 'Coloriages',
             'user' => $_SESSION['user'] ?? null,
-            'avatar' => [$avatar],
+            'avatar' => $avatar,
             'categories' => $categories,
             'elapsed_time' => $elapsedTime,
             'session' => $_SESSION,

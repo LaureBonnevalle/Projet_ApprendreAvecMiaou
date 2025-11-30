@@ -1,0 +1,139 @@
+{% extends "layout.html.twig" %}
+
+{% block description %}
+{{ parent() }}
+{% block title %}
+|Contrôle Admin 
+{% endblock %}
+{% endblock %}
+{% block body %}
+    <body>
+        <div class="rect">
+        {% block header%}
+                <section class="container" id="headerAdmin">
+                    <div class ="rect">
+                        <!--<img class="avatar" src="assets/img/avatars/admin.png" alt="chat admin">-->
+                        {% block header_title %}
+                            <h1> {{session.admin.firstname}} Apprendre avec Miaou</h1>
+                        {% endblock %}
+                        {% block button %}
+                            <div class="button">
+                                <button class="action-button"><a href="?route=login">Se Connecter</a></button>
+                                <button class="action-button"><a href="?route=dashboard">Admin</a></button>
+                            </div>   
+                        {% endblock %}
+                    </div>
+                    <div class="cache">
+                    </div>
+                    <div class="burger-img">
+                        <img id="openBtn" class="burger-icon" src="assets/img/Miaou/menuBurger2.png" >  
+                    </div>
+                </section>
+        
+                {% block nav %}
+                    {% include "subpages/_navAdmin.html.twig" %}
+                {% endblock %}
+            {% endblock %}  
+
+
+{% block content %}
+<section id="storyAdmin">
+
+<ul>
+ {%for coloriages as coloriage %}
+    <li>{{coloriage.name}}
+    <a href= "?route=deleteStory&Id"> supprimer</a>
+    </li>
+{% endfor%}
+</ul>
+
+<form method="post" action="?route=addStory" class ="story-form">
+                        
+
+                        <label  for     = "histoire_titre">titre:</label>
+                        <input  type    = "text"
+                                id      = "histoire_titre"
+                                name    = "histoire_titre"
+                                aria-label = "histoire_titre field"
+                                value   = "">
+                        <div class = "error-message" id = "error-titre"></div>                      
+                        
+                        <label  for     = "histoire_content">contenu</label>
+                        <input  type    = "text"
+                                id      = "histoire_content"
+                                name    = "histoire_content"
+                                aria-label = "histoire_content field"
+
+                        <div class = "error-message" id = "error-content"></div>  
+                        
+                </fielset>
+                <fieldset class="personnage">
+                        <label for=avatar> Choisir un personnage</label>
+                            <ul>
+                            
+                            {% for personnage in personnages %}
+                                <li>
+                                    <div class="personnage">
+                                        <input type="radio" id="{{ perso.name }}" name="personnage" value= "{{ id }}" >
+                                        <label for="{{ perso.name }}"></label>
+                                   </div>
+                               </li>
+                            {% endfor %}
+                            </ul>
+                </fieldset>
+                        <div class="error-message" id="error-personnage"></div>
+                
+                <fieldset class="objet">
+                        <label for=objet> Choisir un objet</label>
+                            <ul>
+                            
+                            {% for objet in objets %}
+                                <li>
+                                    <div class="objet">
+                                        <input type="radio" id="{{ objet.name }}" name="objet" value= "{{ id }}" >
+                                        <label for="{{ objet.name }}"></label>
+                                   </div>
+                               </li>
+                            {% endfor %}
+                            </ul>
+                </fieldset>
+                        <div class="error-message" id="error-objet"></div>
+                        
+                <fieldset class="lieu">
+                        <label for=avatar> Choisir un lieu</label>
+                            <ul>
+                            
+                            {% for personnage in personnages %}
+                                <li>
+                                    <div class="lieu">
+                                        <input type="radio" id="{{ lieu.name }}" name="lieu" value= "{{ id }}" >
+                                        <label for="{{ lieu.name }}"></label>
+                                   </div>
+                               </li>
+                            {% endfor %}
+                            </ul>
+                </fieldset>
+                        <div class="error-message" id="error-lieu"></div>
+                
+                <label  for     = "url">url:</label>
+                        <input  type    = "text"
+                                id      = "url"
+                                name    = "url"
+                                value "assets/img/histoires/"
+                                aria-label = "url field"
+
+                        <div class = "error-message" id = "error-url"></div>  
+                       
+                        
+                        <input  type    = "hidden"
+                                name    = "csrf_token"
+                                id      = "token"
+                                value   = "{{ token }}">
+                        <div class = "error-message" id = "error-token"></div>
+
+                <fieldset class="submit-btn">
+                    <button type="submit" class="register-btn">ajouter une histoire</button>
+                </fieldset>
+        </form>
+
+</form>

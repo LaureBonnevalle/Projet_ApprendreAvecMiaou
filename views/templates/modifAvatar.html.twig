@@ -1,0 +1,102 @@
+{% extends "layoutAdmin.html.twig" %}
+
+{% block description %}
+    {{ parent() }}
+{% endblock %}
+{% block title %} 
+|Modif Avatar
+{% endblock %}
+{% block body %}
+    <body>
+    <div class="rect">
+{% block header %}
+{% include "subpages/_headerAdmin.html.twig" %}
+{% block nav %}
+{% include "subpages/_navUser.html.twig" %}
+{%endblock%}
+{% endblock %}
+
+
+{% block error %}
+    {{ parent() }}
+{% endblock %} 
+    
+{% block stylesheets %}
+    {#{{ parent() }}#}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!--<link href="{#{{ asset('assets/css/user-admin-panel.css') }}#}" rel="stylesheet">-->
+{% endblock %}    
+    
+{% block content %}
+    <main id="Avatar">
+    
+<section id="modifAvatar" class ="modifAvatar">
+    
+    <h2>Liste des avatars</h2> 
+    <ul class ="modifAvatar" id="modifyAvatar">
+        {% for avatar in avatars %}
+                                            
+            <li>
+                <div class="avatars">
+                    <p> {{ avatar.name }}</p> 
+                    <form method="POST" action="?route=deleteAvatar&id">
+                        <input type="hidden" name="id" value="{{ avatar.id|e }}"> 
+                        <input type="hidden" name="token" value="{{ csrf_token }}"> 
+                        <input type="submit" name="soumettre" value="Supprimer">
+                    </form>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>                        
+
+    
+</section>
+
+<section id="form">
+    <h2>Ajouter un avatar</h2>
+
+    <!-- Formulaire pour répondre au message -->
+    <form method="POST" action="?route=addAvatar">
+
+        <fieldset>
+            <!-- Champ pour saisir le contenu de la réponse -->
+            <input type= "text" name="name" id="name" value="">name</input>
+            <div class="error-message" id="error-name"></div>
+            
+            <input type="text" name="url" id="url" value="">url</input>  
+            <div class="error-message" id="error-url"></div>
+            
+            <input type="text" name="description" id="description" value="">description</input>  
+            <div class="error-message" id="error-name"></div>
+            
+            <input type="text" name="caracteristique" id="caracteristique" value="">caractéristique</input>  
+            <div class="error-message" id="error-caracteristiques"></div>
+            
+            <input type="text" name="qualite" id="qualite" value="">qualité</input>  
+            <div class="error-message" id="error-qualite"></div>
+
+            <!-- Champ caché pour le token CSRF -->
+            <input type="hidden" name="csrf_token" id="csrf_token" value="{{ csrf_token }}">
+            <div class="error-message" id="error-token"></div>
+
+            <!-- Bouton pour soumettre le formulaire -->
+            <input type="submit" name="soumettre" value="Envoyer">
+        </fieldset>
+    </form>
+</section>
+ </main>
+{% endblock %}
+        
+            
+           
+        
+        {% block footer %}
+            {{ parent() }}
+        {% endblock %}
+        
+    
+        {% block java%}
+          {{ parent() }}
+        {% endblock %}
+{% endblock %}

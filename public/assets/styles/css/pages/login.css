@@ -88,6 +88,21 @@ main {
     content: " ";
   }
 }
+@media (min-width: 992px) {
+  .login-content #login-form .login-content #login-form .container-login {
+    min-height: 400px;
+  }
+}
+@media (min-width: 1100px) {
+  .login-content #login-form .login-content #login-form .container-login {
+    min-height: 400px;
+  }
+}
+@media (min-width: 1200px) {
+  .login-content #login-form .login-content #login-form .container-login {
+    min-height: 400px;
+  }
+}
 .login-content #login-form .container-login {
   background-color: antiquewhite;
   background-image: url("../../img/Miaou/chatAuth.png");
