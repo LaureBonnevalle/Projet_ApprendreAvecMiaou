@@ -81,7 +81,7 @@
   width: 100%;
   min-height: clamp(400px, 55vh, 500px);
   padding: clamp(1.5rem, 4vh, 3rem) clamp(1rem, 3vw, 2rem);
-  border: 2px solid #5C5454;
+  border: 5px solid #5C5454;
   border-radius: 0 0 15px 15px;
   display: flex;
   flex-direction: column;
@@ -216,7 +216,6 @@
   outline-offset: 4px;
 }
 #register #register-form .avatar .avatars label {
-  ;
   margin: 0;
   display: block;
 }
@@ -281,7 +280,6 @@
   font-family: "Comic Sans MS", "Raleway", cursive;
   background-color: #5C5454;
   color: #ffffff;
-  ;
   border: 2px solid #3d3434;
   box-sizing: border-box;
   transition: all 0.3s ease;

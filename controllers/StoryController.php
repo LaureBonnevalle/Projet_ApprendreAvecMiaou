@@ -23,6 +23,7 @@ class StoryController extends AbstractController {
         $avatar = $am->getById($_SESSION['user']['avatar']);
         $timesModels = new TimesModels();
         $elapsedTime = $timesModels->getElapsedTime();
+        $func = new Utils();
         
         
     $scripts = $this->addScripts(['assets/js/ajaxStory.js']);
@@ -30,6 +31,8 @@ class StoryController extends AbstractController {
         $characters = $pm->getAllCharacters();
         $locations = $lm->getAllLocations();
         $items = $om->getAllItems();
+
+        $avatar->setUrlMini($func->asset($avatar->getUrlMini()));
         
         if (isset($_SESSION['error'])) {
         unset($_SESSION['error']);

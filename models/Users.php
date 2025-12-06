@@ -3,7 +3,7 @@
 class Users {
     private int $id;
     private string $email;
-    private string $password;
+    private ?string $password = null;
     private string $firstname;
     private ?int $age;
     private int $avatar;
@@ -34,7 +34,7 @@ class Users {
         return $this->email;
     }
 
-    public function getPassword(): string {
+    public function getPassword(): ?string {
         return $this->password;
     }
 
@@ -75,7 +75,7 @@ class Users {
         $this->email = $email;
     }
 
-    public function setPassword(string $password): void {
+    public function setPassword(?string $password): void {
         $this->password = $password;
     }
 

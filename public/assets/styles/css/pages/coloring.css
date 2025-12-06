@@ -281,6 +281,7 @@
   box-shadow: 6px 6px 0px rgb(20.8962264151, 200.6037735849, 81.4952830189);
 }
 .download-button {
+  border: 1px solid #000000;
   /*display: inline-flex;
   align-items: center;
   gap: 12px;

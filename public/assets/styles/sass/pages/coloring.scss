@@ -299,6 +299,7 @@
   .download-button {
 
     @include mixins.button-coloriages();
+    border: 1px solid varcolors.$noir;
     /*display: inline-flex;
     align-items: center;
     gap: 12px;

@@ -13,6 +13,7 @@ class DefaultController extends AbstractController {
     $am = new AvatarManager();
     $timesModels = new TimesModels();
     $elapsedTime = $timesModels->getElapsedTime();
+    $func= new Utils();
 
     // Scripts communs (footer + burger)
     $scripts = $this->getDefaultScripts();
@@ -38,6 +39,8 @@ class DefaultController extends AbstractController {
 
     // Cas 2 : utilisateur connecté → switch sur le rôle
     $avatar = $am->getById($_SESSION['user']['avatar']);
+ 
+    $avatar->setUrlMini($func->asset($avatar->getUrlMini()));
     $role   = $_SESSION['user']['role'];
     if (!isset($_SESSION['start_time'])) {
     $_SESSION['start_time'] = time();
@@ -53,7 +56,7 @@ class DefaultController extends AbstractController {
                 'session'         => $_SESSION,
                 'connected'       => true,
                 'success_message' => $_SESSION['success_message'] ?? null,
-                'avatar'          => [$avatar],
+                'avatar'          => $avatar,
                 'isUser'          => true,
                 'start_time'      => $_SESSION['start_time']
             ], $scripts);
@@ -110,6 +113,7 @@ class DefaultController extends AbstractController {
             $am = new AvatarManager();
             $timesModels = new TimesModels();
             $elapsedTime = $timesModels->getElapsedTime();
+            $func = new Utils();
 
             // Scripts communs (footer + burger)
             $scripts = $this->getDefaultScripts();
@@ -129,6 +133,8 @@ class DefaultController extends AbstractController {
             
 
             $avatar = $am->getById($_SESSION['user']['avatar']);
+            $avatar->setUrlMini($func->asset($avatar->getUrlMini()));
+
             $_SESSION['start_time'] = time();
             
             $this->render("pedagogie.html.twig", [
@@ -138,7 +144,7 @@ class DefaultController extends AbstractController {
                 'session'         => $_SESSION,
                 'connected'       => true,
                 'success_message' => $_SESSION['success_message'] ?? null,
-                'avatar'          => [$avatar],
+                'avatar'          => $avatar,
                 'isUser'          => true,
                 'start_time'      => $_SESSION['start_time']
             ], $scripts);

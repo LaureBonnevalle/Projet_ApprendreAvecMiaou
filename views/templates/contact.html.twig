@@ -18,61 +18,35 @@
         
             <h2>Une demande ? Une suggestion ? signalez un bug ? Contactez Miaou</h2>
             <article id="contact-form" class="form">
-                <h3>Pour nous contacter, remplissez le formulaire
-                <form method="POST" action="?route=contact" class ="form-control">
+                <h3>Pour nous contacter, remplissez le formulaire</h3>
+                <form method="POST" action="?route=contact" class="contact-form" novalidate aria-describedby="contact-description">
+                <div class="container-contact">
+                        <legend class="sr-only">Informations de contact</legend>
 
-                    <div class='container-contact'>  
+                        <label for="firstname">Prénom <span aria-label="requis" class="required">*</span></label>
+                        <input type="text" id="firstname" name="firstname" aria-describedby="error-firstname" required>
+                        <div class="error-message" id="error-firstname" role="alert" aria-live="polite"></div>
 
-                        <fieldset>
-                                <legend>Merci de renseigner les informations suivantes :</legend>
+                        <label for="email">Email <span aria-label="requis" class="required">*</span></label>
+                        <input type="email" id="email" name="email" aria-describedby="error-email" required>
+                        <div class="error-message" id="error-email" role="alert" aria-live="polite"></div>
 
-                                <label  for        = "firstname">Prénom :</label>
-                                <input  type       = "text"
-                                        id         = "firstname"
-                                        name       = "firstname"
-                                        aria-label = "firstname field"
-                                        value      = "">
-                                <div class="error-message" id="error-firstname" role="alert" aria-live="polite"></div>
+                        <label for="subject">Sujet <span aria-label="requis" class="required">*</span></label>
+                        <input type="text" id="subject" name="subject" aria-describedby="error-subject" required>
+                        <div class="error-message" id="error-subject" role="alert" aria-live="polite"></div>
 
-                                <label  for        = "email">Email :</label>
-                                <input  type       = "email"
-                                        id         = "email"
-                                        name       = "email"
-                                        aria-label = "Email field"
-                                        value      = "">
-                                <div class="error-message" id="error-email" role="alert" aria-live="polite"></div>
+                        <label for="content">Votre message <span aria-label="requis" class="required">*</span></label>
+                        <textarea id="content" name="content" rows="5" aria-describedby="error-content" required></textarea>
+                        <div class="error-message" id="error-content" role="alert" aria-live="polite"></div>
 
-                                <label  for        = "subject">Sujet:</label>
-                                <input  type       = "text"
-                                        id         = "subject"
-                                        name       = "subject"
-                                        aria-label = "Subject field"
-                                        value      = "">
-                                <div class="error-message" id="error-subject" role="alert" aria-live="polite"></div>
+                        <input type="hidden" name="csrf_token" id="csrf_token" value="{{ csrf_token }}">
+                        <div class="error-message" id="error-csrf_token" role="alert" aria-live="assertive"></div>
 
-                                <label for="content">Contenu</label>
-                                <textarea       id               = "content" 
-                                                name             = "content" 
-                                                rows             = "5" 
-                                                cols             = "33"
-                                                aria-describedby = ""></textarea>
-                                <div class="error-message" id="error-content" role="alert" aria-live="polite"></div>
-
-
-                                <input  type    = "hidden"
-                                        name    = "csrf_token"
-                                        id      = "csrf_token"
-                                        value   = "{{ csrf_token }}">
-                                <div class="error-message" id="error-csrf_token" role="alert" aria-live="polite"></div>                        
-
-                                <input  type    = "submit"
-                                        name    = "soumettre"
-                                        value   = "Envoyer"
-                                        class = "btn-primary">
-                        </fieldset>
+                        <div class="submit-button">
+                        <input type="submit" class="register-btn" name="soumettre" value="Envoyer" aria-label="Envoyer votre message à Miaou">
                         </div>
+                </div>
                 </form>
-            </article>
         </section>
    {% endblock %}
 {% endblock %}

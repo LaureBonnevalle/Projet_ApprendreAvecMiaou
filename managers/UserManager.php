@@ -123,6 +123,33 @@ class UserManager extends AbstractManager
         }
     }
 
+    public function updateProfile(int $userId, string $firstname, int $age, string $email, int $avatar): bool
+{
+    try {
+        $sql = "UPDATE users 
+                SET firstname = :firstname, 
+                    age = :age, 
+                    email = :email, 
+                    avatar = :avatar 
+                WHERE id = :id";
+        
+        $parameters = [
+            'firstname' => $firstname,
+            'age' => $age,
+            'email' => $email,
+            'avatar' => $avatar,
+            'id' => $userId
+        ];
+        
+        $this->execute($sql, $parameters);
+        return true;
+        
+    } catch (PDOException $e) {
+        error_log("Erreur updateProfile: " . $e->getMessage());
+        return false;
+    }
+}
+
     /**
      * Changer le statut newsletter d'un utilisateur
      */

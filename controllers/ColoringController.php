@@ -11,11 +11,12 @@ class ColoringController extends AbstractController
         $categories = $categoriesManager->getAll();
         
         $avatar = $avatarManager->getById($_SESSION['user']['avatar']);
+        $avatar->setUrlMini($func->asset($avatar->getUrlMini()));
+
         $elapsedTime = $timesModels->getElapsedTime();
 
         $scripts = $this->addScripts(['assets/js/ajaxColoring.js']);
         
-        $func= new Utils();
         $func->clearSessionMessages();
         unset($_SESSION['error'], $_SESSION['success_message']);  
         
@@ -72,7 +73,26 @@ class ColoringController extends AbstractController
     
     public function modifColorings(): void 
 {
-    
+ 
+        $func = new Utils();
+        if (!$func->isAdmin()) {
+            throw new Exception("Accès refusé - Administrateur requis");
+        }
+
+       
+        $avatarManager = new AvatarManager();
+        $avatar = $avatarManager->getById($_SESSION['user']['avatar']);
+       
+
+       
+        $contactsManager = new ContactManager();
+        $nbrMessages = $contactsManager->getAllNotRead();
+       
+
+       
+        $timesModels = new TimesModels();
+        $elapsedTime = $timesModels->getElapsedTime();
+
         // Récupération des catégories
         $ccm=new  ColoringCategoriesManager();
         $categories = $ccm->getAllCategoriesColorings();
@@ -84,11 +104,20 @@ class ColoringController extends AbstractController
         foreach ($categories as $categorie) {
             $ColoringsParCategorie[$categorie['id']] = $cm->getAllColoringsByCategorie($categorie['id']);
         }
-        $scripts = $this->addScripts(['public/assets/js/common.js','public/assets/js/formController.js','public/assets/js/formFunction.js', 'public/assets/js/ColoringAdmin.js']);
+        $scripts = $this->addScripts(['assets/js/formController.js', 'assets/js/adminjs/ColoringAdmin.js', 'assets/js/mess.js']);
         // Affichage de la vue
-        $this->render('ColoringsAdmin.html.twig', [
+        $this->render('coloringsAdmin.html.twig', [
+            'titre' => 'Gestion Admin des coloriages',
             'categories' => $categories,
-            'ColoringsParCategorie' => $ColoringsParCategorie
+            'ColoringsParCategorie' => $ColoringsParCategorie,
+             'user' => $_SESSION['user'] ?? null,
+            //'avatar' => [$avatar],
+            'session' => $_SESSION,
+            'connected' => true,
+            'isUser' => false,
+            'isAdmin' => true,
+            'elapsed_time' => $elapsedTime,
+            'start_time' => $_SESSION['start_time'] ?? time(),
         ], $scripts);
         
     

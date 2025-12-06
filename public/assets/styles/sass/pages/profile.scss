@@ -1,0 +1,267 @@
+@use '../abstracts/varcolors';
+@use '../abstracts/mixins';
+
+#profile {
+
+     // Ajout d’un padding en bas pour éviter que le dernier container soit collé au header/footer
+  padding-bottom: 4rem; // ou margin-bottom si tu préfères
+
+  // Par défaut, petit padding en haut
+  padding-top: 1rem;
+
+  // À partir du breakpoint medium, on augmente le padding top
+  @include mixins.breakpoint(medium) {
+    padding-top: 6rem; // espace suffisant sous la nav du header
+  }
+
+  // À partir du breakpoint large, on peut aussi ajuster
+  @include mixins.breakpoint(large) {
+    padding-top: 8rem;
+    padding-bottom: 6rem;
+  }
+  // =====================
+  // CONTAINERS GÉNÉRAUX
+  // =====================
+  .container-profile,
+  .edit-profile,
+  .newsletter-section,
+  .contact-section,
+  .security-section {
+    background-color: rgba(255, 255, 255, 0.85); // encart blanc semi-opaque
+    border-radius: 15px;
+    padding: clamp(1rem, 3vh, 2rem);
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    width: 95%;
+    max-width: 600px;
+    box-sizing: border-box;
+    // ✅ Ajout de marges latérales pour petits formats
+    margin-left: clamp(1vh, 2vw, 3vh);
+    margin-right: clamp(1vh, 2vw, 3vh);
+
+ // ✅ Inputs text et email
+      input[type="email"],
+      input[type="text"],
+      input[type="number"]
+      {
+        width: 100%;
+        max-width: clamp(280px, 85vw, 350px);
+        height: clamp(40px, 6vh, 50px);
+        border-radius: 25px;
+        background-color: rgba(255, 255, 255, 0.65);
+        border: 2px solid #5C5454;
+        padding: 0 clamp(1rem, 3vw, 1.5rem);
+        font-size: clamp(0.9rem, 2vw, 1rem);
+        font-family: 'Comic Sans MS', 'Raleway', cursive;
+        box-sizing: border-box;
+        transition: all varcolors.$transition-normal;
+        position: relative;
+        z-index: 1;
+        
+        &:hover {
+          outline: 2px solid varcolors.$violet-main;
+          outline-offset: 2px;
+          background-color: varcolors.$blanc;
+          box-shadow: 0 2px 8px rgba(178, 57, 237, 0.3);
+        }
+        // ✅ Focus visible
+        &:focus {
+          outline: 3px solid varcolors.$violet-main;
+          outline-offset: 2px;
+          background-color: varcolors.$blanc;
+          box-shadow: 0 2px 8px rgba(178, 57, 237, 0.3);
+        }
+
+        // ✅ Placeholder
+        &::placeholder {
+          color: #999;
+          font-style: italic;
+        }
+      }
+
+  }
+  @include mixins.breakpoint(large) {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+
+    .container-profile,
+    .edit-profile,
+    .newsletter-section,
+    .contact-section,
+    .security-section,
+    .avatar-container {
+      max-width: none;
+      margin-left: 2vh; // la grille gère l’espacement
+      margin-right: 0;
+    }
+  }
+}
+
+  // =====================
+  // PROFIL ACTUEL
+  // =====================
+  .container-profile {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .form-group {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+      padding-bottom: 0.5rem;
+
+      label {
+        font-weight: bold;
+        color: #333;
+        margin-right: 1rem;
+      }
+      
+
+      p {
+        margin: 0;
+        color: #444;
+        font-family: 'Comic Sans MS', 'Raleway', cursive;
+      }
+
+      img.avatar {
+        border-radius: 50%;
+        border: 3px solid #5C5454;
+        width: 70px;
+        height: 70px;
+        object-fit: cover;
+      }
+    }
+  }
+
+  // =====================
+  // FORMULAIRE MODIFICATION
+  // =====================
+  .edit-profile {
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+  }
+
+    label {
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    #avatars-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+      gap: clamp(0.8rem, 2vw, 1.2rem);
+      justify-items: center;
+      margin-top: 1rem;
+    
+    }
+    .avatar-option {
+      position: relative;
+      //display: grid;
+      justify-content: center;
+      align-items: center;
+
+      input[type="radio"] {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+
+        &:checked + label img {
+          border: 4px solid varcolors.$violet-main;
+          box-shadow: 
+            0 0 0 2px varcolors.$blanc,
+            0 0 15px rgba(178, 57, 237, 0.6);
+          transform: scale(1.1);
+        }
+
+        &:focus-visible + label img {
+          outline: 3px solid varcolors.$violet-main;
+          outline-offset: 4px;
+        }
+      }
+
+      label {
+        margin: 0;
+        display: block;
+
+        img {
+            display: flex;
+          width: clamp(65px, 15vw, 85px);
+          height: clamp(65px, 15vw, 85px);
+          border-radius: 50%;
+          border: 3px solid #5C5454;
+          object-fit: cover;
+          transition: all varcolors.$transition-normal;
+          background-color: varcolors.$blanc;
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+
+          &:hover {
+            transform: scale(1.05);
+            border-color: varcolors.$violet-light;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+          }
+        }
+      }
+    }
+
+    .error-message {
+      color: #d32f2f;
+      font-size: clamp(0.8rem, 1.8vw, 0.9rem);
+      font-weight: bold;
+      margin-top: 0.3rem;
+      min-height: 1.2em;
+      text-align: left;
+      background-color: rgba(255, 255, 255, 0.9);
+      padding: 0.3rem 0.5rem;
+      border-radius: 8px;
+      display: none;
+
+      &:not(:empty) {
+        display: block;
+      }
+    }
+
+  // Sur grand écran, la grille gère l’espacement
+  @include mixins.breakpoint(large) {
+    .avatar-container {
+      margin-left: 0;
+      margin-right: 0;
+      max-width: none;
+    }
+  }
+
+  // =====================
+  // NEWSLETTER / CONTACT / SÉCURITÉ
+  // =====================
+  .newsletter-section,
+  .contact-section,
+  .security-section {
+    p {
+      margin-bottom: 1rem;
+      color: #333;
+    }
+  }
+
+  // =====================
+  // BOUTONS
+  // =====================
+  button,
+  .btn {
+    @include mixins.button-3d(varcolors.$violet-main, varcolors.$violet-dark, $border-color: varcolors.$noir); // applique ton mixin bouton 3D
+    margin-top: 1rem;
+  }
+
+  a {
+    color: varcolors.$blanc;
+    text-decoration: none;
+  }
+
+  

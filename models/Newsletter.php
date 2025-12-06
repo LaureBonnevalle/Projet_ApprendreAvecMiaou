@@ -2,13 +2,13 @@
 
 class Newsletter {
     private ?int $id;
-    private string $news_email;
-    private string $news_prenom;
+    private string $firstname;
+    private string $email;
 
-    public function __construct(?int $id, string $news_email, string $news_prenom) {
+    public function __construct(?int $id, string $email, string $firstname) {
         $this->id = $id;
-        $this->news_email = $news_email;
-        $this->news_prenom = $news_prenom;
+        $this->firstname = $firstname;
+        $this->email = $email;
     }
 
     // Getter pour id
@@ -21,24 +21,24 @@ class Newsletter {
         $this->id = $id;
     }
 
-    // Getter pour news_email
-    public function getNewsEmail(): string {
-        return $this->news_email;
+    // Getter pour email
+    public function getEmail(): string {
+        return $this->email;
     }
 
-    // Setter pour news_email
-    public function setNewsEmail(string $news_email): void {
-        $this->news_email = $news_email;
+    // Setter pour email
+    public function setEmail(string $email): void {
+        $this->email = $email;
     }
 
-    // Getter pour news_prenom
-    public function getNewsPrenom(): string {
-        return $this->news_prenom;
+    // Getter pour firstname
+    public function getFirstname(): string {
+        return $this->firstname;
     }
 
-    // Setter pour news_prenom
-    public function setNewsPrenom(string $news_prenom): void {
-        $this->news_prenom = $news_prenom;
+    // Setter pour firstname
+    public function setFirstname(string $firstname): void {
+        $this->firstname = $firstname;
     }
 }
 ?>

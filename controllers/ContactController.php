@@ -15,7 +15,22 @@ class ContactController extends AbstractController {
      * If POSTed data is invalid, redisplays the form with error messages and retains entered data.
      */
     public function contactUs() {
-        
+
+                $func = new Utils();
+                $am = new AvatarManager();
+
+                if(isset($_SESSION['user'])) {
+                $avatar = $_SESSION['user']['avatar'];
+                $avatar = $am->getById( $_SESSION['user']['avatar']);
+                $avatar->setUrlMini($func->asset($avatar->getUrlMini()));
+
+
+                }
+                else {
+                    $avatar= $am->getById(4);
+                    $avatar= $func->asset($avatar->getUrlMini());
+
+                }
                 $errors = [];
                 
                 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -25,6 +40,7 @@ class ContactController extends AbstractController {
                     $scripts = $this->addScripts(['assets/js/formController.js']);
                     
                     $this->render('contact.html.twig', [
+                        'avatar'=> $avatar,
                         'user'  =>$_SESSION['user'] ?? null,
                         'page'      => "Contactez-nous",
                         'csrf_token'     => $token,
@@ -128,6 +144,11 @@ class ContactController extends AbstractController {
         ]);
         exit;
     }*/
+
+    public function renderContacForm() {
+
+        $this->render('contacFormUser.html.twi', []);
+    }
 
 /*****************************GESTION DES MESSAGES DES UTILISATEURS PAR ADMIN***********/    
     

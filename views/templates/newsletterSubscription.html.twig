@@ -13,40 +13,36 @@
         
         {% block error %}
         {% endblock %}
-        <section id="newsletter-subscribe" class="newsletter-content">
-            <h2>Abonnez-vous à notre newsletter</h2>
+       <section id="newsletter" class="newsletter-content">
+  <h2 class="sr-only">Formulaire d’abonnement à la newsletter</h2>
 
-            <form method="post" id="newsletter-form" action="?route=newsletterSubscribe">
-                <div class="form-group">
-                    <label for="firstname">Prénom <span class="required">*</span></label>
-                    <input 
-                        type="text" 
-                        id="firstname" 
-                        name="firstname" 
-                        placeholder="Votre prénom" 
-                        autocomplete="given-name" 
-                        required>
-                    <div class="error-message" id="error-firstname" role="alert" aria-live="polite"></div>
-                </div>
+  <article id="newsletter-form" class="form" role="form" aria-labelledby="newsletter-title">
+    <h3 id="newsletter-title">
+      Pour vous abonner à la Newsletter :<br aria-hidden="true"> Renseignez vos Prénom et Email
+    </h3>
 
-                <div class="form-group">
-                    <label for="email">Adresse email <span class="required">*</span></label>
-                    <input 
-                        type="email" 
-                        id="email" 
-                        name="email" 
-                        placeholder="exemple@email.com" 
-                        autocomplete="email" 
-                        required>
-                    <div class="error-message" id="error-email" role="alert" aria-live="polite"></div>
-                </div>
+    <form method="POST" action="?route=subscribe-newsletter" class="newsletter-form" novalidate aria-describedby="newsletter-description">
+      <div class="container-newsletter">
+        <legend class="sr-only">Informations d’abonnement</legend>
 
-                {# CSRF token #}
-                <input type="hidden" name="csrf_token" id="csrf_token" value="{{ csrf_token }}">
-                <div class="error-message" id="error-csrf_token" role="alert" aria-live="polite"></div>
+        <label for="firstname">Prénom <span aria-label="requis" class="required">*</span></label>
+        <input type="text" id="firstname" name="firstname" aria-describedby="error-firstname" required>
+        <div class="error-message" id="error-firstname" role="alert" aria-live="polite"></div>
 
-                <button type="submit" class="submit-btn">S'abonner</button>
-            </form>
-        </section>
+        <label for="email">Email <span aria-label="requis" class="required">*</span></label>
+        <input type="email" id="email" name="email" aria-describedby="error-email" required>
+        <div class="error-message" id="error-email" role="alert" aria-live="polite"></div>
+
+        <input type="hidden" name="csrf_token" id="csrf_token" value="{{ csrf_token }}">
+        <div class="error-message" id="error-csrf_token" role="alert" aria-live="assertive"></div>
+
+        <div class="submit-button">
+          <input type="submit" class="register-btn" name="soumettre" value="S’abonner" aria-label="S’abonner à la newsletter Miaou">
+        </div>
+      </div>
+    </form>
+  </article>
+</section>
+
 {% endblock %}
 {% endblock %}
