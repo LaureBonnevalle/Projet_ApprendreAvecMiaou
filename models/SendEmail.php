@@ -1,195 +1,219 @@
 <?php
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 class SendEmail {
 
-    public function sendEmailConfirme(string $firstname, string $email, string $passwordView) :void {
+    private function getMailer(): PHPMailer {
+        $mail = new PHPMailer(true);
 
-        $expeditorEmail = "apprendreavecmiaou@alwaysdata.net";
-        $destinataire = $email;
+        try {
+            // Config SMTP depuis les variables globales $_ENV
+            $mail->isSMTP();
+            $mail->Host       = $_ENV['SMTP_HOST'];
+            $mail->SMTPAuth   = true;
+            $mail->Username   = $_ENV['SMTP_USER'];
+            $mail->Password   = $_ENV['SMTP_PASSWORD'];
+            $mail->SMTPSecure = $_ENV['SMTP_SECURE']; // 'ssl' ou 'tls'
+            $mail->Port       = $_ENV['SMTP_PORT'];
 
-        $header= "MIME-Version: 1.0\r\n";
-        $header.= 'From:"ApprendreAvecMiaou"<'.$expeditorEmail.'>'."\n";
-        //$header.= "Cc: .......@hotmail.fr\n";
-        $header.= "X-Priority: 1\n";
-        $header.= 'Content-Type: text/html; charset="uft-8"'."\n";
-        $header.= 'Content-Transfer-Encoding: 8bit';
+            // Expéditeur
+            $mail->setFrom($_ENV['SMTP_USER'], $_ENV['MAIL8FROM8NAME']);
 
-        $message =
-'<html>
-    <body>
-        <div style="font-size: 24px; text-align: center">
-            <img src="assets/img/Miaou/chatfiligranne.jpg" alt="logo du site"/>
+            // Format HTML
+            $mail->isHTML(true);
+            $mail->CharSet = 'UTF-8';
+        } catch (Exception $e) {
+            error_log("Erreur configuration PHPMailer: " . $e->getMessage());
+        }
 
-            <h1>Site de jeux et activités pour enfants</h1>
+        return $mail;
+    }
 
-            <p>Bonjour, <span style="text-transform:uppercase">' . $email . ' responsable de ' . $firstname . '</span>
+    public function sendEmailConfirme(string $firstname, string $email, string $passwordView): void {
+        $mail = $this->getMailer();
+        $mail->addAddress($email);
+        $mail->AddEmbeddedImage('../public/assets/img/Miaou/EnteteEmailGrand.jpg', 'logo_miaou');
+        $message = '<img src="cid:logo_miaou" alt="logo du site">';
 
-            <p>Votre demande d\'accès au site a bien été enregistrée.</p>
-            <p>Votre mot de passe temporaire est : <strong>' . $passwordView . '</strong></p>
-            <p>Email : <strong>' . $email . '</strong></p>
-            <p style="color: rgb(255, 0, 0); font-size: 24px;">Nous vous conseillons de le changer rapidement !</p>
-    
-            <p>Respectez bien les majuscules et les minuscules.<br />
-            Votre compte n\'est pas encore activé. Vous devez vous connectez et modifier votre mot de passe.</p>
+        $mail->Subject = "Confirmation d'inscription sur le site ApprendreAvecMiaou";
 
-            <img src="assets/img/Miaou/chatfiligranne.jpg" alt="logo du site"/>
-        </div>
-    </body>
-</html>';
+        $message = '
+        <html>
+            <body style="width: 550px">
+            
+            </style>
+            <div class="header">
+                <img src="cid:logo_miaou" style="width: 550px"/>
+            </div>
+                <div >
+                    <p style="margin-top: 10px; text-align: center">Bonjour,</p>
+                    <p style="text-align: justify">Votre demande d\'accès au site pour <strong>' . htmlspecialchars($firstname) . '</strong> a bien été enregistrée. Votre mot de passe temporaire est : <strong>' . htmlspecialchars($passwordView) . '</strong></p>
+                    <p>Votre email de connexion: <strong>' . htmlspecialchars($email) . '</strong></p>
+                    <p style="color: #FF33FF; font-size: 18px;">Votre compte n\'est pas encore activé. Vous devez vous connecter et modifier votre mot de passe pour activer votre compte.</p>
+                    <p>Respectez bien les majuscules et les minuscules.<br />
+                    </p>
+                    <a href:"http://
+                </div>
+            <div class=footer style="background-color:#f1f1f1; padding:15px; text-align:center; font-size:14px; color:#555;">
+                <p>👉 Accédez à votre compte ici : <a href="https://apprendreavecmiaou.alwaysdata.net/index.php?route=login" 
+                style="color:#FF33FF; text-decoration:underline">
+                Se connecter
+                </a>
+                </p>
+                <p>&copy; ' . date("Y") . ' Apprendre avec Miaou</p>
+            </div>
+            </body>
+        </html>';
 
-        /*
-        $message .= "Content-Disposition: attachment; filename=\"Cars.png\"\n\n";
-        $message .= $content_encode . "\n";
-        $message .= "\n\n";	*/
+        $mail->Body = $message;
+
+        try {
+            $mail->send();
+            error_log("Email de confirmation envoyé à : " . $email);
+        } catch (Exception $e) {
+            error_log("Erreur envoi email confirmation: " . $mail->ErrorInfo);
+        }
 
         file_put_contents('../documents/email1.html', $message);
-
-        //mail($destinataire, "CONFIRMATION DE RECEPTION DE DEMANDE D'INSCRIPTION SUR ApprendreAvecMiaou.", $message, $header);
     }
-        
-        /*public function sendEmailConfirme(string $firstname, string $email, string $passwordView): void {
-        $expeditorEmail = "apprendreavecmiaou@gmail.com";
-        $destinataire = $email;
-        $subject = "CONFIRMATION DE RECEPTION DE DEMANDE D'INSCRIPTION SUR ApprendreAvecMiaou";
-    
-        $header = "MIME-Version: 1.0\r\n";
-        $header .= 'From: "ApprendreAvecMiaou" <'.$expeditorEmail.'>'."\n";
-        $header .= "X-Priority: 1\n";
-        $header .= 'Content-Type: text/html; charset="utf-8"'."\n";
-        $header .= 'Content-Transfer-Encoding: 8bit';
-    
-        $message = '<html>
-        <body>
-            <div style="font-size: 24px; text-align: center">
-                <img src="assets/img/Miaou/chatfiligranne.jpg" alt="logo du site"/>
-                <h1>Site de jeux et activités pour enfants</h1>
-                <p>Bonjour, <span style="text-transform:uppercase">' . $firstname . '</span></p>
-                <p>Votre demande d\'accès au site a bien été enregistrée.</p>
-                <p>Votre mot de passe temporaire est : <strong>' . $passwordView . '</strong></p>
-                <p>Email : <strong>' . $email . '</strong></p>
-                <p style="color: rgb(255, 0, 0); font-size: 24px;">Nous vous conseillons de le changer rapidement !</p>
-                <p>Respectez bien les majuscules et les minuscules.<br />
-                Votre compte n\'est pas encore activé. Vous devez vous connectez et modifier votre mot de passe.</p>
-                <img src="assets/img/Miaou/chatfiligranne.jpg" alt="logo du site"/>
-            </div>
-        </body>
-        </html>';
-    
-        // Send the email
-        mail($destinataire, $subject, $message, $header);
-    
-        // Optionally save the email to a file for records
-        file_put_contents('documents/email1.html', $message);
-        }*/
 
-    
-    public function sendEmailResponse(string $email, string $subjectReceived, string $firstname, string $contentReceived, string $receptedDate,   string $response): void {
-        $expeditorEmail = "apprendreavecmiaou@alwaysdata.net";
-        $destinataire = $email;
-        $subject = "Re: '.$subjectReceived.'";
-    
-        $header = "MIME-Version: 1.0\r\n";
-        $header .= 'From: "ApprendreAvecMiaou" <'.$expeditorEmail.'>'."\n";
-        $header .= "X-Priority: 1\n";
-        $header .= 'Content-Type: text/html; charset="utf-8"'."\n";
-        $header .= 'Content-Transfer-Encoding: 8bit';
-    
-        $message = '<html>
-        <body>
-            <div style="font-size: 24px; text-align: center">
-                <img src="assets/img/Miaou/chatfiligranne.jpg" alt="logo du site"/>
-                <h1>Site de jeux et activités pour enfants</h1>
-                <p>Bonjour, <span style="text-align: left">' . $firstname . '</span></p>
-                <p>Votre message: '.$contentReceived.' du '.$receptedDate.' </p>
-                
-                <p>La réponse de ApprendreAvecMiaou : '.$response.' </p>
-                
-                <img src="assets/img/Miaou/chatfiligranne.jpg" alt="logo du site"/>
+    public function sendEmailResponse(string $email, string $subjectReceived, string $firstname, string $contentReceived, string $receptedDate, string $response): void {
+        $mail = $this->getMailer();
+        $mail->addAddress($email);
+        $mail->AddEmbeddedImage('../public/assets/img/Miaou/EnteteEmailGrand.jpg', 'logo_miaou');
+        $message = '<img src="cid:logo_miaou" alt="logo du site">';
+
+        $mail->Subject = "Re: " . $subjectReceived;
+
+        $message = '
+        <html>
+        <body style="width: 550px">
+            
+            </style>
+            <div class="header">
+                <img src="cid:logo_miaou" style="width: 550px"/>
+            </div>
+            <div >
+                <p style="margin-top: 10px; text-align: center">Bonjour,</p>
+                <p>Votre message: ' . htmlspecialchars($contentReceived) . ' du ' . htmlspecialchars($receptedDate) . '</p>
+                <p>La réponse de ApprendreAvecMiaou : ' . htmlspecialchars($response) . '</p>
+            </div>
+            <div class=footer style="background-color:#f1f1f1; padding:15px; text-align:center; font-size:14px; color:#555;">
+                <p>👉 Répondre à cet email : <a href="https://apprendreavecmiaou.alwaysdata.net/index.php?route=contact" 
+                style="color:#FF33FF; text-decoration:underline">
+                Se connecter
+                </a>
+                </p>
+                <p>&copy; ' . date("Y") . ' Apprendre avec Miaou</p>
             </div>
         </body>
         </html>';
-    
-        // Send the email
-        mail($destinataire, $subject, $message, $header);
-    
-        // Optionally save the email to a file for records
+
+        $mail->Body = $message;
+
+        try {
+            $mail->send();
+            error_log("Email de réponse envoyé à : " . $email);
+        } catch (Exception $e) {
+            error_log("Erreur envoi email réponse: " . $mail->ErrorInfo);
+        }
+
         file_put_contents('../documents/email2.html', $message);
     }
-    
+
     public function sendPasswordResetEmail(string $firstname, string $email, string $newPassword): void {
-    $expeditorEmail = "apprendreavecmiaou@alwaysdata.net";
-    $destinataire = $email;
-    $subject = "RÉINITIALISATION DE VOTRE MOT DE PASSE - ApprendreAvecMiaou";
+        $mail = $this->getMailer();
+        $mail->addAddress($email);
+        $mail->AddEmbeddedImage('../public/assets/img/Miaou/EnteteEmailGrand.jpg', 'logo_miaou');
+        $message = '<img src="cid:logo_miaou" alt="logo du site">';
 
-    $header = "MIME-Version: 1.0\r\n";
-    $header .= 'From: "ApprendreAvecMiaou" <'.$expeditorEmail.'>'."\n";
-    $header .= "X-Priority: 1\n";
-    $header .= 'Content-Type: text/html; charset="utf-8"'."\n";
-    $header .= 'Content-Transfer-Encoding: 8bit';
+        $mail->Subject = "Réinitialisation de votre mot de passe - ApprendreAvecMiaou";
 
-    $message = '<html>
-    <body>
-        <div style="font-size: 18px; text-align: center; max-width: 600px; margin: 0 auto;">
-            <img src="assets/img/Miaou/chatfiligranne.jpg" alt="logo du site"/>
-            
-            <h1 style="color: #333;">Réinitialisation de votre mot de passe</h1>
-            
-            <p>Bonjour <span style="text-transform:uppercase; font-weight: bold;">' . htmlspecialchars($firstname) . '</span>,</p>
-            
-            <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
-                <p style="color: #856404; font-size: 16px;">
-                    <strong>🔒 Votre mot de passe a été réinitialisé</strong>
-                </p>
-                
-                <div style="background-color: #e9ecef; padding: 15px; border-radius: 5px; font-family: monospace; font-size: 20px; margin: 15px 0; border-left: 4px solid #007bff;">
-                    <strong>' . htmlspecialchars($newPassword) . '</strong>
+        $message = '
+        <html>
+        <body style="width: 550px">
+            <div class="header">
+                <img src="cid:logo_miaou" style="width: 550px"/>
+            </div>
+            <div >
+                <p style="margin-top: 10px; text-align: center">Bonjour,</p>
+                <p style="text-align: justify"><strong>🔒 Votre mot de passe a été réinitialisé</strong></p>
+                    <p>Votre nouveau mot de passe temporaire est: <strong>' . htmlspecialchars($newPassword) . '</strong>
+                    </p>
+                    <p>Votre email de connexion:<strong> ' . htmlspecialchars($email) . '</strong></p>
                 </div>
-                
-                <p><strong>Email :</strong> ' . htmlspecialchars($email) . '</p>
-            </div>
-            
-            <div style="background-color: #fff3cd; border: 1px solid #ffeaa7; border-radius: 5px; padding: 15px; margin: 20px 0;">
-                <p style="color: #856404; font-weight: bold;">⚠️ IMPORTANT - SÉCURITÉ</p>
-                <ul style="text-align: left; color: #856404;">
-                    <li>Connectez-vous <strong>immédiatement</strong> avec ce nouveau mot de passe</li>
-                    <li><strong>Changez ce mot de passe</strong> dès votre première connexion</li>
-                    <li>Ne partagez <strong>jamais</strong> ce mot de passe</li>
-                    <li>Supprimez cet email après vous être connecté</li>
-                </ul>
-            </div>
-            
-            <p style="font-size: 14px; color: #666;">
-                Si vous n\'avez pas demandé cette réinitialisation, 
-                <strong style="color: #dc3545;">contactez immédiatement l\'administrateur</strong>.
-            </p>
-            
-            <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #dee2e6;">
-                <p style="font-size: 12px; color: #999;">
-                    Respectez bien les majuscules et les minuscules.<br/>
-                    Email envoyé automatiquement le ' . date('d/m/Y à H:i') . '
+                <p style="color: #FF33FF; font-size: 18px;">Votre compte est désactivé. Vous devez vous connecter et modifier votre mot de passe pour réactiver votre compte.</p>
+                    <p>Respectez bien les majuscules et les minuscules.<br />
+                    </p>⚠️ IMPORTANT - SÉCURITÉ: Si vous n\'avez pas demandé cette réinitialisation, 
+                    <strong style="color: #dc3545;">contactez immédiatement l\'administrateur</strong>.
                 </p>
+                <div class=footer style="background-color:#f1f1f1; padding:15px; text-align:center; font-size:14px; color:#555;">
+                <p>👉 Contacter l\'administrateur : <a href="mailto:apprendreavecmiaou@gmail.com"  style="color: #FF33FF; text-decoration:underline";">Contacter l\'admin</a></p>
+                <p>&copy; ' . date("Y") . ' Apprendre avec Miaou</p>
             </div>
-            
-            <img src="assets/img/Miaou/chatfiligranne.jpg" alt="logo du site"/>
-        </div>
-    </body>
-    </html>';
+        </body>
+        </html>';
 
-    // Envoi de l'email
-    $emailSent = mail($destinataire, $subject, $message, $header);
-    
-    // Log pour debug
-    if ($emailSent) {
-        error_log("Email de réinitialisation envoyé avec succès à : " . $email);
-    } else {
-        error_log("Échec envoi email de réinitialisation à : " . $email);
-    }
-    
-    
-    // Optionally save the email to a file for records
+        $mail->Body = $message;
+
+        try {
+            $mail->send();
+            error_log("Email de réinitialisation envoyé à : " . $email);
+        } catch (Exception $e) {
+            error_log("Erreur envoi email reset: " . $mail->ErrorInfo);
+        }
+
         file_put_contents('../documents/email3.html', $message);
-    // Sauvegarde optionnelle pour les logs
-    file_put_contents('../documents/email_reset_' . date('Y-m-d_H-i-s') . '.html', $message);
-}
+        file_put_contents('../documents/email_reset_' . date('Y-m-d_H-i-s') . '.html', $message);
+    }
+
+    /**
+     * Envoie la newsletter HTML avec l'en-tête arc-en-ciel
+     * 
+     * @param string $to Email du destinataire
+     * @param string $subject Sujet de l'email
+     * @param string $htmlContent Contenu HTML de la newsletter
+     * @return bool true si envoi réussi, false sinon
+     */
+    public function sendNewsletter(string $to, string $subject, string $htmlContent) : bool
+    {
+        $mail = $this->getMailer();
+        
+        try {
+            // Ajouter le destinataire
+            $mail->addAddress($to);
+            
+            // Intégrer l'image d'en-tête arc-en-ciel "La Newsletter de Miaou"
+            // Utilisez le chemin vers votre image d'en-tête arc-en-ciel
+            $mail->AddEmbeddedImage('../public/assets/img/Miaou/EnetetEmailNewsletter.jpg', 'newsletter_header');
+            
+            // Note: Si votre image s'appelle différemment, changez le nom du fichier ici
+            // Par exemple: EnteteNewsletterMiaou.jpg, header_rainbow.jpg, etc.
+            
+            // Sujet
+            $mail->Subject = $subject;
+            
+            // Contenu HTML (déjà généré par generateNewsletterHTML)
+            $mail->Body = $htmlContent;
+            
+            // Version texte alternative (sans HTML)
+            $mail->AltBody = strip_tags($htmlContent);
+            
+            // Envoi
+            $mail->send();
+            error_log("Newsletter envoyée à : " . $to);
+            
+            // Optionnel : sauvegarder une copie de la newsletter envoyée
+            $filename = '../documents/newsletter_' . date('Y-m-d_H-i-s') . '_' . md5($to) . '.html';
+            file_put_contents($filename, $htmlContent);
+            
+            return true;
+            
+        } catch (Exception $e) {
+            error_log("Erreur envoi newsletter à $to : {$mail->ErrorInfo}");
+            return false;
+        }
+    }
 }

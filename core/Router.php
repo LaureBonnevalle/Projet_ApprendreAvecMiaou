@@ -28,14 +28,14 @@ class Router {
             $publicRoutes = [
                 "homepage", "contact", "login", "check-login", 
                 "register", "check-register", "displayModify", "modifyPassword", "logout",
-                "pedagogie"
+                "pedagogie", "forgottenPassword","newsletterSubscribe","newsletterUnsubscribe",
             ];
 
             // Routes pour utilisateurs connectés et validés (role 1 ou 2)
             $userRoutes = [
                 "homepageUser", "profile", "games", "pixelArt", 
                 "memo", "colorings", "coloringsListe", "stories", "getImage", 
-                "getStory", "displayGame", "displayPixelArt" 
+                "getStory", "displayGame", "displayPixelArt" ,"forgottenPassword", "updateProfile", "toggleNewsletter", "contact", "contactUsForm",
             ];
 
             // Routes pour administrateurs uniquement (role 2)
@@ -45,7 +45,8 @@ class Router {
                 "updateNewsletter", "response", "messagerie", "deleteMessage", 
                 "readMessage", "modifAvatar", "deleteAvatar", "addAvatar", 
                 "addstoryStoriesAd", "StoriesAdmin", "modifColoring", "addColoring", 
-                "deleteColoring", "addCategorie", "modifGame", "modifypedagogie"
+                "deleteColoring", "addCategorie", "modifGame", "modifypedagogie","forgottenPassword",
+                "sendNewsletterForm", "processNewsletterSend", "resetPassword",
             ];
 
             // ====================================
@@ -87,6 +88,7 @@ class Router {
             $dc = new DefaultController();
             $ac = new AuthController();
             $ctc = new ContactController();
+            $nc = new NewsletterController();
 
             switch ($route) {
                 case "homepage":
@@ -128,6 +130,18 @@ class Router {
                 case "pedagogie":
                     $dc->pedagogie();
                     break;
+
+                case "forgottenPassword":
+                    $ac->displayForgottenPassword();
+                    break;
+
+                case "newsletterSubscribe":
+                    $nc->newsletterSubscribe();
+                    break;
+
+                case "newsletterUnsubscribe":
+                    $nc->unsubscribe();
+                    break;
                     
                 default:
                     throw new Exception("Route publique non gérée: $route");
@@ -163,6 +177,10 @@ class Router {
             $gm = new GameController();
             $cc = new ColoringController();
             $sc = new StoryController();
+            $uc = new UserController();
+            $ctc= new ContactController();
+            $nc = new NewsletterController();
+
 
             switch ($route) {
                 case "homepageUser":
@@ -170,14 +188,29 @@ class Router {
                     break;
                     
                 case "profile":
-                    $ac->displayProfile();
+                    $uc->displayProfile();
                     break;
-                    
+
+                case "updateProfile":
+                    $uc->updateProfile();
+                    break;
+
+                case "toggleNewsletter":
+                    $uc->toggleNewsletter();
+                    break;
+                
+                case 'contact':
+                    $cc->contactUs();
+                    break;
+
+                case 'contactUsForm': 
+                    $cc->renderContactForm();
+                    break;
+                                    
                 case "displayGame":
                     $gm->displayGame();
                     break;
                     
-                case "pixelArt":
                 case "displayPixelArt":
                     $gm->displayPixelArt();
                     break;
@@ -205,6 +238,11 @@ class Router {
                 case "getStory":
                     $sc->getStory();
                     break;
+                
+                 case "forgottenPassword":
+                    $ac->displayForgottenPassword();
+                    break;
+                
                     
                 case "logout":
                     $ac->logout();
@@ -246,6 +284,14 @@ class Router {
 
             $dash = new DashboardController();
             $ac = new AuthController();
+            $uc = new UserController();
+            $avc= new AvatarController();
+            $sc = new StoryController();
+            $gm = new GameController();
+            $cc = new ColoringController();
+            $ctc= new ContactController();
+            $nc = new NewsletterController();
+
 
             switch ($route) {
                 case "homepageAdmin":
@@ -257,91 +303,103 @@ class Router {
                     break;
                     
                 case "ajaxSearchUsers":
-                    $dash->ajaxSearchUsers();
+                    $uc->ajaxSearchUsers();
                     break;
                     
                 case "allUsers":
-                    $dash->allUsers();
+                    $uc->allUsers();
                     break;
                     
                 case "readOneUser":
-                    $dash->readOneUser();
+                    $uc->readOneUser();
                     break;
                     
                 case "resetPassword":
-                    $dash->resetPassword();
+                    $uc->resetPassword();
                     break;
                     
                 case "updateStatus":
-                    $dash->resetStatus();
+                    $uc->resetStatus();
                     break;
                     
                 case "updateRole":
-                    $dash->resetRole();
+                    $uc->resetRole();
                     break;
                     
                 case "updateUserAvatar":
-                    $dash->updateUserAvatar();
+                    $uc->updateUserAvatar();
+                    break;
+
+                case "newsletterUnsubscribe":
+                    $nc->unsubscribe();
                     break;
                     
                 case "updateNewsletter":
-                    $dash->resetNewsletter();
+                    $uc->resetNewsletter();
                     break;
                     
                 case "response":
-                    $dash->response();
+                    $ctc->response();
                     break;
                     
                 case "messagerie":
-                    $dash->displayMessages();
+                    $ctc->displayMessages();
                     break;
                     
                 case "deleteMessage":
-                    $dash->deleteMessage();
+                    $ctc->deleteMessage();
                     break;
                     
                 case "readMessage":
-                    $dash->readMessage();
+                    $ctc->readMessage();
                     break;
                     
                 case "modifAvatar":
-                    $dash->modifAvatarAdmin();
+                    $avc->modifAvatarAdmin();
                     break;
                     
                 case "deleteAvatar":
-                    $dash->deleteAvatar();
+                    $avc->deleteAvatar();
                     break;
                     
                 case "addAvatar":
-                    $dash->addAvatar();
+                    $avc->addAvatar();
                     break;
                     
                 case "addstoryStoriesAd":
-                    $dash->addStory();
+                    $sc->addStory();
                     break;
                     
                 case "StoriesAdmin":
-                    $dash->ManageStories();
+                    $sc->ManageStories();
                     break;
                     
                 case "modifColoring":
-                    $dash->modifColorings();
+                    $cc->modifColorings();
                     break;
                     
                 case "addColoring":
-                    $dash->addColoring();
+                    $cc->addColoring();
                     break;
                     
                 case "deleteColoring":
-                    $dash->deleteColoring();
+                    $cc->deleteColoring();
                     break;
                     
                 case "addCategorie":
-                    $dash->addCategorie();
+                    $cc->addCategorie();
                     break;
                     
                 case "modifGame":
-                    $dash->modifGames();
+                    $gc->modifGames();
+                    break;
+
+                case "forgottenPassword":
+                    $ac->displayForgottenPassword();
+                    break;
+
+                case "resetPassword":
+                    $ac->resetPassword();
                     break;
                     
                 case "logout":

@@ -7,258 +7,182 @@
 
 {% block body %}
 
-        {% block header %}
-           {{ parent() }}
-            {% block stylesheets %}
-                {{ parent() }}
-                <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet"
-                <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"
-                {#<link href="{ asset('assets/css/user-admin-panel.css') }" rel="stylesheet" #}
-            {% endblock %}
-        {% endblock %}
         {% block content %}
     
             {% block error %}
             {% endblock %}
+            <section id="oneuser">
 <div class="user-panel">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-10">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="mb-0">
-                            <i class="fas fa-user-cog me-2"></i>
-                            Gestion de l'utilisateur #{{ user.id }}
-                        </h3>
-                    </div>
-                    <div class="card-body p-0">
-                        <table class="table table-striped mb-0">
-                            <tbody>
-                                <tr>
-                                    <th><i class="fas fa-id-card me-2"></i>ID</th>
-                                    <td>{{ id }}</td>
-                                </tr>
-                                <tr>
-                                    <th><i class="fas fa-envelope me-2"></i>Email</th>
-                                    <td>{{ email }}</td>
-                                </tr>
-                                <tr>
-                                    <th><i class="fas fa-user me-2"></i>Prénom</th>
-                                    <td>{{  firstname }}</td>
-                                </tr>
-                                <tr>
-                                    <th><i class="fas fa-birthday-cake me-2"></i>Âge</th>
-                                    <td>{{  age ? age ~ ' ans' : 'Non renseigné' }}</td>
-                                </tr>
-                                <tr>
-                                    <th><i class="fas fa-user-circle me-2"></i>Avatar</th>
-                                    <td>
-                                       <div class="d-flex align-items-center gap-3">
-        {#{% if avatar %}
-            <img class="avatar" src="{{ avatar.url }}" alt="{{ avatar.description }}">
-        {% endif %}#}
-        
-        <select class="form-select form-select-sm" style="width: 200px;" onchange="updateAvatar(this)">
-    {% for avatarOption in avatars %}
-        <option value="{{ avatarOption.id }}" 
-                {{ avatar and avatar.id == avatarOption.id ? 'selected' : '' }}>
-            {{ avatarOption.name }}
-        </option>
-    {% endfor %}
-    
-</select>
-<input type="hidden" name="user_id" value="{{ id }}">
+  <div class="card">
+    <div class="card-header">
+      Gestion de l'utilisateur #{{ id }}
     </div>
-                                    </td>
-                                </tr>
-<tr>
-    <th><i class="fas fa-envelope me-2"></i>Newsletter</th>
-    <td>
-        <div class="d-flex align-items-center gap-3">
-            <span class="newsletter-badge {{ newsletter == 1 ? 'newsletter-active' : 'newsletter-inactive' }}" id="newsletter-badge-{{ id }}">
-                {{ newsletter == 1 ? 'Abonné' : 'Non abonné' }}
-            </span>
-            <button class="btn btn-sm {{ newsletter == 1 ? 'btn-outline-danger' : 'btn-outline-success' }} btn-action" 
-                    onclick="toggleNewsletter({{ id }}, {{ newsletter == 1 ? 0 : 1 }})" 
-                    id="newsletter-button-{{ id }}">
-                {{ newsletter == 1 ? 'Désabonner' : 'Abonner' }}
-            </button>
-        </div>
-        <div id="newsletter-message-{{ id }}" class="mt-2" style="display: none;"></div>
-    </td>
-</tr>
-<tr>
-    <th><i class="fas fa-user-tag me-2"></i>Rôle</th>
-    <td>
-        <div class="d-flex align-items-center gap-3">
-            <span class="role-badge {{ role == 2 ? 'admin' : 'user' }}" id="role-badge-{{ id }}">
-                {{ role == 2 ? 'Administrateur' : 'Utilisateur' }}
-            </span>
-            <select class="form-select form-select-sm" style="width: 200px;" 
-                    onchange="updateRole({{ id }}, this.value)" id="role-select-{{ id }}">
-                <option value="1" {{ role == 1 ? 'selected' : '' }}>Utilisateur</option>
-                <option value="2" {{ role == 2 ? 'selected' : '' }}>Administrateur</option>
-            </select>
-        </div>
-        <div id="role-message-{{ id }}" class="mt-2" style="display: none;"></div>
-    </td>
-</tr>
-<tr>
-    <th><i class="fas fa-toggle-on me-2"></i>Statut</th>
-    <td>
-        <div class="d-flex align-items-center gap-3">
-            <span class="status-badge {{ statut == 1 ? 'status-active' : 'status-inactive' }}" id="status-badge-{{ id }}">
-                {{ statut == 1 ? 'Actif' : 'Inactif' }}
-            </span>
-            <button class="btn btn-sm {{ statut == 1 ? 'btn-outline-danger' : 'btn-outline-success' }} btn-action" 
-                    onclick="toggleStatus({{ id }}, {{ statut == 1 ? 0 : 1 }})"
-                    id="status-button-{{ id }}">
-                {{ statut == 1 ? 'Désactiver' : 'Activer' }}
-            </button>
-        </div>
-        <div id="status-message-{{ id }}" class="mt-2" style="display: none;"></div>
-    </td>
-</tr>
-                                <tr>
-                                    <th><i class="fas fa-lock me-2"></i>Mot de passe</th>
-                                    <td>
-                                        <div class="password-field">
-                                            <span class="password-masked">••••••••</span>
-                                            <button id="resetPasswordBtn" data-user-id="{{ id }}" class="btn btn-warning">
-    <i class="fas fa-key me-1"></i>Réinitialiser le mot de passe
-</button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th><i class="fas fa-calendar-alt me-2"></i>Créé le</th>
-                                    <td>{{  createdAt|date('d/m/Y H:i') }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="card-footer text-center">
-    <a href="?route=allUsers" class="btn btn-secondary">
-        <i class="fas fa-arrow-left me-1"></i>Retour à la liste des utilisateurs
-    </a>
-</div>
-                </div>
-            </div>
-        </div>
+
+    <div class="card-body">
+      <table>
+        <tbody>
+          <tr>
+            <th>ID</th>
+            <td>{{ id }}</td>
+          </tr>
+
+          <tr>
+            <th>Email</th>
+            <td>{{ email }}</td>
+          </tr>
+
+          <tr>
+            <th>Prénom</th>
+            <td>{{ firstname }}</td>
+          </tr>
+
+          <tr>
+            <th>Avatar</th>
+            <td>
+              <div class="action-group">
+                <select class="select-sm" style="width: 200px;" onchange="updateAvatar(this)">
+                  {% for avatarOption in avatars %}
+                    <option value="{{ avatarOption.id }}"
+                      {{ avatar and avatar.id == avatarOption.id ? 'selected' : '' }}>
+                      {{ avatarOption.name }}
+                    </option>
+                  {% endfor %}
+                </select>
+                <input type="hidden" name="user_id" value="{{ id }}">
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <th>Newsletter</th>
+            <td>
+              <div class="action-group">
+                {% if newsletter == 1 %}
+        <span class="newsletter-badge active" id="newsletter-badge-{{ id }}">Abonné</span>
+        <button class="btn-toggle"
+                onclick="toggleNewsletter({{ id }}, 0)"
+                id="newsletter-button-{{ id }}">
+          Désabonner
+        </button>
+      {% else %}
+        <span class="newsletter-badge inactive" id="newsletter-badge-{{ id }}">Non abonné</span>
+        <button class="btn-toggle"
+                onclick="toggleNewsletter({{ id }}, 1)"
+                id="newsletter-button-{{ id }}">
+          Abonner
+        </button>
+      {% endif %}
+              </div>
+              <div id="newsletter-message-{{ id }}" class="message" aria-live="polite"></div>
+            </td>
+          </tr>
+
+          <tr>
+            <th>Rôle</th>
+            <td>
+              <div class="action-group">
+                <span class="badge role {{ role == 2 ? 'admin' : 'user' }}"
+                      id="role-badge-{{ id }}">
+                  {{ role == 2 ? 'Administrateur' : 'Utilisateur' }}
+                </span>
+                <select class="select-sm" style="width: 200px;"
+                        onchange="updateRole({{ id }}, this.value)"
+                        id="role-select-{{ id }}">
+                  <option value="1" {{ role == 1 ? 'selected' : '' }}>Utilisateur</option>
+                  <option value="2" {{ role == 2 ? 'selected' : '' }}>Administrateur</option>
+                </select>
+              </div>
+              <div id="role-message-{{ id }}" class="message" aria-live="polite"></div>
+            </td>
+          </tr>
+
+          <tr>
+            <th>Statut</th>
+            <td>
+              <div class="action-group">
+                {% if statut == 1 %}
+        <span class="status-badge active" id="status-badge-{{ id }}">Actif</span>
+        <button class="btn-toggle"
+                onclick="toggleStatus({{ id }}, 0)"
+                id="status-button-{{ id }}">
+          Désactiver
+        </button>
+      {% else %}
+        <span class="status-badge inactive" id="status-badge-{{ id }}">Inactif</span>
+        <button class="btn-toggle"
+                onclick="toggleStatus({{ id }}, 1)"
+                id="status-button-{{ id }}">
+          Activer
+        </button>
+      {% endif %}
+              </div>
+              <div id="status-message-{{ id }}" class="message" aria-live="polite"></div>
+            </td>
+          </tr>
+          <tr>
+            <th>Mot de passe</th>
+            <td>
+              <div class="action-group">
+                <button 
+                  type="button" 
+                  class="btn btn-sm btn-outline-warning btn-action"
+                  id="resetPasswordBtn"
+                  data-user-id="{{ id }}"
+                  onclick="resetPassword({{ id }})">
+                  <i class="fas fa-key"></i> Réinitialiser le mot de passe
+                </button>
+              </div>
+              <div id="resetPasswordMsg-{{ id }}" class="message" aria-live="polite"></div>
+              {# Hidden CSRF token for the request #}
+              <input type="hidden" id="csrf-token-{{ id }}" value="{{ csrf_token }}">
+            </td>
+          </tr>
+          </tr>
+
+          <tr>
+            <th>Créé le</th>
+            <td>{{ createdAt|date('d/m/Y H:i') }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+
+    <div class="card-footer">
+      <a href="?route=allUsers" class="btn-link">Retour à la liste des utilisateurs</a>
+    </div>
+  </div>
 </div>
+</section>
+<style>
+                    section {
+                        font-family: 'Comic Sans MS', 'Raleway', cursive;
+                    }
+                        #search {
+                            border-radius 30px;
+                        }
 
-          <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-         <!-- <script>
-// Fonction principale pour mettre à jour l'avatar utilisateur
+                        table {
+                            margin-top: 5vh; /* Ajoute un espace de 5 cm avant la table */
+                            border-collapse: collapse;
+                            width: 100%;
+                            border-radius: 30px;
+                        }
 
+                        th, td {
+                            border: 1px solid black;
+                            padding: 10px;
+                            text-align: left;
+                        }
 
-// Fonction pour réinitialiser le mot de passe
-function resetPassword(userId) {
-    if (confirm('Êtes-vous sûr de vouloir réinitialiser le mot de passe de cet utilisateur ?')) {
-        fetch(routes.resetPassword, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-Token': csrfToken
-            },
-            body: JSON.stringify({
-                user_id: userId
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Nouveau mot de passe généré : ' + data.new_password + '\n\nVeuillez le communiquer à l\'utilisateur de manière sécurisée.');
-            } else {
-                alert('Erreur : ' + (data.error || 'Erreur lors de la réinitialisation'));
-            }
-        })
-        .catch(error => {
-            console.error('Erreur:', error);
-            alert('Erreur lors de la réinitialisation du mot de passe.');
-        });
-    }
-}
+                        th {
+                            background-color: #090909ff;
+                            color: white;
+                            border: 1px solid white;
+                        }
+                        td {
+                            background-color: white;
+                        }
+            </style>
 
-// Fonction pour changer le statut
-function toggleStatus(userId, newStatus) {
-    const action = newStatus == 1 ? 'activer' : 'désactiver';
-    if (confirm(`Êtes-vous sûr de vouloir ${action} cet utilisateur ?`)) {
-        fetch(routes.updateStatus, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-Token': csrfToken
-            },
-            body: JSON.stringify({
-                user_id: userId,
-                status: newStatus
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                location.reload();
-            } else {
-                alert('Erreur : ' + (data.error || 'Erreur lors de la mise à jour'));
-            }
-        })
-        .catch(error => {
-            console.error('Erreur:', error);
-            alert('Erreur lors de la mise à jour du statut.');
-        });
-    }
-}
-
-// Fonction pour changer le rôle
-function updateRole(userId, newRole) {
-    if (confirm('Êtes-vous sûr de vouloir modifier le rôle de cet utilisateur ?')) {
-        fetch(routes.updateRole, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                //'X-CSRF-Token': csrfToken
-            },
-            body: JSON.stringify({
-                user_id: userId,
-                role: newRole
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                location.reload();
-            } else {
-                alert('Erreur : ' + (data.error || 'Erreur lors de la mise à jour'));
-            }
-        })
-        .catch(error => {
-            console.error('Erreur:', error);
-            alert('Erreur lors de la mise à jour du rôle.');
-        });
-    }
-}
-
-// Debug au chargement
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('=== DEBUG AVATAR ===');
-    
-    const select = document.querySelector('select[onchange*="updateAvatar"]');
-    const userInput = document.querySelector('input[name="user_id"]');
-    
-    console.log('Select trouvé:', select);
-    console.log('Input user_id trouvé:', userInput);
-    
-    if (select && userInput) {
-        console.log('✅ Configuration OK');
-        console.log('User ID:', userInput.value);
-        console.log('Avatar sélectionné:', select.value);
-    } else {
-        console.warn('❌ Éléments manquants');
-    }
-});
-
-    </script>-->
         {% endblock %}
 {% endblock %}

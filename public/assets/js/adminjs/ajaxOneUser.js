@@ -60,113 +60,162 @@ function restoreButton(button) {
  * Reset user password
  */
 function resetPassword(userId) {
-    // Validation des paramètres / Validate parameters
+    console.log("=== RESET PASSWORD === User ID:", userId);
+    
+    // Validation des paramètres
     if (!userId) {
         alert('Erreur : ID utilisateur manquant');
         return;
     }
     
-    // Trouver le bouton de réinitialisation / Find the reset button
+    // Trouver le bouton de réinitialisation
     const button = document.querySelector(`button[data-user-id="${userId}"]`);
     
-    // Empêcher la double exécution / Prevent double execution
+    console.log("Bouton trouvé:", button);
+    
+    // Empêcher la double exécution
     if (button && button.disabled) {
         return;
     }
     
-    // Dialogue de confirmation / Confirmation dialog
+    // Dialogue de confirmation
     const confirmMessage = `Êtes-vous sûr de vouloir réinitialiser le mot de passe de cet utilisateur ?
     
-    Ceci va :
-    - Générer un nouveau mot de passe aléatoire
-    - Passer le statut à "Inactif"  
-    - Envoyer le nouveau mot de passe par email`;
+Ceci va :
+- Générer un nouveau mot de passe aléatoire
+- Passer le statut à "Inactif"  
+- Envoyer le nouveau mot de passe par email`;
     
     if (!confirm(confirmMessage)) {
         return;
     }
     
-    // État de chargement / Set loading state
-    setButtonLoading(button, 'Réinitialisation...');
+    // État de chargement
+    if (button) {
+        button.disabled = true;
+        button.dataset.originalText = button.innerHTML;
+        button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Réinitialisation...';
+    }
     
-    // Préparer les données de la requête / Prepare request data
-    const requestData = {
-        user_id: parseInt(userId)
-    };
+    // Récupérer le CSRF token
+    const csrfTokenElement = document.getElementById(`csrf-token-${userId}`);
+    const csrfToken = csrfTokenElement ? csrfTokenElement.value : null;
     
-    // Vérifier que la route existe / Check that route exists
-    if (!routes || !routes.resetPassword) {
-        alert('Erreur de configuration: route non définie');
-        restoreButton(button);
+    console.log("CSRF Token:", csrfToken);
+    
+    if (!csrfToken) {
+        alert('Erreur : Token CSRF manquant');
+        if (button) {
+            button.disabled = false;
+            button.innerHTML = button.dataset.originalText;
+        }
         return;
     }
     
-    // Requête API / API request
-    fetch(routes.resetPassword, {
+    // Préparer les données de la requête
+    const formData = new URLSearchParams();
+    formData.append('id', userId);
+    formData.append('csrf_token', csrfToken);
+    
+    console.log("Envoi de la requête POST...");
+    
+    // Requête API
+    fetch('?route=resetPassword', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: JSON.stringify(requestData)
+        body: formData
     })
     .then(response => {
+        console.log("Réponse reçue:", response.status, response.statusText);
+        
         return response.text().then(text => {
+            console.log("Texte brut:", text);
+            
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`);
             }
             
-            // Vérifier si c'est du HTML au lieu de JSON / Check if HTML instead of JSON
+            // Vérifier si c'est du HTML au lieu de JSON
             if (text.trim().startsWith('<')) {
                 throw new Error('Le serveur a retourné du HTML au lieu de JSON. Vérifiez les logs serveur.');
             }
             
-            // Vérifier si la réponse est vide / Check if response is empty
+            // Vérifier si la réponse est vide
             if (!text.trim()) {
                 throw new Error('Réponse vide du serveur');
             }
             
-            // Parser le JSON / Parse JSON
+            // Parser le JSON
             try {
-                return JSON.parse(text);
+                const data = JSON.parse(text);
+                console.log("JSON parsé:", data);
+                return data;
             } catch (parseError) {
+                console.error("Erreur parsing JSON:", parseError);
                 throw new Error('Réponse JSON invalide du serveur: ' + parseError.message);
             }
         });
     })
     .then(data => {
+        console.log("Traitement des données:", data);
+        
         if (data.success) {
-            // Mettre à jour l'affichage du statut / Update status display
+            console.log("✅ SUCCÈS - Mise à jour de l'interface");
+            
+            // Mettre à jour l'affichage du statut si possible
             try {
                 updateStatusDisplay(0);
             } catch (statusError) {
-                // Ignorer les erreurs de mise à jour du statut / Ignore status update errors
+                console.warn("Impossible de mettre à jour le statut:", statusError);
             }
             
-            // Message de succès / Success message
-            const successMessage = data.email_sent 
-                ? 'Réinitialisation réussie ! Email envoyé à l\'utilisateur.'
-                : 'Réinitialisation réussie ! Attention : Email non envoyé.';
+            // Message de succès
+            const successMessage = data.message || 'Réinitialisation réussie ! Email envoyé à l\'utilisateur.';
             
+            // ✅ MISE À JOUR DU BOUTON AVEC LE CHECK
+            if (button) {
+                button.innerHTML = '<i class="fas fa-check"></i> Mot de passe réinitialisé';
+                button.className = button.className.replace('btn-outline-warning', 'btn-success');
+                button.disabled = true; // Garder disabled
+                
+                console.log("Bouton mis à jour:", button.innerHTML);
+            }
+            
+            // Afficher le message sous le bouton
+            const msgDiv = document.getElementById(`resetPasswordMsg-${userId}`);
+            if (msgDiv) {
+                msgDiv.textContent = successMessage;
+                msgDiv.style.color = 'green';
+                msgDiv.style.display = 'block';
+            }
+            
+            // Alert de confirmation
             alert(successMessage);
             
-            // Feedback visuel / Visual feedback
-            if (button) {
-                button.innerHTML = '<i class="fas fa-check me-1"></i>Réinitialisé !';
-                button.className = button.className.replace('btn-outline-warning', 'btn-success');
-                
-                setTimeout(() => {
-                    restoreButton(button);
-                    button.className = button.className.replace('btn-success', 'btn-outline-warning');
-                }, 3000);
-            }
         } else {
             throw new Error(data.error || 'Échec de la réinitialisation du mot de passe');
         }
     })
     .catch(error => {
-        restoreButton(button);
+        console.error("❌ ERREUR:", error);
         
-        // Message d'erreur / Error message
+        // Restaurer le bouton
+        if (button && button.dataset.originalText) {
+            button.disabled = false;
+            button.innerHTML = button.dataset.originalText;
+        }
+        
+        // Afficher le message d'erreur
+        const msgDiv = document.getElementById(`resetPasswordMsg-${userId}`);
+        if (msgDiv) {
+            msgDiv.textContent = error.message;
+            msgDiv.style.color = 'red';
+            msgDiv.style.display = 'block';
+        }
+        
+        // Message d'erreur
         let errorMessage = `Erreur lors de la réinitialisation : ${error.message}`;
         
         if (error.message.includes('HTML')) {

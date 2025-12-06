@@ -13,11 +13,22 @@ abstract class AbstractController
         ]);
 
         $twig->addExtension(new \Twig\Extension\DebugExtension());
+        $twig->addExtension(new AssetExtension());
+        /*$twig->addFunction(new \Twig\TwigFunction('getUserAvatar', function() {
+            if (!isset($_SESSION['user']['avatar'])) {
+                return null;
+            }
+            
+            $am = new AvatarManager();
+            return $am->getById($_SESSION['user']['avatar']);
+            }));*/
 
         $this->twig = $twig;
     }
+    // Ajouter cette fonction globale Twig
 
-    protected function render(string $template, array $data =[], array $scripts =[]) : void
+
+    /*protected function render(string $template, array $data =[], array $scripts =[]) : void
     {
         $data['scripts'] = $scripts;
         
@@ -25,6 +36,20 @@ abstract class AbstractController
         
         echo $this->twig->render($template, $data, ['elapsed_time' => (new TimesModels())->getElapsedTime()],$data);
         exit();
+    }*/
+
+    protected function render(string $template, array $data = [], array $scripts = []): void
+    {
+        // Charger automatiquement l'avatar si l'utilisateur est connecté
+        if (!isset($data['avatar']) && isset($_SESSION['user'])) {
+            $data['avatar'] = $this->getAvatarForUser();
+        }
+        
+        // Ajouter les scripts au tableau de données
+        $data['scripts'] = $scripts;
+        
+        // ... le reste de votre méthode render existante ...
+        echo $this->twig->render($template, $data);
     }
     
     protected function redirect (string $route) : void {
@@ -117,6 +142,17 @@ abstract class AbstractController
         return $elapsed;
     }
     return 0;
+    }
+
+    protected function getAvatarForUser(): ?Avatars
+    {
+        // Si l'utilisateur est connecté et a un avatar
+        if (isset($_SESSION['user']['avatar'])) {
+            $am = new AvatarManager();
+            return $am->getById($_SESSION['user']['avatar']);
+        }
+        
+        return null;
     }
     
     

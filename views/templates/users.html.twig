@@ -7,16 +7,7 @@
 
 {% block body %}
 
-        {% block header %}
-            {{ parent() }}
-            {% block stylesheets %}
-                {{ parent() }}
-                <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet"
-                <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"
-                {#<link href="{ asset('assets/css/user-admin-panel.css') }" rel="stylesheet" #}
-            {% endblock %}
-        {% endblock %}
-        {% block content %}
+         {% block content %}
     
             {% block error %}
             {% endblock %}
@@ -51,22 +42,35 @@
                                 <td>{{ user.newsletter|e }}</td>
                                 <td><a href="?route=readOneUser&id={{ user.id|e }}">Voir</a></td>
                             </tr>
-                            <style>
-                table {
-                    margin-top: 5vh; /* Ajoute un espace de 5 cm avant la table */
-                    border-collapse: collapse;
-                    width: 100%;
-                }
+                           <style>
+                    section {
+                        font-family: 'Comic Sans MS', 'Raleway', cursive;
+                    }
+                        #search {
+                            border-radius 30px;
+                        }
 
-                th, td {
-                    border: 1px solid black;
-                    padding: 10px;
-                    text-align: left;
-                }
+                        table {
+                            margin-top: 5vh; /* Ajoute un espace de 5 cm avant la table */
+                            border-collapse: collapse;
+                            width: 100%;
+                            border-radius: 30px;
+                        }
 
-                th {
-                    background-color: #f2f2f2;
-                }
+                        th, td {
+                            border: 1px solid black;
+                            padding: 10px;
+                            text-align: left;
+                        }
+
+                        th {
+                            background-color: #090909ff;
+                            color: white;
+                            border: 1px solid white;
+                        }
+                        td {
+                            background-color: white;
+                        }
             </style>
                             {% endfor %}
                         </tbody>

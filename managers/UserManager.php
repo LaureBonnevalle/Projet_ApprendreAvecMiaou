@@ -187,28 +187,40 @@ class UserManager extends AbstractManager
      * Réinitialiser le mot de passe et le statut
      */
     public function resetOneUserPasswordAndStatus(int $userId, string $passwordHash): bool 
-    {
-        try {
-            $sql = "UPDATE users SET password = :password, statut = 0 WHERE id = :id";
-            
-            $parameters = [
-                'password' => $passwordHash,
-                'id' => $userId
-            ];
-            
-            $this->execute($sql, $parameters);
-            
-            // Vérifier que la mise à jour a bien eu location
-            $checkSql = "SELECT id FROM users WHERE id = :id AND statut = 0";
-            $result = $this->findOne($checkSql, ['id' => $userId]);
-            
-            return $result !== false;
-            
-        } catch (PDOException $e) {
-            error_log("Erreur resetPasswordAndStatus: " . $e->getMessage());
+{
+    try {
+        $sql = "UPDATE users SET password = :password, statut = 0 WHERE id = :id";
+        
+        $parameters = [
+            'password' => $passwordHash,
+            'id' => $userId
+        ];
+        
+        // Exécuter la requête
+        $stmt = $this->db->prepare($sql);
+        $result = $stmt->execute($parameters);
+        
+        if (!$result) {
+            error_log("Erreur resetPasswordAndStatus: execute() a échoué");
             return false;
         }
+        
+        // Vérifier que la mise à jour a bien eu lieu
+        $rowCount = $stmt->rowCount();
+        
+        if ($rowCount === 0) {
+            error_log("Erreur resetPasswordAndStatus: aucune ligne modifiée (utilisateur introuvable?)");
+            return false;
+        }
+        
+        error_log("resetPasswordAndStatus: succès pour user ID $userId");
+        return true;
+        
+    } catch (PDOException $e) {
+        error_log("Erreur resetPasswordAndStatus: " . $e->getMessage());
+        return false;
     }
+}
     
     /**
      * Obtenir tous les utilisateurs avec formatage

@@ -4087,42 +4087,20 @@ main {
     min-height: 400px;
   }
 }
-body {
-  padding-top: 18vh;
-}
-@media (min-width: 576px) {
-  body {
-    padding-top: 20vh;
-  }
-}
-@media (min-width: 768px) {
-  body {
-    padding-top: 21vh;
-  }
-}
-@media (min-width: 992px) {
-  body {
-    margin-top: 15vh;
-  }
-}
-
 @media (min-width: 576px) {
   #dashboard {
-    padding-top: 20vh;
+    padding-top: 10vh;
   }
 }
 @media (min-width: 768px) {
   #dashboard {
-    padding-top: 21vh;
+    padding-top: 11vh;
   }
 }
 @media (min-width: 992px) {
   #dashboard {
     margin-top: 15vh;
   }
-}
-#dashboard table {
-  margin-top: 5vh;
 }
 
 #footer {

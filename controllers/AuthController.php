@@ -1,15 +1,5 @@
 <?php
 
-
-/*require_once("models/ErrorMessages.php");
-require_once("models/TimesModels.php");
-require_once("models/SendEmail.php");
-require_once("core/Utils.php");
-require_once("core/CSRFTokenManager.php");
-require_once("managers/AvatarManager.php");
-require_once("managers/AbstractManager.php");*/
-
-
 class AuthController extends AbstractController {
     public function __construct()
     {
@@ -18,7 +8,7 @@ class AuthController extends AbstractController {
 
     public function login() : void
     {  
-         $scripts = $this->addScripts(['public/assets/js/formController.js', 'public/assets/js/common.js', 'public/assets/js/global.js', 'public/assets/js/home.js']);
+         $scripts = $this->addScripts(['assets/js/formController.js',]);
         
         //($avatars);
         // Générer le token pour le mettre dans le vue, dans l'input de type hidden
@@ -143,12 +133,17 @@ $_SESSION["account_status"] = [
         $func = new Utils();
         $elapsedTime = $timesModels->getElapsedTime();
         $avatar = $am->getById($result['avatar']);
-        
+        //$avatar->setUrlMini($func->asset($avatar->getUrlMini()));
+
+
 
         if ($result['role'] == 1 || $result['role'] == 2) {
             $scripts= $this->getDefaultScripts();
             $scripts=$this->addScripts(['assets/js/mess.js'], $scripts);
-            $avatar->setUrlMini($func->asset($avatar->getUrlMini()));
+             $avatar->setUrlMini($func->asset($avatar->getUrlMini()));
+            //$avatar->setUrlMini($func->asset($avatar->getUrlMini()));
+           // var_dump($avatar);
+//exit();
             $this->render("homepageUser.html.twig", [
                 'user' =>$_SESSION['user'] ?? null,
                 'elapsed_time' => 0, // reset 
@@ -204,11 +199,14 @@ $this->redirectTo('homepage');
         // Générer le token pour le mettre dans le vue, dans l'input de type hidden
         $tm = new CSRFTokenManager();
         $scripts= $this->addScripts([
-            'public/assets/js/formController.js',
+            'assets/js/formController.js',
             ]);
         
         $_SESSION['error_mesage'] = "";      
-        $this->render("register.html.twig", ["elapsed_time" => $elapsedTime, "avatars" => $avatars, "token" => $tm-> generateCSRFToken()],$scripts);
+        $this->render("register.html.twig", [
+            "elapsed_time" => $elapsedTime, 
+            "avatars" => $avatars, 
+            "token" => $tm-> generateCSRFToken()],$scripts);
         // $template = "register";
         // require "templates/layout.phtml";
     }
@@ -302,7 +300,7 @@ $this->redirectTo('homepage');
 
                     $_SESSION['success_message'] = "Un email de validation vient de vous être envoyé";
                     
-                    $scripts= $this->addScripts(['public/assets/js/formController.js', 'public/assets/js/mess.js']);
+                    $scripts= $this->addScripts(['assets/js/formController.js', 'assets/js/mess.js']);
 
                     $this->render("homepage.html.twig", ['elapsed_time' => $elapsedTime, 'success_message'=> $_SESSION['success_message']], $scripts);
                     exit();
@@ -351,7 +349,7 @@ $this->redirectTo('homepage');
         }
         
         
-        $scripts = $this->addScripts(['public/assets/js/formController.js','public/assets/js/formFunction.js, /assets/js/mess.js']);
+        $scripts = $this->addScripts(['assets/js/formController.js']);
         $timesModels = new TimesModels();
                                 $elapsedTime = $timesModels->getElapsedTime();
         //($avatars);
@@ -436,87 +434,158 @@ $this->redirectTo('homepage');
     }
 }
 
-    
-    
-public function displayProfile() {
-     $am = new AvatarManager();
-        $avatars = $am->findAllAvatars();
-        $scripts = $this->addScripts(['public/assets/js/formController.js','public/assets/js/formFunction.js', 'public/assets/js/formController.js']);
-         $timesModels = new TimesModels();
-        $elapsedTime = $timesModels->getElapsedTime();
-        //($avatars);
-        // Générer le token pour le mettre dans le vue, dans l'input de type hidden
+
+public function displayForgottenPassword()
+{
+    $func = new Utils();
+
+    // Si le formulaire est soumis
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && $func->checkPostKeys(['email', 'csrf_token'])) {
+        $data = [
+            'email'      => trim($_POST['email']),
+            'csrf_token' => $_POST['csrf_token']
+        ];
+
+        // Vérification CSRF
         $tm = new CSRFTokenManager();
-        $scripts= $this->addScripts([
-            'public/assets/js/formController.js',
-            ]);
+        $tokenVerify = $tm->validateCSRFToken($_SESSION['csrf_token']);
+
+        if ($tokenVerify == $data['csrf_token']) {
+            $um = new UserManager();
+            $result = $um->findByEmail($data['email']);
+
+            if ($result === null) {
+                // Email inexistant
+                $_SESSION['error_message'] = "Adresse email inconnue.";
+            } else {
+                // Génération du nouveau mot de passe
+                $passwordGenerated = $func->generateRandomPassword(12);
+                $passwordHash      = password_hash($passwordGenerated, PASSWORD_BCRYPT);
+                $passwordView      = $passwordGenerated; // mot de passe en clair pour l'email
+
+                // Mise à jour en BDD
+                $resetOk = $um->resetOneUserPasswordAndStatus($result['id'], $passwordHash);
+
+                if ($resetOk) {
+                    // Envoi du mail
+                    $sendEmail = new SendEmail();
+                    $sendEmail->sendPasswordResetEmail($result['firstname'], $data['email'], $passwordView);
+
+                    $_SESSION['success_message'] = "Un email de réinitialisation vient de vous être envoyé.";
+                    $this->redirectTo("homepage");
+                } else {
+                    $_SESSION['error_message'] = "Erreur lors de la réinitialisation du mot de passe.";
+                }
+            }
+        } else {
+            $_SESSION['error_message'] = "Token CSRF invalide.";
+        }
+    }
+
+    // Affichage du formulaire (toujours exécuté)
+    $scripts = $this->addScripts(['assets/js/formController.js', 'assets/js/mess.js']);
+    $this->render("forgottenPassword.html.twig", [
+        'error_message'   => $_SESSION['error_message'] ?? null,
+        'success_message' => $_SESSION['success_message'] ?? null,
+        'csrf_token'      => $_SESSION['csrf_token'] ?? null
+    ], $scripts);
+}
+
+
+// Dans UserController.php
+
+/**
+ * Réinitialise le mot de passe d'un utilisateur (Admin uniquement)
+ * Envoie la réponse en JSON pour traitement AJAX
+ */
+public function resetPassword(): void
+{
+    // ✅ CRITICAL : Empêcher tout output avant le JSON
+    ob_clean(); // Nettoyer le buffer de sortie
+    
+    // Vérifier que c'est une requête POST
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        http_response_code(405);
+        header('Content-Type: application/json'); // ✅ AJOUTÉ
+        echo json_encode(['success' => false, 'error' => 'Méthode non autorisée']);
+        exit;
+    }
+
+    // Vérifier que c'est du JSON
+    $contentType = $_SERVER['CONTENT_TYPE'] ?? '';
+    
+    try {
+        $func = new Utils();
         
-        $_SESSION['error_mesage'] = "";      
-        $this->render("profile.html.twig", [
-            'titre' => 'Mon profil',
-            "user" => $_SESSION['user'] ?? null,
-            "elapsed_time" => $elapsedTime, 
-            "avatars" => $avatars, 
-            "token" => $tm-> generateCSRFToken(),
-            'session' => $_SESSION,
-            'connected' => $_SESSION['user'],
-            $scripts]);
-            
-       
+        // Lire les données POST (application/x-www-form-urlencoded)
+        if (!$func->checkPostKeys(['id', 'csrf_token'])) {
+            throw new Exception('Données manquantes (id ou csrf_token)');
+        }
 
+        $userId = (int) $_POST['id'];
+        $csrfToken = $_POST['csrf_token'];
 
+        // Validation de l'ID
+        if ($userId <= 0) {
+            throw new Exception('ID utilisateur invalide');
+        }
 
+        // Vérification CSRF
+        $tm = new CSRFTokenManager();
+        if (!$tm->validateCSRFToken($csrfToken)) {
+            throw new Exception('Token CSRF invalide');
+        }
 
+        // Récupérer l'utilisateur
+        $um = new UserManager();
+        $user = $um->readOneUser($userId);
+        
+        if (!$user) {
+            throw new Exception('Utilisateur non trouvé');
+        }
 
+        // Générer le nouveau mot de passe
+        $passwordGenerated = $func->generateRandomPassword(12);
+        $passwordHash = password_hash($passwordGenerated, PASSWORD_BCRYPT);
+
+        // Mettre à jour en BDD (mot de passe + statut à 0)
+        $resetOk = $um->resetOneUserPasswordAndStatus($userId, $passwordHash);
+
+        if (!$resetOk) {
+            throw new Exception('Échec de la mise à jour en base de données');
+        }
+
+        // Envoyer l'email
+        $sendEmail = new SendEmail();
+        $sendEmail->sendPasswordResetEmail(
+            $user->getFirstname(),
+            $user->getEmail(),
+            $passwordGenerated
+        );
+
+        // Réponse de succès
+        header('Content-Type: application/json'); // ✅ AJOUTÉ
+        echo json_encode([
+            'success' => true,
+            'message' => 'Mot de passe réinitialisé avec succès. Un email a été envoyé.',
+            'user_id' => $userId
+        ]);
+
+    } catch (Exception $e) {
+        error_log("Erreur resetPassword: " . $e->getMessage());
+        http_response_code(400);
+        header('Content-Type: application/json'); // ✅ AJOUTÉ
+        echo json_encode([
+            'success' => false,
+            'error' => $e->getMessage()
+        ]);
+    }
+    exit;
 }
 
 
 
 
-        
-       
-
-
-        
-       /* public function validateMail($email,$cle ) : void 
-        {
-            $um = new UserManager();
-            
-            $data = $this->um->findByEmail($email);
-         
-            $clebdd = $data['cle'];    // Récupération de la clé
-            $actif = $data['actif']; // $actif contiendra alors 0 ou 1
-        
-         
-         
-             // On teste la valeur de la variable $actif récupérée dans la BDD
-            if($actif == '1') // Si le compte est déjà actif on prévient
-              { //return $active="Votre compte est déjà actif !";
-                 $this->render("login.html.twig", ['active'=>"Votre compte est déjà actif !"]);
-              }
-            else // Si ce n'est pas le cas on passe aux comparaisons
-            {
-                    if($cle == $clebdd) // On compare nos deux clés    
-                    { 
-                      
-             
-                      // La requête qui va passer notre champ actif de 0 à 1
-                      $query = $this->db->prepare("UPDATE membres SET actif = 1 WHERE email like :email ");
-                      $query->bindParam(':email', $email);
-                      $query->execute();
-                      
-                      // Si elles correspondent on active le compte !    
-                      //return $activate= "Votre compte a bien été activé !";
-                      $this->render("login.html.twig", ['success_message'=>"Votre compte a bien été activé vous pouvez vous connectez !"]);
-                    }
-                    else // Si les deux clés sont différentes on provoque une erreur...
-                    {
-                      //return $errorCle = "Erreur ! Votre compte ne peut être activé...";
-                      $this->render("homepage.html.twig", ['error_message'=> "Erreur ! Votre compte ne peut être activé..."]);
-                    }
-             }
-        }*/
-    
     public function logout() : void
     {
         session_destroy();

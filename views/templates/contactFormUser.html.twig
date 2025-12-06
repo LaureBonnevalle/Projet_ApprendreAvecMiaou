@@ -1,25 +1,4 @@
-{% extends "layout.html.twig" %}
-
-{% block title %}
-      Miaou |Page Contact
-{% endblock %}
-{% block body %}
-
-        {% block header %}
-            {{ parent() }}
-        {% endblock %}
-
-        {% block content %}
-        
-        {% block error %}
-        {% endblock %}
-
-        <section id="contact"class="contact-content">
-        
-            <h2>Une demande ? Une suggestion ? signalez un bug ? Contactez Miaou</h2>
-            <article id="contact-form" class="form">
-                <h3>Pour nous contacter, remplissez le formulaire
-                <form method="POST" action="?route=contact" class ="form-control">
+ <form method="POST" action="?route=contact" class ="form-control">
 
                     <div class='container-contact'>  
 
@@ -72,8 +51,3 @@
                         </fieldset>
                         </div>
                 </form>
-            </article>
-        </section>
-   {% endblock %}
-{% endblock %}
-

@@ -1,6 +1,6 @@
 <?php
 
-class ContactsManager extends AbstractManager {
+class ContactManager extends AbstractManager {
 
     /**
      * Inserts a new user into the database
@@ -13,7 +13,7 @@ class ContactsManager extends AbstractManager {
      * @return void
      */
     public function insert(Contacts $newContact):void {
-        $sql = "INSERT INTO `messages`(`receptedDate`, `firstname`, `email`, `subject`, `content`, `statut`) VALUES (?, ?, ?, ?,?,?)";
+        $sql = "INSERT INTO `messages`(`recepted_date`, `firstname`, `email`, `subject`, `content`, `statut`) VALUES (?, ?, ?, ?,?,?)";
 
         $datas = [
             $newContact->getReceptedDate(),
@@ -28,7 +28,7 @@ class ContactsManager extends AbstractManager {
     }
     
     public function getAll(): array  {
-        $query = $this->db->prepare ( "SELECT * FROM `messages` ORDER BY statut ASC, receptedDate DESC");   
+        $query = $this->db->prepare ( "SELECT * FROM `messages` ORDER BY statut ASC, recepted_date DESC");   
         
         
         
