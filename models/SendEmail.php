@@ -138,7 +138,7 @@ class SendEmail {
                 <img src="cid:logo_miaou" style="width: 550px"/>
             </div>
             <div >
-                <p style="margin-top: 10px; text-align: center">Bonjour,</p>
+                <p style="margin-top: 10px; text-align: center">Bonjour ' . htmlspecialchars($firstname) . '</p>
                 <p style="text-align: justify"><strong>🔒 Votre mot de passe a été réinitialisé</strong></p>
                     <p>Votre nouveau mot de passe temporaire est: <strong>' . htmlspecialchars($newPassword) . '</strong>
                     </p>

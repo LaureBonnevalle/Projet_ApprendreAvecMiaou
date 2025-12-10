@@ -14,141 +14,225 @@ class ContactController extends AbstractController {
      * If POSTed data is valid, inserts the contact into the database and displays success message.
      * If POSTed data is invalid, redisplays the form with error messages and retains entered data.
      */
-    public function contactUs() {
+    /**
+     * Affiche et traite le formulaire de contact PUBLIC
+     */
+    public function contactUs(): void
+    {
+        $func = new Utils();
+        $am = new AvatarManager();
+        $tm = new CSRFTokenManager();
 
-                $func = new Utils();
-                $am = new AvatarManager();
+        // Gérer l'avatar pour l'affichage
+        if (isset($_SESSION['user'])) {
+            $avatar = $am->getById($_SESSION['user']['avatar']);
+            $avatar->setUrlMini($func->asset($avatar->getUrlMini()));
+        } else {
+            $avatar = $am->getById(4);
+            $avatar->setUrlMini($func->asset($avatar->getUrlMini()));
+        }
 
-                if(isset($_SESSION['user'])) {
-                $avatar = $_SESSION['user']['avatar'];
-                $avatar = $am->getById( $_SESSION['user']['avatar']);
-                $avatar->setUrlMini($func->asset($avatar->getUrlMini()));
+        $errors = [];
 
-
-                }
-                else {
-                    $avatar= $am->getById(4);
-                    $avatar= $func->asset($avatar->getUrlMini());
-
-                }
-                $errors = [];
-                
-                if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-                    $tm = new CSRFTokenManager();
-                    $token = $tm->generateCSRFToken();
-                    $_SESSION['csrf_token']= $token;
-                    $scripts = $this->addScripts(['assets/js/formController.js']);
-                    
-                    $this->render('contact.html.twig', [
-                        'avatar'=> $avatar,
-                        'user'  =>$_SESSION['user'] ?? null,
-                        'page'      => "Contactez-nous",
-                        'csrf_token'     => $token,
-                        'errors'    => [],
-                        'firstname'  => null,
-                        'email'     => null,
-                        'subject'   => null,
-                        'content'     => null,
-                    ], $scripts);
-                    return;
-                }
-
-                $errors = []; //$valids = [];
-
-                // Retrieve error and valid messages
-                $errorMessages = (new ErrorMessages())->getMessages();
-                //$validMessages = (new ValidMessages())->getMessages();
-                $func = new Utils();
-                //var_dump($_POST); die;
-        
-
-                if ($func->checkPostKeys(['firstname', 'email', 'subject', 'content', 'csrf_token'])) {
-                        
-                
-                $data = [
-                        'firstname'  => trim($_POST['firstname']),   // Removing unnecessary spaces and lowercaseing the first letter of the lastname, the rest in lowercase.           
-                        'email'     => strtolower(trim($_POST['email'])), 
-                        'subject'     => $func->e($_POST['subject']),// Removing unnecessary spaces and lowering the email
-                        'content'     => $func->e($_POST['content']),
-                        'csrf_token'  => $_POST['csrf_token']// Removing unnecessary spaces at the story
-                    ];
-                    
-                    //var_dump($data);
+        // ✅ SI PAS POST → Afficher le formulaire
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            $token = $tm->generateCSRFToken();
+            $_SESSION['csrf_token'] = $token;
             
-
-                    // Verify the CSRF token
-                    if($tm = (new CSRFTokenManager())->validateCSRFToken($data['csrf_token']) == false)
-                    {
-                        $errors[] = $errorMessages[0];                      // An error occurred while sending the form !
-                        unset($_SESSION['csrf_token']);                    // Clear the token verification session data
-                    }
-
-                    // Validate 'firsname' field
-                    //if (!$this->verifInputText($data['lastname'], [2, 60], 'string')) 
-                    if (strlen($data['firstname']) < 2 || strlen($data['firstname']) > 60) {
-                        $errors[] = $errorMessages[5];                      // Please enter your lastname !
-                    }
-                    // Validate 'email' field
-                    if (!$func->validateEmail($data['email'])) {
-                        $errors[] = $errorMessages[2];                      // Please provide a valid email !
-                    }
-                    // If there are no errors, proceed to insert the contact into the database
-                    if (empty($errors)) {                
-                            $scripts = $this->addScripts(['assets/js/formController.js']);
-                        //try {
-                            // Insert the new contact into the database                     
-                            $newContact = new Contacts();
-                            $newContact->setFirstname($data['firstname']);
-                            $newContact->setEmail($data['email']);
-                            $newContact->setSubject($data['subject']);
-                            $newContact->setContent($data['content']);
-                            $newContact->setReceptedDate((new TimesModels())->dateNow('Y-m-d H:i:s', 'Europe/Paris'));
-                            $newContact->setStatut(0);
-                            
-                            //($newContact);
-
-                            $addContact = new ContactManager();
-                            $addContact->insert($newContact);
-
-                            $_SESSION['success-message']="Votre message a bien été envoyé. Merci";
-
-                            $this->redirectTo('homepage');
-                            return; // Exit the method after rendering success message
-
-                //} catch (\Exception $e) {
-                    // Handle any errors that occur during user insertion
-                  //  $errors[] = $errorMessages[0];              // An error occurred while sending the form !
-                //}
-            //}
-                     }
-                }
-
-             $tm = new CSRFTokenManager();
-
+            $scripts = $this->addScripts(['assets/js/formController.js']);
+            
             $this->render('contact.html.twig', [
-                'user'          =>$_SESSION['user'] ?? null,
-                'page'          => "Contactez-nous",
-                'token'         => $tm->generateCSRFToken(),
-                'firstname'     => $data['firstname']    ?? null,
-                'email'         => $data['email']       ?? null,
-                'subject'       => $data['subject']     ?? null,
-                'content'       => $data['content']       ?? null
+                'avatar' => $avatar,
+                'user' => $_SESSION['user'] ?? null,
+                'page' => "Contactez-nous",
+                'csrf_token' => $token,
+                'errors' => [],
+                'firstname' => null,
+                'email' => null,
+                'subject' => null,
+                'content' => null,
+            ], $scripts);
+            return;
+        }
+
+        // ✅ SI POST → Traiter le formulaire
+        $errorMessages = (new ErrorMessages())->getMessages();
+
+        if (!$func->checkPostKeys(['firstname', 'email', 'subject', 'content', 'csrf_token'])) {
+            $errors[] = 'Tous les champs sont requis';
+        } else {
+            $data = [
+                'firstname' => trim($_POST['firstname']),
+                'email' => strtolower(trim($_POST['email'])),
+                'subject' => $func->e(trim($_POST['subject'])),
+                'content' => $func->e(trim($_POST['content'])),
+                'csrf_token' => $_POST['csrf_token']
+            ];
+
+            // Vérifier CSRF
+            if (!$tm->validateCSRFToken($data['csrf_token'])) {
+                $errors[] = $errorMessages[0] ?? 'Token CSRF invalide';
+                unset($_SESSION['csrf_token']);
+            }
+
+            // Valider firstname
+            if (strlen($data['firstname']) < 2 || strlen($data['firstname']) > 60) {
+                $errors[] = $errorMessages[5] ?? 'Le prénom doit contenir entre 2 et 60 caractères';
+            }
+
+            // Valider email
+            if (!$func->validateEmail($data['email'])) {
+                $errors[] = $errorMessages[2] ?? 'Veuillez fournir un email valide';
+            }
+
+            // Valider subject
+            if (strlen($data['subject']) < 3 || strlen($data['subject']) > 100) {
+                $errors[] = 'Le sujet doit contenir entre 3 et 100 caractères';
+            }
+
+            // Valider content
+            if (strlen($data['content']) < 10) {
+                $errors[] = 'Le message doit contenir au moins 10 caractères';
+            }
+
+            // ✅ Si pas d'erreurs, insérer le message
+            if (empty($errors)) {
+                try {
+                    $newContact = new Contacts();
+                    $newContact->setFirstname($data['firstname']);
+                    $newContact->setEmail($data['email']);
+                    $newContact->setSubject($data['subject']);
+                    $newContact->setContent($data['content']);
+                    $newContact->setReceptedDate((new TimesModels())->dateNow('Y-m-d H:i:s', 'Europe/Paris'));
+                    $newContact->setStatut(0);
+
+                    $contactManager = new ContactManager();
+                    $contactManager->insert($newContact);
+
+                    // ✅ Redirection vers homepage PUBLIC
+                    $_SESSION['success_message'] = "Votre message a bien été envoyé. Merci !";
+                    $this->redirectTo('homepage');
+                    return;
+
+                } catch (\Exception $e) {
+                    error_log("Erreur contact: " . $e->getMessage());
+                    $errors[] = $errorMessages[0] ?? 'Une erreur est survenue lors de l\'envoi du message';
+                }
+            }
+        }
+
+        // ✅ Réafficher le formulaire avec erreurs
+        $scripts = $this->addScripts(['assets/js/formController.js']);
+        $token = $tm->generateCSRFToken();
+
+        $this->render('contact.html.twig', [
+            'avatar' => $avatar,
+            'user' => $_SESSION['user'] ?? null,
+            'page' => "Contactez-nous",
+            'csrf_token' => $token,
+            'errors' => $errors,
+            'firstname' => $data['firstname'] ?? null,
+            'email' => $data['email'] ?? null,
+            'subject' => $data['subject'] ?? null,
+            'content' => $data['content'] ?? null,
+        ], $scripts);
+    }
+
+    /**
+     * ✅ NOUVELLE MÉTHODE : Traite le formulaire de contact depuis le PROFIL (AJAX)
+     */
+    public function contactFromProfile(): void
+    {
+        // Nettoyer le buffer
+        if (ob_get_length()) {
+            ob_clean();
+        }
+
+        header('Content-Type: application/json');
+
+        // Vérifier POST
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            echo json_encode(['success' => false, 'error' => 'Méthode non autorisée']);
+            exit;
+        }
+
+        // Vérifier que l'utilisateur est connecté
+        if (!isset($_SESSION['user']['id'])) {
+            http_response_code(401);
+            echo json_encode(['success' => false, 'error' => 'Vous devez être connecté']);
+            exit;
+        }
+
+        try {
+            $func = new Utils();
+            $tm = new CSRFTokenManager();
+
+            // Vérifier les champs
+            if (!$func->checkPostKeys(['firstname', 'email', 'subject', 'content', 'csrf_token'])) {
+                throw new Exception('Tous les champs sont requis');
+            }
+
+            $data = [
+                'firstname' => trim($_POST['firstname']),
+                'email' => strtolower(trim($_POST['email'])),
+                'subject' => $func->e(trim($_POST['subject'])),
+                'content' => $func->e(trim($_POST['content'])),
+                'csrf_token' => $_POST['csrf_token']
+            ];
+
+            // Vérifier CSRF
+            if (!$tm->validateCSRFToken($data['csrf_token'])) {
+                throw new Exception('Token CSRF invalide');
+            }
+
+            // Validations
+            if (strlen($data['firstname']) < 2 || strlen($data['firstname']) > 60) {
+                throw new Exception('Le prénom doit contenir entre 2 et 60 caractères');
+            }
+
+            if (!$func->validateEmail($data['email'])) {
+                throw new Exception('Email invalide');
+            }
+
+            if (strlen($data['subject']) < 3 || strlen($data['subject']) > 100) {
+                throw new Exception('Le sujet doit contenir entre 3 et 100 caractères');
+            }
+
+            if (strlen($data['content']) < 10) {
+                throw new Exception('Le message doit contenir au moins 10 caractères');
+            }
+
+            // Insérer le message
+            $newContact = new Contacts();
+            $newContact->setFirstname($data['firstname']);
+            $newContact->setEmail($data['email']);
+            $newContact->setSubject($data['subject']);
+            $newContact->setContent($data['content']);
+            $newContact->setReceptedDate((new TimesModels())->dateNow('Y-m-d H:i:s', 'Europe/Paris'));
+            $newContact->setStatut(0);
+
+            $contactManager = new ContactManager();
+            $contactManager->insert($newContact);
+
+            // Réponse de succès
+            echo json_encode([
+                'success' => true,
+                'message' => 'Votre message a bien été envoyé. Merci !'
             ]);
-    
-    }
 
-/*// Nouvelle méthode pour afficher le formulaire
-    public function renderContactForm(): void {
-        echo $this->twig->render('contactFormUser.html.twig', [
-            'csrf_token' => $_SESSION['csrf_token'] ?? ''
-        ]);
+        } catch (Exception $e) {
+            error_log("Erreur contactFromProfile: " . $e->getMessage());
+            http_response_code(400);
+            echo json_encode([
+                'success' => false,
+                'error' => $e->getMessage()
+            ]);
+        }
+
         exit;
-    }*/
-
-    public function renderContacForm() {
-
-        $this->render('contacFormUser.html.twi', []);
     }
+
 
 /*****************************GESTION DES MESSAGES DES UTILISATEURS PAR ADMIN***********/    
     

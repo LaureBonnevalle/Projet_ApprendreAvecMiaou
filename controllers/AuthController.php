@@ -8,7 +8,7 @@ class AuthController extends AbstractController {
 
     public function login() : void
     {  
-         $scripts = $this->addScripts(['assets/js/formController.js',]);
+         $scripts = $this->addScripts(['assets/js/formController.js', 'assets/mess.js']);
         
         //($avatars);
         // Générer le token pour le mettre dans le vue, dans l'input de type hidden
@@ -199,7 +199,7 @@ $this->redirectTo('homepage');
         // Générer le token pour le mettre dans le vue, dans l'input de type hidden
         $tm = new CSRFTokenManager();
         $scripts= $this->addScripts([
-            'assets/js/formController.js',
+            'assets/js/formController.js', 'assets/js/mess.js',
             ]);
         
         $_SESSION['error_mesage'] = "";      
@@ -349,7 +349,7 @@ $this->redirectTo('homepage');
         }
         
         
-        $scripts = $this->addScripts(['assets/js/formController.js']);
+        $scripts = $this->addScripts(['assets/js/formController.js', 'assets/js/mess.js']);
         $timesModels = new TimesModels();
                                 $elapsedTime = $timesModels->getElapsedTime();
         //($avatars);
@@ -494,94 +494,7 @@ public function displayForgottenPassword()
 
 // Dans UserController.php
 
-/**
- * Réinitialise le mot de passe d'un utilisateur (Admin uniquement)
- * Envoie la réponse en JSON pour traitement AJAX
- */
-public function resetPassword(): void
-{
-    // ✅ CRITICAL : Empêcher tout output avant le JSON
-    ob_clean(); // Nettoyer le buffer de sortie
-    
-    // Vérifier que c'est une requête POST
-    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        http_response_code(405);
-        header('Content-Type: application/json'); // ✅ AJOUTÉ
-        echo json_encode(['success' => false, 'error' => 'Méthode non autorisée']);
-        exit;
-    }
 
-    // Vérifier que c'est du JSON
-    $contentType = $_SERVER['CONTENT_TYPE'] ?? '';
-    
-    try {
-        $func = new Utils();
-        
-        // Lire les données POST (application/x-www-form-urlencoded)
-        if (!$func->checkPostKeys(['id', 'csrf_token'])) {
-            throw new Exception('Données manquantes (id ou csrf_token)');
-        }
-
-        $userId = (int) $_POST['id'];
-        $csrfToken = $_POST['csrf_token'];
-
-        // Validation de l'ID
-        if ($userId <= 0) {
-            throw new Exception('ID utilisateur invalide');
-        }
-
-        // Vérification CSRF
-        $tm = new CSRFTokenManager();
-        if (!$tm->validateCSRFToken($csrfToken)) {
-            throw new Exception('Token CSRF invalide');
-        }
-
-        // Récupérer l'utilisateur
-        $um = new UserManager();
-        $user = $um->readOneUser($userId);
-        
-        if (!$user) {
-            throw new Exception('Utilisateur non trouvé');
-        }
-
-        // Générer le nouveau mot de passe
-        $passwordGenerated = $func->generateRandomPassword(12);
-        $passwordHash = password_hash($passwordGenerated, PASSWORD_BCRYPT);
-
-        // Mettre à jour en BDD (mot de passe + statut à 0)
-        $resetOk = $um->resetOneUserPasswordAndStatus($userId, $passwordHash);
-
-        if (!$resetOk) {
-            throw new Exception('Échec de la mise à jour en base de données');
-        }
-
-        // Envoyer l'email
-        $sendEmail = new SendEmail();
-        $sendEmail->sendPasswordResetEmail(
-            $user->getFirstname(),
-            $user->getEmail(),
-            $passwordGenerated
-        );
-
-        // Réponse de succès
-        header('Content-Type: application/json'); // ✅ AJOUTÉ
-        echo json_encode([
-            'success' => true,
-            'message' => 'Mot de passe réinitialisé avec succès. Un email a été envoyé.',
-            'user_id' => $userId
-        ]);
-
-    } catch (Exception $e) {
-        error_log("Erreur resetPassword: " . $e->getMessage());
-        http_response_code(400);
-        header('Content-Type: application/json'); // ✅ AJOUTÉ
-        echo json_encode([
-            'success' => false,
-            'error' => $e->getMessage()
-        ]);
-    }
-    exit;
-}
 
 
 

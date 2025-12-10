@@ -39,10 +39,27 @@
     margin-left: clamp(1vh, 2vw, 3vh);
     margin-right: clamp(1vh, 2vw, 3vh);
 
+.btn-profile {
+    @include mixins.button-3d(varcolors.$violet-main, varcolors.$violet-dark, $border-color: varcolors.$noir); // applique ton mixin bouton 3D
+    margin-top: 1rem;
+     a {
+    color: varcolors.$blanc;
+    text-decoration: none;
+    }
+  }
+
+  fieldset {
+
+    margin-top: 5vh;
+    padding: 2vh;
+    border-radius: 30px;
+  }
+
  // ✅ Inputs text et email
       input[type="email"],
       input[type="text"],
-      input[type="number"]
+      input[type="number"],
+      textarea
       {
         width: 100%;
         max-width: clamp(280px, 85vw, 350px);
@@ -77,7 +94,13 @@
           color: #999;
           font-style: italic;
         }
+
+        
       }
+      textarea {
+           height: clamp(40px, 10vh, 50px);
+        }
+        
 
   }
   @include mixins.breakpoint(large) {
@@ -248,20 +271,15 @@
       margin-bottom: 1rem;
       color: #333;
     }
+
+
   }
 
   // =====================
   // BOUTONS
   // =====================
-  button,
-  .btn {
-    @include mixins.button-3d(varcolors.$violet-main, varcolors.$violet-dark, $border-color: varcolors.$noir); // applique ton mixin bouton 3D
-    margin-top: 1rem;
-  }
+  
 
-  a {
-    color: varcolors.$blanc;
-    text-decoration: none;
-  }
+ 
 
   

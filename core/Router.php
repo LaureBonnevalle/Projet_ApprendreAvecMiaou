@@ -35,7 +35,8 @@ class Router {
             $userRoutes = [
                 "homepageUser", "profile", "games", "pixelArt", 
                 "memo", "colorings", "coloringsListe", "stories", "getImage", 
-                "getStory", "displayGame", "displayPixelArt" ,"forgottenPassword", "updateProfile", "toggleNewsletter", "contact", "contactUsForm",
+                "getStory", "displayGame", "displayPixelArt" ,"forgottenPassword", "updateProfile", "toggleNewsletter", "contact", 
+                "contactUsForm", 'resetPasswordFromProfile', "displayClick", 'contactFromProfile', 
             ];
 
             // Routes pour administrateurs uniquement (role 2)
@@ -45,8 +46,9 @@ class Router {
                 "updateNewsletter", "response", "messagerie", "deleteMessage", 
                 "readMessage", "modifAvatar", "deleteAvatar", "addAvatar", 
                 "addstoryStoriesAd", "StoriesAdmin", "modifColoring", "addColoring", 
-                "deleteColoring", "addCategorie", "modifGame", "modifypedagogie","forgottenPassword",
-                "sendNewsletterForm", "processNewsletterSend", "resetPassword",
+                "deleteColoring", "addCategorie", "modifGame", "modifypedagogie",
+                "forgottenPassword", "sendNewsletterForm", "processNewsletterSend", "resetPassword",
+                
             ];
 
             // ====================================
@@ -200,15 +202,27 @@ class Router {
                     break;
                 
                 case 'contact':
-                    $cc->contactUs();
+                    $ctc->contactUs();
                     break;
 
-                case 'contactUsForm': 
-                    $cc->renderContactForm();
-                    break;
+                case 'contactFromProfile':
+                    $ctc->contactFromProfile();
+                    break;  
+
+                case 'resetPasswordFromProfile':
+                     $uc->resetPasswordFromProfile();
+                     break;
+
+                /*case 'contactUsForm': 
+                    $ctc->renderContactForm();
+                    break;*/
                                     
                 case "displayGame":
                     $gm->displayGame();
+                    break;
+
+                case "displayClick":
+                    $gm->displayClick();
                     break;
                     
                 case "displayPixelArt":
@@ -284,7 +298,7 @@ class Router {
 
             $dash = new DashboardController();
             $ac = new AuthController();
-            $uc = new UserController();
+            $auc = new AdminUserController();
             $avc= new AvatarController();
             $sc = new StoryController();
             $gm = new GameController();
@@ -303,31 +317,31 @@ class Router {
                     break;
                     
                 case "ajaxSearchUsers":
-                    $uc->ajaxSearchUsers();
+                    $auc->ajaxSearchUsers();
                     break;
                     
                 case "allUsers":
-                    $uc->allUsers();
+                    $auc->allUsers();
                     break;
                     
                 case "readOneUser":
-                    $uc->readOneUser();
+                    $auc->readOneUser();
                     break;
                     
                 case "resetPassword":
-                    $uc->resetPassword();
+                    $auc->resetPassword();
                     break;
                     
                 case "updateStatus":
-                    $uc->resetStatus();
+                    $auc->resetStatus();
                     break;
                     
                 case "updateRole":
-                    $uc->resetRole();
+                    $auc->resetRole();
                     break;
                     
                 case "updateUserAvatar":
-                    $uc->updateUserAvatar();
+                    $auc->updateUserAvatar();
                     break;
 
                 case "newsletterUnsubscribe":
@@ -335,7 +349,7 @@ class Router {
                     break;
                     
                 case "updateNewsletter":
-                    $uc->resetNewsletter();
+                    $auc->resetNewsletter();
                     break;
                     
                 case "response":
@@ -398,9 +412,9 @@ class Router {
                     $ac->displayForgottenPassword();
                     break;
 
-                case "resetPassword":
+                /*case "resetPassword":
                     $ac->resetPassword();
-                    break;
+                    break;*/
                     
                 case "logout":
                     $ac->logout();

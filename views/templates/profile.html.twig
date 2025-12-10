@@ -18,18 +18,6 @@
             {# ===================== TITRE ===================== #}
             <h3>Mon espace personnel</h3>
 
-            {# ===================== MESSAGES ===================== #}
-            {% if success_message %}
-                <div class="alert alert-success" role="alert">
-                    ✅ {{ success_message }}
-                </div>
-            {% endif %}
-            {% if error_message %}
-                <div class="alert alert-danger" role="alert">
-                    ❌ {{ error_message }}
-                </div>
-            {% endif %}
-
             {# ===================== INFOS ACTUELLES ===================== #}
             <article class="container-profile">
                 <h4>Informations actuelles</h4>
@@ -71,8 +59,8 @@
             {# ===================== MODIFICATION PROFIL ===================== #}
             <article class="edit-profile">
                 <h4>Modifier mes informations</h4>
-                
-                <form method="post" id="profile-form" action="?route=updateProfile">
+                <!-- ✅ CECI EST LE BON FICHIER profile.html.twig -->
+                <form method="POST" id="profile-form" action="?route=updateProfile">
                     
                     <div class="form-group">
                         <label for="firstname">Prénom <span class="required">*</span></label>
@@ -140,7 +128,7 @@
 
                     <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                     
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-primary btn-profile" id="button-profile">
                         💾 Mettre à jour mes informations
                     </button>
                 </form>
@@ -155,12 +143,12 @@
                     
                     {% if user.newsletter == 1 %}
                         <p>Vous êtes actuellement <strong>abonné</strong> à notre newsletter.</p>
-                        <button type="submit" class="btn btn-warning">
+                        <button type="submit" class="btn btn-warning btn-profile">
                             📧 Se désabonner de la newsletter
                         </button>
                     {% else %}
                         <p>Vous n'êtes actuellement <strong>pas abonné</strong> à notre newsletter.</p>
-                        <button type="submit" class="btn btn-success">
+                        <button type="submit" class="btn btn-profile btn-success">
                             ✉️ S'abonner à la newsletter
                         </button>
                     {% endif %}
@@ -168,37 +156,49 @@
             </article>
 
             {# ===================== CONTACT ===================== #}
+             <script>
+    window.userFirstname = "{{ user.firstname|e }}";
+    window.userEmail = "{{ user.email|e }}";
+    window.csrfToken = "{{ csrf_token }}";
+</script>
             <article class="contact-section">
                 <h4>Contacter l'administrateur</h4>
                 <p>Besoin d'aide ? Une question ? Envoyez un message !</p>
-                <button type="button" id="open-contact" class="btn btn-info">
-                    <a href=?route=contactUsForm> 💬 Ouvrir le formulaire de contact</a>
+                <button type="button" id="open-contact" class="btn btn-info btn-profile">
+                     💬 Ouvrir le formulaire de contact
                 </button>
                 <div id="contact-form-container"></div>
             </article>
+           
 
+            {# ===================== SÉCURITÉ ===================== #}
             {# ===================== SÉCURITÉ ===================== #}
             <article class="security-section">
                 <h4>Sécurité</h4>
                 
-                <form method="post" action="?route=resetPasswordFromProfile" class="reset-password">
-                    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-                    
-                    <p class="warning-text">
-                        ⚠️ La réinitialisation de votre mot de passe va :
-                    </p>
-                    <ul>
-                        <li>Générer un nouveau mot de passe aléatoire</li>
-                        <li>Vous envoyer ce mot de passe par email</li>
-                        <li>Vous déconnecter automatiquement</li>
-                    </ul>
-                    
-                    <button type="submit" class="btn btn-danger">
-                        🔒 Réinitialiser mon mot de passe
-                    </button>
-                </form>
+                <p class="warning-text">
+                    ⚠️ La réinitialisation de votre mot de passe va :
+                </p>
+                <ul>
+                    <li>Générer un nouveau mot de passe aléatoire</li>
+                    <li>Vous envoyer ce mot de passe par email</li>
+                    <li>Vous déconnecter automatiquement</li>
+                </ul>
+                
+                <button 
+                    type="button" 
+                    class="btn-profile btn btn-danger"
+                    id="resetPasswordBtn-{{ user.id }}"
+                    onclick="resetPasswordProfile({{ user.id }})">
+                    🔒 Réinitialiser mon mot de passe
+                </button>
+                
+                <div id="resetPasswordMsg-{{ user.id }}" class="reset-message" aria-live="polite"></div>
+                
+                {# Hidden CSRF token #}
+                <input type="hidden" id="csrf-token-{{ user.id }}" value="{{ csrf_token }}">
             </article>
-
         </section>
+        
     {% endblock %}
 {% endblock %}

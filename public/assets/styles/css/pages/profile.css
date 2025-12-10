@@ -41,21 +41,126 @@
   margin-left: clamp(1vh, 2vw, 3vh);
   margin-right: clamp(1vh, 2vw, 3vh);
 }
+#profile .container-profile .btn-profile,
+#profile .edit-profile .btn-profile,
+#profile .newsletter-section .btn-profile,
+#profile .contact-section .btn-profile,
+#profile .security-section .btn-profile {
+  background-color: #B239ED;
+  border: 1px solid #000000;
+  box-shadow: 6px 6px 0px #9220CB;
+  border-radius: 500px;
+  padding: 0.8rem 1rem;
+  font-weight: bold;
+  text-decoration: none;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+#profile .container-profile .btn-profile:focus-visible,
+#profile .edit-profile .btn-profile:focus-visible,
+#profile .newsletter-section .btn-profile:focus-visible,
+#profile .contact-section .btn-profile:focus-visible,
+#profile .security-section .btn-profile:focus-visible {
+  outline: 3px solid #B239ED;
+  outline-offset: 2px;
+}
+#profile .container-profile .btn-profile:hover,
+#profile .edit-profile .btn-profile:hover,
+#profile .newsletter-section .btn-profile:hover,
+#profile .contact-section .btn-profile:hover,
+#profile .security-section .btn-profile:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 4px 4px 0px #9220CB;
+}
+#profile .container-profile .btn-profile:active,
+#profile .edit-profile .btn-profile:active,
+#profile .newsletter-section .btn-profile:active,
+#profile .contact-section .btn-profile:active,
+#profile .security-section .btn-profile:active {
+  transform: translate(4px, 4px);
+  box-shadow: 2px 2px 0px #9220CB;
+}
+#profile .container-profile .btn-profile:disabled, #profile .container-profile .btn-profile[aria-disabled=true],
+#profile .edit-profile .btn-profile:disabled,
+#profile .edit-profile .btn-profile[aria-disabled=true],
+#profile .newsletter-section .btn-profile:disabled,
+#profile .newsletter-section .btn-profile[aria-disabled=true],
+#profile .contact-section .btn-profile:disabled,
+#profile .contact-section .btn-profile[aria-disabled=true],
+#profile .security-section .btn-profile:disabled,
+#profile .security-section .btn-profile[aria-disabled=true] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+#profile .container-profile .btn-profile:disabled:hover, #profile .container-profile .btn-profile:disabled:active, #profile .container-profile .btn-profile[aria-disabled=true]:hover, #profile .container-profile .btn-profile[aria-disabled=true]:active,
+#profile .edit-profile .btn-profile:disabled:hover,
+#profile .edit-profile .btn-profile:disabled:active,
+#profile .edit-profile .btn-profile[aria-disabled=true]:hover,
+#profile .edit-profile .btn-profile[aria-disabled=true]:active,
+#profile .newsletter-section .btn-profile:disabled:hover,
+#profile .newsletter-section .btn-profile:disabled:active,
+#profile .newsletter-section .btn-profile[aria-disabled=true]:hover,
+#profile .newsletter-section .btn-profile[aria-disabled=true]:active,
+#profile .contact-section .btn-profile:disabled:hover,
+#profile .contact-section .btn-profile:disabled:active,
+#profile .contact-section .btn-profile[aria-disabled=true]:hover,
+#profile .contact-section .btn-profile[aria-disabled=true]:active,
+#profile .security-section .btn-profile:disabled:hover,
+#profile .security-section .btn-profile:disabled:active,
+#profile .security-section .btn-profile[aria-disabled=true]:hover,
+#profile .security-section .btn-profile[aria-disabled=true]:active {
+  transform: none;
+  box-shadow: 6px 6px 0px #9220CB;
+}
+#profile .container-profile .btn-profile,
+#profile .edit-profile .btn-profile,
+#profile .newsletter-section .btn-profile,
+#profile .contact-section .btn-profile,
+#profile .security-section .btn-profile {
+  margin-top: 1rem;
+}
+#profile .container-profile .btn-profile a,
+#profile .edit-profile .btn-profile a,
+#profile .newsletter-section .btn-profile a,
+#profile .contact-section .btn-profile a,
+#profile .security-section .btn-profile a {
+  color: #ffffff;
+  text-decoration: none;
+}
+#profile .container-profile fieldset,
+#profile .edit-profile fieldset,
+#profile .newsletter-section fieldset,
+#profile .contact-section fieldset,
+#profile .security-section fieldset {
+  margin-top: 5vh;
+  padding: 2vh;
+  border-radius: 30px;
+}
 #profile .container-profile input[type=email],
 #profile .container-profile input[type=text],
 #profile .container-profile input[type=number],
+#profile .container-profile textarea,
 #profile .edit-profile input[type=email],
 #profile .edit-profile input[type=text],
 #profile .edit-profile input[type=number],
+#profile .edit-profile textarea,
 #profile .newsletter-section input[type=email],
 #profile .newsletter-section input[type=text],
 #profile .newsletter-section input[type=number],
+#profile .newsletter-section textarea,
 #profile .contact-section input[type=email],
 #profile .contact-section input[type=text],
 #profile .contact-section input[type=number],
+#profile .contact-section textarea,
 #profile .security-section input[type=email],
 #profile .security-section input[type=text],
-#profile .security-section input[type=number] {
+#profile .security-section input[type=number],
+#profile .security-section textarea {
   width: 100%;
   max-width: clamp(280px, 85vw, 350px);
   height: clamp(40px, 6vh, 50px);
@@ -73,18 +178,23 @@
 #profile .container-profile input[type=email]:hover,
 #profile .container-profile input[type=text]:hover,
 #profile .container-profile input[type=number]:hover,
+#profile .container-profile textarea:hover,
 #profile .edit-profile input[type=email]:hover,
 #profile .edit-profile input[type=text]:hover,
 #profile .edit-profile input[type=number]:hover,
+#profile .edit-profile textarea:hover,
 #profile .newsletter-section input[type=email]:hover,
 #profile .newsletter-section input[type=text]:hover,
 #profile .newsletter-section input[type=number]:hover,
+#profile .newsletter-section textarea:hover,
 #profile .contact-section input[type=email]:hover,
 #profile .contact-section input[type=text]:hover,
 #profile .contact-section input[type=number]:hover,
+#profile .contact-section textarea:hover,
 #profile .security-section input[type=email]:hover,
 #profile .security-section input[type=text]:hover,
-#profile .security-section input[type=number]:hover {
+#profile .security-section input[type=number]:hover,
+#profile .security-section textarea:hover {
   outline: 2px solid #B239ED;
   outline-offset: 2px;
   background-color: #ffffff;
@@ -93,18 +203,23 @@
 #profile .container-profile input[type=email]:focus,
 #profile .container-profile input[type=text]:focus,
 #profile .container-profile input[type=number]:focus,
+#profile .container-profile textarea:focus,
 #profile .edit-profile input[type=email]:focus,
 #profile .edit-profile input[type=text]:focus,
 #profile .edit-profile input[type=number]:focus,
+#profile .edit-profile textarea:focus,
 #profile .newsletter-section input[type=email]:focus,
 #profile .newsletter-section input[type=text]:focus,
 #profile .newsletter-section input[type=number]:focus,
+#profile .newsletter-section textarea:focus,
 #profile .contact-section input[type=email]:focus,
 #profile .contact-section input[type=text]:focus,
 #profile .contact-section input[type=number]:focus,
+#profile .contact-section textarea:focus,
 #profile .security-section input[type=email]:focus,
 #profile .security-section input[type=text]:focus,
-#profile .security-section input[type=number]:focus {
+#profile .security-section input[type=number]:focus,
+#profile .security-section textarea:focus {
   outline: 3px solid #B239ED;
   outline-offset: 2px;
   background-color: #ffffff;
@@ -113,20 +228,32 @@
 #profile .container-profile input[type=email]::placeholder,
 #profile .container-profile input[type=text]::placeholder,
 #profile .container-profile input[type=number]::placeholder,
+#profile .container-profile textarea::placeholder,
 #profile .edit-profile input[type=email]::placeholder,
 #profile .edit-profile input[type=text]::placeholder,
 #profile .edit-profile input[type=number]::placeholder,
+#profile .edit-profile textarea::placeholder,
 #profile .newsletter-section input[type=email]::placeholder,
 #profile .newsletter-section input[type=text]::placeholder,
 #profile .newsletter-section input[type=number]::placeholder,
+#profile .newsletter-section textarea::placeholder,
 #profile .contact-section input[type=email]::placeholder,
 #profile .contact-section input[type=text]::placeholder,
 #profile .contact-section input[type=number]::placeholder,
+#profile .contact-section textarea::placeholder,
 #profile .security-section input[type=email]::placeholder,
 #profile .security-section input[type=text]::placeholder,
-#profile .security-section input[type=number]::placeholder {
+#profile .security-section input[type=number]::placeholder,
+#profile .security-section textarea::placeholder {
   color: #999;
   font-style: italic;
+}
+#profile .container-profile textarea,
+#profile .edit-profile textarea,
+#profile .newsletter-section textarea,
+#profile .contact-section textarea,
+#profile .security-section textarea {
+  height: clamp(40px, 10vh, 50px);
 }
 @media (min-width: 992px) {
   #profile {
@@ -266,62 +393,6 @@ label {
 .security-section p {
   margin-bottom: 1rem;
   color: #333;
-}
-
-button,
-.btn {
-  background-color: #B239ED;
-  border: 1px solid #000000;
-  box-shadow: 6px 6px 0px #9220CB;
-  border-radius: 500px;
-  padding: 0.8rem 1rem;
-  font-weight: bold;
-  text-decoration: none;
-  color: #ffffff;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  transition: all 0.3s ease;
-  box-sizing: border-box;
-}
-button:focus-visible,
-.btn:focus-visible {
-  outline: 3px solid #B239ED;
-  outline-offset: 2px;
-}
-button:hover,
-.btn:hover {
-  transform: translate(2px, 2px);
-  box-shadow: 4px 4px 0px #9220CB;
-}
-button:active,
-.btn:active {
-  transform: translate(4px, 4px);
-  box-shadow: 2px 2px 0px #9220CB;
-}
-button:disabled, button[aria-disabled=true],
-.btn:disabled,
-.btn[aria-disabled=true] {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-button:disabled:hover, button:disabled:active, button[aria-disabled=true]:hover, button[aria-disabled=true]:active,
-.btn:disabled:hover,
-.btn:disabled:active,
-.btn[aria-disabled=true]:hover,
-.btn[aria-disabled=true]:active {
-  transform: none;
-  box-shadow: 6px 6px 0px #9220CB;
-}
-button,
-.btn {
-  margin-top: 1rem;
-}
-
-a {
-  color: #ffffff;
-  text-decoration: none;
 }
 
 /*# sourceMappingURL=profile.css.map */

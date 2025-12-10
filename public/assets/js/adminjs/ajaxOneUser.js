@@ -172,7 +172,7 @@ Ceci va :
             }
             
             // Message de succès
-            const successMessage = data.message || 'Réinitialisation réussie ! Email envoyé à l\'utilisateur.';
+            //const successMessage = data.message || 'Réinitialisation réussie ! Email envoyé à l\'utilisateur.';
             
             // ✅ MISE À JOUR DU BOUTON AVEC LE CHECK
             if (button) {
@@ -183,13 +183,6 @@ Ceci va :
                 console.log("Bouton mis à jour:", button.innerHTML);
             }
             
-            // Afficher le message sous le bouton
-            const msgDiv = document.getElementById(`resetPasswordMsg-${userId}`);
-            if (msgDiv) {
-                msgDiv.textContent = successMessage;
-                msgDiv.style.color = 'green';
-                msgDiv.style.display = 'block';
-            }
             
             // Alert de confirmation
             alert(successMessage);
