@@ -1,3 +1,160 @@
+@charset "UTF-8";
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
 
+#users {
+  font-family: "Comic Sans MS", "Raleway", cursive;
+}
+@media (min-width: 768px) {
+  #users {
+    margin-top: 5vh;
+  }
+}
+@media (min-width: 850px) {
+  #users {
+    margin-top: 15vh;
+  }
+}
+#users #search {
+  margin: 2vh 3vh;
+  display: block;
+}
+#users input[type=email],
+#users input[type=text],
+#users input[type=number],
+#users textarea {
+  margin-left: 3vw;
+  width: 100%;
+  max-width: clamp(280px, 85vw, 350px);
+  height: clamp(40px, 6vh, 50px);
+  border-radius: 25px;
+  background-color: rgba(255, 255, 255, 0.65);
+  border: 2px solid #5C5454;
+  padding: 0 clamp(1rem, 3vw, 1.5rem);
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  font-family: "Comic Sans MS", "Raleway", cursive;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+#users input[type=email]:hover,
+#users input[type=text]:hover,
+#users input[type=number]:hover,
+#users textarea:hover {
+  outline: 2px solid #B239ED;
+  outline-offset: 2px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(178, 57, 237, 0.3);
+}
+#users input[type=email]:focus,
+#users input[type=text]:focus,
+#users input[type=number]:focus,
+#users textarea:focus {
+  outline: 3px solid #B239ED;
+  outline-offset: 2px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(178, 57, 237, 0.3);
+}
+#users input[type=email]::placeholder,
+#users input[type=text]::placeholder,
+#users input[type=number]::placeholder,
+#users textarea::placeholder {
+  color: #999;
+  font-style: italic;
+}
+#users textarea {
+  height: clamp(40px, 10vh, 50px);
+}
+#users .table-container {
+  margin: 0 3vw;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+#users table {
+  margin-top: 5vh;
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 900px;
+  border-radius: 20px;
+  overflow: hidden;
+}
+#users {
+  /* En-têtes : fond noir, texte blanc, séparateurs blancs */
+}
+#users thead th {
+  background-color: #000;
+  color: #fff;
+  border: 1px solid #fff;
+  padding: 10px;
+  text-align: left;
+}
+#users {
+  /* Corps : fond blanc, texte noir, séparateurs noirs */
+}
+#users tbody td {
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #000;
+  padding: 10px;
+  text-align: left;
+}
+#users {
+  /* Bouton "Voir" avec radius plus généreux */
+}
+#users td a {
+  background-color: #cfcfcf;
+  border: 1px solid #525252;
+  box-shadow: 6px 6px 0px #6a6a6a;
+  border-radius: 500px;
+  padding: 0.8rem 1rem;
+  font-weight: bold;
+  text-decoration: none;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+#users td a:focus-visible {
+  outline: 3px solid #B239ED;
+  outline-offset: 2px;
+}
+#users td a:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 4px 4px 0px #6a6a6a;
+}
+#users td a:active {
+  transform: translate(4px, 4px);
+  box-shadow: 2px 2px 0px #6a6a6a;
+}
+#users td a:disabled, #users td a[aria-disabled=true] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+#users td a:disabled:hover, #users td a:disabled:active, #users td a[aria-disabled=true]:hover, #users td a[aria-disabled=true]:active {
+  transform: none;
+  box-shadow: 6px 6px 0px #6a6a6a;
+}
+#users td a {
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px; /* ✅ radius plus grand */
+  font-size: 0.9rem;
+  color: #000;
+}
+#users td a:hover {
+  color: #fff;
+}
 
 /*# sourceMappingURL=users.css.map */

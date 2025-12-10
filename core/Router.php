@@ -412,6 +412,11 @@ class Router {
                     $ac->displayForgottenPassword();
                     break;
 
+                case "adminNewsletter":
+                    $nm->sendNewsletter();
+                    break;
+
+
                 /*case "resetPassword":
                     $ac->resetPassword();
                     break;*/

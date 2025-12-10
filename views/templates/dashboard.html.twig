@@ -1,56 +1,62 @@
 {% extends "layout.html.twig" %}
 
-{# Titre de la page #}
 {% block title %}
-         | DashboardAdmin
+    | DashboardAdmin
 {% endblock %}
 
 {% block body %}
+    {% block content %}
+        {% block error %}{% endblock %}
 
+        <section id="dashboard">
+            <h2>Panneau d'administration</h2>
 
-        {% block content %}
-    
-            {% block error %}
-            {% endblock %}
-            <section id="dashboard">
-                <h2>Panneau d'administration</h2>
-                
-                <div class="actionAdmin">
-                    <ul>
-                        <li class="admin-button">
-                            <a href="?route=allUsers" type="button">Recherche utilisateur</a>
-                        </li>
-                        <li class="admin-button">
-                            <a href="?route=messagerie" type="button">Messagerie
-                                {% if nbrMessages >= 1 %}
-                                    <span class="notification-badge"></span>
-                                {% endif %}
-                            </a>
-                        </li>
-                        <li class="admin-button">
-                            <a href="?route=StoriesAdmin" type="button">Histoires</a>
-                        </li>
-                        <li class="admin-button">
-                            <a href="?route=modifColoring" type="button">Coloriages</a>
-                        </li>
-                        <li class="admin-button">
-                            <a href="?route=modifGame" type="button">Jeux</a>
-                        </li>
-                        <li class="admin-button">
-                            <a href="?route=modifActuality" type="button">Actualités</a>
-                        </li>
-                        <li class="admin-button">
-                            <a href="?route=modifAvatar" type="button">Avatars</a>
-                        </li>
-                    </ul>
-                </div>
-                
-            </section>
-         
-        {% endblock %}
+            <article class="admin-section">
+                <h3>Gestion des utilisateurs</h3>
+                <ul>
+                    <li class="admin-button">
+                        <a href="?route=allUsers" type="button">Utilisateurs</a>
+                    </li>
+                    <li class="admin-button">
+                        <a href="?route=messagerie" type="button">
+                            Messagerie
+                            {% if nbrMessages >= 1 %}
+                                <span class="notification-badge"></span>
+                            {% endif %}
+                        </a>
+                    </li>
+                    <li class="admin-button">
+                        <a href="?route=modifAvatar" type="button">Avatars</a>
+                    </li>
+                </ul>
+            </article>
 
-       
-{% endblock %} 
+            <article class="admin-section">
+                <h3>Jeux et activités</h3>
+                <ul>
+                    <li class="admin-button">
+                        <a href="?route=modifColoring" type="button">Coloriages</a>
+                    </li>
+                    <li class="admin-button">
+                        <a href="?route=StoriesAdmin" type="button">Histoires</a>
+                    </li>
+                    <li class="admin-button">
+                        <a href="?route=modifGame" type="button">Jeux</a>
+                    </li>
+                </ul>
+            </article>
 
-
-
+            <article class="admin-section">
+                <h3>Newsletters et actualités</h3>
+                <ul>
+                    <li class="admin-button">
+                        <a href="?route=adminNewsletter" type="button">Newsletter</a>
+                    </li>
+                    <li class="admin-button">
+                        <a href="?route=modifActuality" type="button">Actualités</a>
+                    </li>
+                </ul>
+            </article>
+        </section>
+    {% endblock %}
+{% endblock %}

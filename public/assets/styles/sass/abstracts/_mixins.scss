@@ -6,62 +6,36 @@
 // ====================================
 @mixin breakpoint($size) {
     @if $size == custom {
-        @media #{varcolors.$custom} {
-            @content;
-        }
-     } @else if $size == mobile {
-        @media #{varcolors.$mobile} {
-            @content;
-        }
+        @media #{varcolors.$custom} { @content; }
+    } @else if $size == mobile {
+        @media #{varcolors.$mobile} { @content; }
     } @else if $size == small {
-        @media #{varcolors.$small} {
-            @content;
-        }
+        @media #{varcolors.$small} { @content; }
     } @else if $size == medium {
-        @media #{varcolors.$medium} {
-            @content;
-        }
+        @media #{varcolors.$medium} { @content; }
     } @else if $size == medium-large {
-        @media #{varcolors.$mediumLarge} {
-            @content;
-        }
+        @media #{varcolors.$mediumLarge} { @content; }
     } @else if $size == large {
-        @media #{varcolors.$large} {
-            @content;
-        }
+        @media #{varcolors.$large} { @content; }
     } @else if $size == larger {
-        @media #{varcolors.$larger} {
-            @content;
-        }
+        @media #{varcolors.$larger} { @content; }
     } @else if $size == extra {
-        @media #{varcolors.$extra} {
-            @content;
-        }
+        @media #{varcolors.$extra} { @content; }
     } @else if $size == extra-large {
-        @media #{varcolors.$extraLarge} {
-            @content;
-        }
+        @media #{varcolors.$extraLarge} { @content; }
     } @else if $size == ultra {
-        @media #{varcolors.$ultra} {
-            @content;
-        }
+        @media #{varcolors.$ultra} { @content; }
     } @else if $size == huge {
-        @media #{varcolors.$huge} {
-            @content;
-        }
+        @media #{varcolors.$huge} { @content; }
     }
 }
 
 // ✅ Mixin pour range personnalisé
 @mixin custom-breakpoint($min, $max: null) {
     @if $max {
-        @media (min-width: $min) and (max-width: $max) {
-            @content;
-        }
+        @media (min-width: $min) and (max-width: $max) { @content; }
     } @else {
-        @media (min-width: $min) {
-            @content;
-        }
+        @media (min-width: $min) { @content; }
     }
 }
 
@@ -70,8 +44,8 @@
 // ====================================
 @mixin button-3d($bg-color, $shadow-color, $border-color: null) {
     background-color: $bg-color;
-    border: 1px solid if($border-color, $border-color, color.adjust($bg-color, $lightness: -10%));
-    box-shadow: 6px 6px 0px if($shadow-color, $shadow-color, color.adjust($bg-color, $lightness: -15%));
+    border: 1px solid if(sass($border-color != null): $border-color; else: color.adjust($bg-color, $lightness: -10%));
+    box-shadow: 6px 6px 0px if(sass($shadow-color != null): $shadow-color; else: color.adjust($bg-color, $lightness: -15%));
     border-radius: varcolors.$radius-round;
     padding: 0.8rem 1rem;
     font-weight: bold;
@@ -82,7 +56,6 @@
     justify-content: center; // ✅ Centre le contenu
     gap: 0.5rem;
     transition: all varcolors.$transition-normal;
-    ;
     box-sizing: border-box; // ✅ Inclut padding et border
     
     // ✅ Focus visible pour accessibilité
@@ -93,12 +66,12 @@
     
     &:hover {
         transform: translate(2px, 2px);
-        box-shadow: 4px 4px 0px if($shadow-color, $shadow-color, color.adjust($bg-color, $lightness: -10%));
+        box-shadow: 4px 4px 0px if(sass($shadow-color != null): $shadow-color; else: color.adjust($bg-color, $lightness: -10%));
     }
     
     &:active {
         transform: translate(4px, 4px);
-        box-shadow: 2px 2px 0px if($shadow-color, $shadow-color, color.adjust($bg-color, $lightness: -15%));
+        box-shadow: 2px 2px 0px if(sass($shadow-color != null): $shadow-color; else: color.adjust($bg-color, $lightness: -15%));
     }
 
     // ✅ État désactivé
@@ -110,7 +83,7 @@
         &:hover,
         &:active {
             transform: none;
-            box-shadow: 6px 6px 0px if($shadow-color, $shadow-color, color.adjust($bg-color, $lightness: -15%));
+            box-shadow: 6px 6px 0px if(sass($shadow-color != null): $shadow-color; else: color.adjust($bg-color, $lightness: -15%));
         }
     }
 }
@@ -121,60 +94,36 @@
     
     padding: clamp(0.5rem, 1.5vw, 0.8rem) clamp(0.8rem, 2vw, 1.2rem);
     font-size: clamp(0.85rem, 1.5vw, 1rem);
-    box-shadow: clamp(3px, 0.5vw, 6px) clamp(3px, 0.5vw, 6px) 0px if($shadow-color, $shadow-color, color.adjust($bg-color, $lightness: -15%));
+    box-shadow: clamp(3px, 0.5vw, 6px) clamp(3px, 0.5vw, 6px) 0px if(sass($shadow-color != null): $shadow-color; else: color.adjust($bg-color, $lightness: -15%));
     
     &:hover {
-        box-shadow: clamp(2px, 0.4vw, 4px) clamp(2px, 0.4vw, 4px) 0px if($shadow-color, $shadow-color, color.adjust($bg-color, $lightness: -10%));
+        box-shadow: clamp(2px, 0.4vw, 4px) clamp(2px, 0.4vw, 4px) 0px if(sass($shadow-color != null): $shadow-color; else: color.adjust($bg-color, $lightness: -10%));
     }
     
     &:active {
-        box-shadow: clamp(1px, 0.2vw, 2px) clamp(1px, 0.2vw, 2px) 0px if($shadow-color, $shadow-color, color.adjust($bg-color, $lightness: -15%));
+        box-shadow: clamp(1px, 0.2vw, 2px) clamp(1px, 0.2vw, 2px) 0px if(sass($shadow-color != null): $shadow-color; else: color.adjust($bg-color, $lightness: -15%));
     }
 }
-
 // ====================================
 // BOUTONS PAR SECTION (VERSION MODERNE)
 // ====================================
-@mixin button-accueil {
-    @include button-3d(varcolors.$violet-main, varcolors.$violet-dark);
-}
-
-@mixin button-histoires {
-    @include button-3d(varcolors.$bleu-main, varcolors.$bleu-dark);
-}
-
-@mixin button-coloriages {
-    @include button-3d(varcolors.$vert-main, color.adjust(varcolors.$vert-main, $lightness: -15%));
-}
-
+@mixin button-accueil   { @include button-3d(varcolors.$violet-main, varcolors.$violet-dark); }
+@mixin button-histoires { @include button-3d(varcolors.$bleu-main, varcolors.$bleu-dark); }
+@mixin button-coloriages { @include button-3d(varcolors.$vert-main, color.adjust(varcolors.$vert-main, $lightness: -15%)); }
 @mixin button-jeux {
     @include button-3d(varcolors.$jaune-main, color.adjust(varcolors.$jaune-main, $lightness: -15%), varcolors.$noir);
     color: varcolors.$noir;
 }
-
-@mixin button-contact {
-    @include button-3d(varcolors.$deepblue-main, varcolors.$deepblue-dark);
-}
-
-@mixin button-pink {
-    @include button-3d(varcolors.$pink-main, varcolors.$pink-dark);
-}
-
-@mixin button-orange {
-    @include button-3d(varcolors.$orange-main, varcolors.$orange-border);
-}
-
-@mixin button-rouge {
-    @include button-3d(varcolors.$rouge-main, varcolors.$rouge-dark);
-}
+@mixin button-contact { @include button-3d(varcolors.$deepblue-main, varcolors.$deepblue-dark); }
+@mixin button-pink    { @include button-3d(varcolors.$pink-main, varcolors.$pink-dark); }
+@mixin button-orange  { @include button-3d(varcolors.$orange-main, varcolors.$orange-border); }
+@mixin button-rouge   { @include button-3d(varcolors.$rouge-main, varcolors.$rouge-dark); }
 
 // ====================================
 // MIXIN BORDURES SECTION
 // ====================================
 @mixin section-border($color, $width: 3px) {
     border-left: $width solid $color;
-    
-    // ✅ Version responsive
     @include breakpoint(mobile) {
         border-left-width: clamp(2px, 0.5vw, $width);
     }
@@ -185,15 +134,11 @@
 // ====================================
 @mixin overlay($bg-color: rgba(0, 0, 0, 0.7)) {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
     background-color: $bg-color;
     z-index: varcolors.$z-overlay;
     transition: opacity varcolors.$transition-normal;
-    
-    // ✅ Accessibilité
     &[aria-hidden="true"] {
         pointer-events: none;
         opacity: 0;
@@ -203,57 +148,34 @@
 // ====================================
 // MIXIN CENTRAGE
 // ====================================
-@mixin center-flex {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-@mixin center-absolute {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-// ✅ Centrage avec grid
-@mixin center-grid {
-    display: grid;
-    place-items: center;
-}
+@mixin center-flex     { display: flex; justify-content: center; align-items: center; }
+@mixin center-absolute { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+@mixin center-grid     { display: grid; place-items: center; }
 
 // ====================================
 // MIXIN TEXTE TRONQUÉ
 // ====================================
 @mixin text-ellipsis($lines: 1) {
     @if $lines == 1 {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+        overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
     } @else {
         display: -webkit-box;
         -webkit-line-clamp: $lines;
         -webkit-box-orient: vertical;
         overflow: hidden;
-        text-overflow: ellipsis; // ✅ Fallback
+        text-overflow: ellipsis;
     }
 }
 
 // ====================================
 // MIXINS RESPONSIVE
 // ====================================
-
-// ✅ Taille de police responsive
 @mixin fluid-font($min-size, $max-size, $min-vw: 320px, $max-vw: 1200px) {
     font-size: clamp(#{$min-size}, calc(#{$min-size} + (#{$max-size} - #{$min-size}) * ((100vw - #{$min-vw}) / (#{$max-vw} - #{$min-vw}))), #{$max-size});
 }
-
-// ✅ Espacement responsive
 @mixin fluid-spacing($property, $min-size, $max-size) {
     #{$property}: clamp(#{$min-size}, calc(#{$min-size} + (#{$max-size} - #{$min-size}) * ((100vw - 320px) / (1200 - 320))), #{$max-size});
 }
-
-// ✅ Container responsive avec marges égales
 @mixin responsive-container($max-width: 1200px, $padding: 1rem) {
     max-width: $max-width;
     margin-left: auto;

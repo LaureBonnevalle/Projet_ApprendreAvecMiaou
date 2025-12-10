@@ -456,7 +456,7 @@ body {
 
   // 💻 Large écrans classiques : cover
   @include mixins.breakpoint(large) {
-    background-repeat: no-repeat, no-repeat;
+    background-repeat: repeat-y, no-repeat;
     background-size: cover, 100% 100%;
     background-position: center top;
   }

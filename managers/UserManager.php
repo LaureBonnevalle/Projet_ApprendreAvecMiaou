@@ -274,32 +274,32 @@ class UserManager extends AbstractManager
         return $this->findAll($sql);
     }
 
-    /**
-     * Rechercher des utilisateurs par email (LIKE)
-     */
-    public function getAllUsersByLike(string $ref): array 
-    {
-        $sql = "SELECT id, email, firstname, 
-                CASE
-                    WHEN newsletter = 0 THEN 'NON'
-                    ELSE 'OUI' 
-                END AS newsletter, 
-                CASE
-                    WHEN role = 1 THEN 'USER'
-                    ELSE 'ADMIN' 
-                END AS role,
-                CASE
+   /**
+ * Rechercher des utilisateurs par email OU prénom (LIKE)
+ */
+public function getAllUsersByLike(string $ref): array 
+{
+    $sql = "SELECT 
+                id, 
+                email, 
+                firstname,
+                CASE WHEN newsletter = 0 THEN 'NON' ELSE 'OUI' END AS newsletter,
+                CASE WHEN role = 1 THEN 'USER' ELSE 'ADMIN' END AS role,
+                CASE 
                     WHEN statut = 0 THEN 'COMPTE NON VALIDE'
                     WHEN statut = 1 THEN 'COMPTE VALIDE'
                     WHEN statut = 2 THEN 'COMPTE BANNI'
                     ELSE 'COMPTE EN ATTENTE' 
-                END AS statut       
-                FROM users WHERE email LIKE :ref ORDER BY id DESC LIMIT 100";
-        
-        $parameters = ["ref" => $ref];
-        
-        return $this->findAll($sql, $parameters);
-    }
+                END AS statut
+            FROM users 
+            WHERE email LIKE :ref OR firstname LIKE :ref
+            ORDER BY id DESC 
+            LIMIT 100";
+
+    $parameters = ["ref" => "%".$ref."%"];
+
+    return $this->findAll($sql, $parameters);
+}
     
     /**
      * Mettre à jour le mot de passe

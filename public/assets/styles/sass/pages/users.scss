@@ -1,2 +1,111 @@
+@use '../abstracts/varcolors' as varcolors;
+@use '../abstracts/mixins' as mixins;
 
+#users {
+    font-family: 'Comic Sans MS', 'Raleway', cursive;
 
+    @include mixins.breakpoint(medium) {
+            margin-top: 5vh;   // ou padding-top: 5vh; selon ton besoin
+        }
+
+        @include mixins.breakpoint(medium-large) {
+            margin-top: 15vh;  // encore plus d’espace dès medium-large
+        }
+
+    #search {
+        margin: 2vh 3vh;
+        display: block;
+    }
+
+    input[type="email"],
+    input[type="text"],
+    input[type="number"],
+    textarea {
+        margin-left: 3vw;
+        width: 100%;
+        max-width: clamp(280px, 85vw, 350px);
+        height: clamp(40px, 6vh, 50px);
+        border-radius: 25px;
+        background-color: rgba(255, 255, 255, 0.65);
+        border: 2px solid #5C5454;
+        padding: 0 clamp(1rem, 3vw, 1.5rem);
+        font-size: clamp(0.9rem, 2vw, 1rem);
+        font-family: 'Comic Sans MS', 'Raleway', cursive;
+        box-sizing: border-box;
+        transition: all varcolors.$transition-normal;
+        position: relative;
+        z-index: 1;
+
+        &:hover {
+            outline: 2px solid varcolors.$violet-main;
+            outline-offset: 2px;
+            background-color: varcolors.$blanc;
+            box-shadow: 0 2px 8px rgba(178, 57, 237, 0.3);
+        }
+
+        &:focus {
+            outline: 3px solid varcolors.$violet-main;
+            outline-offset: 2px;
+            background-color: varcolors.$blanc;
+            box-shadow: 0 2px 8px rgba(178, 57, 237, 0.3);
+        }
+
+        &::placeholder {
+            color: #999;
+            font-style: italic;
+        }
+    }
+
+    textarea { height: clamp(40px, 10vh, 50px); }
+
+    .table-container {
+        margin: 0 3vw;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        
+    }
+
+    table {
+        margin-top: 5vh;
+        border-collapse: collapse;
+        width: 100%;
+        min-width: 900px;
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
+    /* En-têtes : fond noir, texte blanc, séparateurs blancs */
+    thead th {
+        background-color: #000;
+        color: #fff;
+        border: 1px solid #fff;
+        padding: 10px;
+        text-align: left;
+    }
+
+    /* Corps : fond blanc, texte noir, séparateurs noirs */
+    tbody td {
+        background-color: #fff;
+        color: #000;
+        border: 1px solid #000;
+        padding: 10px;
+        text-align: left;
+    }
+
+    /* Bouton "Voir" avec radius plus généreux */
+    td a {
+        @include mixins.button-3d(
+            #cfcfcf, // gris clair
+            #6a6a6a, // ombre gris foncé
+            #525252  // bordure plus foncée
+        );
+        padding: 0.4rem 0.8rem;
+        border-radius: 20px; /* ✅ radius plus grand */
+        font-size: 0.9rem;
+        color: #000;
+
+        &:hover {
+            color: #fff;
+        }
+    }
+}

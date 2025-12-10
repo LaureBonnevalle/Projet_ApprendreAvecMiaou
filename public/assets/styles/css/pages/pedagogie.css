@@ -11,76 +11,153 @@
   border: 0;
 }
 
-#pedagogie .pedagie-container {
+#pedagogie {
+  font-family: "Comic Sans MS", "Raleway", cursive;
+}
+#pedagogie .title-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* centre le titre */
+  margin-bottom: 40px;
+}
+#pedagogie .title-wrapper h1 {
+  color: #000;
+  font-size: clamp(1.8rem, 3vw, 2.2rem); /* min 1.8rem, idéal 3vw, max 2.2rem */
+  font-weight: 700;
+  margin: 0;
+  text-align: center;
+  flex: 1;
+}
+#pedagogie .title-wrapper .title-image {
+  height: 120px; /* ✅ taille par défaut */
+  width: auto;
+  position: absolute;
+  padding-top: 2vh;
+  padding-left: 2vh;
+  top: 0;
+  left: 0;
+  /* ✅ à partir de medium */
+}
+@media (min-width: 768px) {
+  #pedagogie .title-wrapper .title-image {
+    height: 150px;
+    padding-left: 2vh;
+    padding-top: 1vh;
+  }
+}
+#pedagogie .title-wrapper .title-image {
+  /* ✅ à partir de medium-large */
+}
+@media (min-width: 850px) {
+  #pedagogie .title-wrapper .title-image {
+    height: 200px;
+    padding-left: 3vh;
+    padding-top: 0;
+    top: -2vh;
+  }
+}
+#pedagogie .pedagogie-container {
   max-width: 1000px;
-  margin: 40px auto;
-  padding: 20px;
-  background-color: rgba(255, 255, 255, 0.9); /* Contenu légèrement transparent pour laisser voir le dégradé */
+  margin: 60px auto;
+  padding: 40px;
+  background-color: rgba(255, 255, 255, 0.9);
   border-radius: 15px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
-#pedagogie h1 {
-  color: #8A2BE2; /* Violet vif pour le titre principal */
-  text-align: center;
-  font-size: 2.5em;
-  margin-bottom: 30px;
-  padding-bottom: 10px;
-  border-bottom: 3px solid #FFC0CB; /* Ligne rose */
-}
 #pedagogie {
-  /* STYLE DES ARTICLES/SECTIONS */
+  /* ✅ Ajout d’espace en bas pour éviter chevauchement avec footer */
+  margin-top: 1vh;
+  padding-bottom: 10vh; /* espace interne sous le contenu */
+  margin-bottom: 5vh; /* espace externe supplémentaire */
+  /* ✅ Titre principal plus sobre */
+}
+#pedagogie h1 {
+  color: #000;
+  text-align: center;
+  font-size: clamp(1.8rem, 3vw, 2.2rem); /* min 1.8rem, idéal 3vw, max 2.2rem */
+  margin-bottom: 40px;
+  font-weight: 700;
+  border: none;
+  padding-bottom: 0;
 }
 #pedagogie article {
-  margin-bottom: 40px;
-  padding: 20px;
-  border-left: 5px solid #FF69B4; /* Bordure rose vif pour délimiter les articles */
-  background-color: #FAFAFA;
-  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.85);
+  border-radius: 30px;
+  padding: 3rem;
+  margin: 0 5vh 60px 5vh;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
 }
-#pedagogie h2 {
-  color: #D8BFD8; /* Lavande/Rose pour les sous-titres */
-  font-size: 1.8em;
+#pedagogie article h2 {
+  color: #B239ED;
+  font-size: clamp(1.4rem, 2.5vw, 1.8rem); /* min 1.4rem, idéal 2.5vw, max 1.8rem */
   margin-top: 0;
-  margin-bottom: 15px;
+  margin-bottom: 25px;
+  text-align: center;
+  border: none;
 }
-#pedagogie h3 {
-  color: #FF69B4; /* Rose vif */
-  font-size: 1.4em;
-  border-bottom: 1px dashed #FFC0CB;
-  padding-bottom: 5px;
+#pedagogie article h3 {
+  color: #333;
+  font-size: clamp(1.2rem, 2vw, 1.5rem); /* min 1.2rem, idéal 2vw, max 1.5rem */
+  margin-bottom: 20px;
+  text-align: center;
+  border: none;
+}
+#pedagogie article p, #pedagogie li {
+  text-align: justify;
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
 }
 #pedagogie .note-source {
   font-style: italic;
-  font-size: 0.9em;
+  font-size: 0.95em;
   color: #555;
-  margin-top: 20px;
-  padding: 10px;
+  margin-top: 30px;
+  padding: 15px;
   border-top: 1px solid #eee;
-}
-#pedagogie {
-  /* STYLE POUR LES LISTES D'ACTIVITÉS */
+  text-align: justify;
+  line-height: 1.6;
 }
 #pedagogie .liste-activite {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
-  margin-top: 20px;
+  gap: 30px;
+  margin-top: 30px;
 }
 #pedagogie .activite-card {
   background-color: #fff;
-  padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  /* ✅ Ombre légère pour le relief */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   transition: transform 0.2s;
+  text-align: justify;
+  line-height: 1.6;
 }
 #pedagogie .activite-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
 }
 #pedagogie .icon-miaou {
-  font-size: 1.2em;
-  margin-right: 8px;
-  color: #FFC0CB; /* Rose clair */
+  font-size: 1.3em;
+  margin-right: 10px;
+  color: #999;
+}
+#pedagogie {
+  /* ✅ Responsive margin-top */
+}
+@media (min-width: 768px) {
+  #pedagogie {
+    margin-top: 5vh;
+  }
+}
+@media (min-width: 850px) {
+  #pedagogie {
+    margin-top: 15vh;
+  }
 }
 
 /*# sourceMappingURL=pedagogie.css.map */

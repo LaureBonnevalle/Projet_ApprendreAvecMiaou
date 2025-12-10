@@ -14,7 +14,7 @@
             <section id="users">
                 <h2>Tous les utilisateurs</h2>
                 <div>
-                    <input type="text" id="search" name="search" aria-label="Search field" placeholder="Rechercher via email">
+                    <input type="text" id="search" name="search" aria-label="Search field" placeholder="Rechercher via email ou prénom">
                 </div>
                 
                 <div class="table-container">
@@ -42,36 +42,6 @@
                                 <td>{{ user.newsletter|e }}</td>
                                 <td><a href="?route=readOneUser&id={{ user.id|e }}">Voir</a></td>
                             </tr>
-                           <style>
-                    section {
-                        font-family: 'Comic Sans MS', 'Raleway', cursive;
-                    }
-                        #search {
-                            border-radius 30px;
-                        }
-
-                        table {
-                            margin-top: 5vh; /* Ajoute un espace de 5 cm avant la table */
-                            border-collapse: collapse;
-                            width: 100%;
-                            border-radius: 30px;
-                        }
-
-                        th, td {
-                            border: 1px solid black;
-                            padding: 10px;
-                            text-align: left;
-                        }
-
-                        th {
-                            background-color: #090909ff;
-                            color: white;
-                            border: 1px solid white;
-                        }
-                        td {
-                            background-color: white;
-                        }
-            </style>
                             {% endfor %}
                         </tbody>
                     </table>
