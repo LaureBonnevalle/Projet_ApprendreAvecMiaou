@@ -5,14 +5,46 @@ class GameController extends AbstractController {
      public function __construct()
     {
         parent::__construct();
+
     } 
-    
-    public function displayGame() {
-        $scripts = $this->addScripts(['public/assets/js/' ]);
-       $this->render("game.html.twig", [
-           'user' => $_SESSION['user'] ?? null
-           ],$scripts); 
+
+
+    private function getUserIdFromSession(): ?int {
+        // Récupération de l'ID utilisateur comme spécifié
+        return $_SESSION['user']['id'] ?? null;
     }
+
+    public function displayGame() : void
+    {
+    $am = new AvatarManager();
+    $timesModels = new TimesModels();
+    $elapsedTime = $timesModels->getElapsedTime();
+    $func= new Utils();
+
+    $avatar = $am->getById($_SESSION['user']['avatar']);
+ 
+    $avatar->setUrlMini($func->asset($avatar->getUrlMini()));
+
+    // Scripts communs (footer + burger)
+    $scripts = $this->getDefaultScripts();
+    $scripts = $this->addScripts(['assets/js/mess.js'
+    ], $scripts);
+
+            
+            $this->render("homepageGame.html.twig", [
+                'titre'           => 'Activités',
+                'user'            => $_SESSION['user'],
+                'elapsed_time'    => $elapsedTime,
+                'session'         => $_SESSION,
+                'connected'       => true,
+                'success_message' => $_SESSION['success_message'] ?? null,
+                'avatar'          => $avatar,
+                'isUser'          => true,
+                'start_time'      => $_SESSION['start_time']
+            ], $scripts);
+           
+    }
+
     
     public function displayPixelArt() {
     
@@ -30,12 +62,6 @@ class GameController extends AbstractController {
       $this->render("memo.html.twig", [
           'user' => $_SESSION['user'] ?? null
           ],$scripts);
-    }
-
-   private function getUserIdFromSession(): ?int
-    {
-        // Récupération de l'ID utilisateur comme spécifié
-        return $_SESSION['user']['id'] ?? null;
     }
 
 

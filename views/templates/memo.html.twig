@@ -19,42 +19,55 @@
 {% endblock %}
 
         {% block content %}
-       <main id="memory"> 
-       
-        <div class="game-container-memo">
-    {% for i in 1..12 %}
-        <div class="card-memo">
-            <div class="front"></div>
-            <div class="back"><img src="" alt=""></div>
+       <section id="memory"> 
+    <div class='game-container'   
+        <div class="game-container-easy">
+            {% for i in 1..12 %}
+                <div class="card-memo">
+                    <div class="front"></div>
+                    <div class="back"><img src="" alt=""></div>
+                </div>
+            {% endfor %}
         </div>
-    {% endfor %}
-</div>
 
-<div class="bar-memo">
-    <div class="moves-memo">
-        <p>Nombre de Mouvements</p>
-        <span>0</span>
+        <div class="game-container-memo-intermediate">
+            {% for i in 1..12 %}
+                <div class="card-memo">
+                    <div class="front"></div>
+                    <div class="back"><img src="" alt=""></div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="nav-game">
+        <div class="bar-memo">
+            <div class="moves-memo">
+                <p>Nombre de Mouvements</p>
+                <span>0</span>
+            </div>
+
+            <div class="timer-memo">
+                <p>Temps</p>
+                <span>00:00</span>
+            </div>
+
+            <div class="start-memo">
+                <button>Démarrer</button>
+            </div>
+
+            <div class="best-score-memo">
+                <span>Meilleur Score</span>
+            </div>
+
+        </div>
     </div>
 
-    <div class="timer-memo">
-        <p>Temps</p>
-        <span>00:00</span>
-    </div>
+    </section>
+   {% block modal %}
+            {{ parent() }}
+         {% endblock %}
 
-    <div class="start-memo">
-        <button>Démarrer</button>
-    </div>
-</div>
+{% endblock %}  
 
 
-    </main>
-    {% endblock %}
-
-    {% block footer %}
-        {{ parent() }}
-    {% endblock %}
-
-    {% block java %}
-        {{ parent() }}
-    {% endblock %}
 {% endblock %}

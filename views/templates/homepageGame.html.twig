@@ -1,0 +1,79 @@
+{% extends "layout.html.twig" %}
+
+{# Titre de la page #}
+{% block title %}
+         | Page Jeux
+{% endblock %}
+
+{% block body %}
+
+        {% block header %}
+            {{ parent() }}
+        {% endblock %}
+
+        
+    
+    {% block content %}
+    
+    {% block error %}
+    {% endblock %}
+
+        <section class="homeuser-game-content" id="homeGame">
+            <header class="homepageGame-header">
+                <h1>Bienvenue sur ta page de jeux !</h1>
+                <p>A quoi veux-tu jouer maintenant ?</p>
+                </header>
+            <div class="card-game-container">
+                <article class="card-game-article">
+                    <div class="card card-game-color-vert">
+                        <div class="card-game-image-container card-memo">
+                        </div>
+                        <div class="card-game-title">
+                            <h2 class ="sr-only">Jeux mémory</h2>
+                        </div>
+                        <a href="?route=memory" class="jeu-action-button" id="memory" aria-label="Je Joue">
+                            Mémo
+                        </a>
+                    </div>
+                </article>
+
+                <article class="card-game-article">
+                    <div class="card card-game-color-bleu">
+                        <div class="card-game-image-container card-pixelart">
+                                                </div>
+                        <div class="card-game-title">
+                            <h2 class ="sr-only">Jeu PixelArt</h2>
+                        </div>
+                        <a href="?route=pixelart" class="jeu-action-button" id="pixelart" aria-label="Je joue">
+                            PixelArt
+                        </a>
+                    </div>
+                </article>
+
+                <article class="card-game-article">
+                    <div class="card card-game-color-jaune">
+                        <div class="card-game-image-container card-click">
+                                                </div>
+                        <div class="card-game-title">
+                            <h2 class="sr-only">Acitvité jeux</h2>
+                        </div>
+                        <a href="?route=clickSouris" class="jeu-action-button" id="click" aria-label="Je joue">
+                            Attrape-Souris
+                        </a>
+                    </div>
+                </article>
+                </div>
+        </section>       
+        
+         {% block modal %}
+            {{ parent() }}
+         {% endblock %}
+
+{% endblock %}  
+
+
+{% endblock %}
+        
+       
+
+

@@ -1,8 +1,9 @@
 @use '../abstracts/varcolors' as varcolors;
 @use '../abstracts/mixins' as mixins;
 
-#homeUser {
-  /* Espacement haut responsive */
+
+#homeGame {
+ /* Espacement haut responsive */
   margin-top: 12vh;
 
   @include mixins.breakpoint(medium) {
@@ -22,7 +23,7 @@
     color: varcolors.$pink_Glamour;
   }
 
-  .homeUser-content {
+  .homeuser-game-content {
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -32,9 +33,8 @@
     }
   }
 
-  // Bloc header (h1 + p)
-  .homeUser-header {
-    display: block;
+  .homepageGame-header {
+    display: block; /* ✅ bloc centré */
     text-align: center;
     margin: auto;
 
@@ -53,7 +53,7 @@
     }
   }
 
-  .card-container {
+  .card-game-container {
     display: flex;
     flex-direction: column; /* ✅ colonne par défaut */
     gap: 20px;
@@ -64,7 +64,7 @@
   }
 
   // Cartes
-  .card-article {
+  .card-game-article {
     width: 100%;
     max-width: 260px;
     margin: 2vh auto;
@@ -73,26 +73,26 @@
   }
 
   // Mixins cards
-  .card-color-vert {
+  .card-game-color-vert {
     @include mixins.cards(varcolors.$vert-main);
     border: 1px solid varcolors.$noir;
     box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.6);
   }
 
-  .card-color-bleu {
+  .card-game-color-bleu {
     @include mixins.cards(varcolors.$bleu-main);
     border: 1px solid varcolors.$noir;
     box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.6);
   }
 
-  .card-color-jaune {
+  .card-game-color-jaune {
     @include mixins.cards(varcolors.$jaune-main);
     border: 1px solid varcolors.$noir;
     box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.6);
   }
 
   // Images
-  .card-image-container {
+  .card-game-image-container {
     width: 200px;
     height: 200px;
     margin: 0 auto 15px auto;
@@ -102,19 +102,44 @@
     border-radius: 20px;
   }
 
-  .card-coloring {
-    background-image: url('../../img/Miaou/ChatColoriages.svg');
+  .card-memo {
+    background-image: url('../../img/Miaou/ChatMemo.png');
   }
-  .card-story {
-    background-image: url('../../img/Miaou/ChatHistoires.svg');
+  .card-pixelart {
+    background-image: url('../../img/Miaou/ChatPixelArt.png');
   }
-  .card-game {
-    background-image: url('../../img/Miaou/ChatJeux.svg');
+  .card-click {
+    background-image: url('../../img/Miaou/ChatAttrapeSouris.png');
   }
 
-  .activite-action-button {
+  .jeu-action-button {
     @include mixins.button-3d(varcolors.$violet-main, varcolors.$violet-dark, varcolors.$noir);
     align-self: center;
     margin-bottom: 2vh;
+    width: 35vw;
+
+    @include mixins.breakpoint(small) {
+    width: 30vw; /* ✅ small */
+  }
+
+  @include mixins.breakpoint(medium) {
+    width: 21vw; /* ✅ medium */
+  }
+
+  @include mixins.breakpoint(mediumLarge) {
+    width: 13vw; /* ✅ medium-large et + */
+  }
+
+  @include mixins.breakpoint(large) {
+    width: 15vw; /* ✅ medium-large et + */
+  }
+
+  @include mixins.breakpoint(larger) {
+    width: 15vw; /* ✅ medium-large et + */
+  }
+
+  @include mixins.breakpoint(ultra) {
+    width: 10vw; /* ✅ medium-large et + */
+  }
   }
 }

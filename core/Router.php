@@ -176,7 +176,7 @@ class Router {
             // Si toutes les vérifications passent, router vers le bon controller
             $dc = new DefaultController();
             $ac = new AuthController();
-            $gm = new GameController();
+            $gc = new GameController();
             $cc = new ColoringController();
             $sc = new StoryController();
             $uc = new UserController();
@@ -218,19 +218,19 @@ class Router {
                     break;*/
                                     
                 case "displayGame":
-                    $gm->displayGame();
+                    $gc->displayGame();
                     break;
 
                 case "displayClick":
-                    $gm->displayClick();
+                    $gc->displayClick();
                     break;
                     
                 case "displayPixelArt":
-                    $gm->displayPixelArt();
+                    $gc->displayPixelArt();
                     break;
                     
                 case "memo":
-                    $gm->displayMemo();
+                    $gc->displayMemo();
                     break;
                     
                 case "colorings":

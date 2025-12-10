@@ -3155,55 +3155,73 @@ main {
   }
 }
 
-main {
-  margin-top: 10vh;
+#homeUser {
+  /* Espacement haut responsive */
+  margin-top: 12vh;
 }
-
-.alert-success, #session-message, .alert-error, #session-error, #session-alert, .alert {
+@media (min-width: 768px) {
+  #homeUser {
+    margin-top: 15vh;
+  }
+}
+@media (min-width: 850px) {
+  #homeUser {
+    margin-top: 25vh;
+  }
+}
+#homeUser .alert-success,
+#homeUser #session-message,
+#homeUser .alert-error,
+#homeUser #session-error,
+#homeUser #session-alert,
+#homeUser .alert {
   color: #FF7675;
 }
-
-.homeUser-content {
+#homeUser .homeUser-content {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 @media (min-width: 576px) {
-  .homeUser-content {
+  #homeUser .homeUser-content {
     flex-direction: row;
   }
 }
-
-.homeUser-header {
+#homeUser .homeUser-header {
   display: block;
   text-align: center;
   margin: auto;
 }
-.homeUser-header h1 {
+#homeUser .homeUser-header h1 {
+  display: block;
   font-size: 2em;
-  margin: 0 0 1vh 0;
+  margin: 0 auto 1vh auto;
+  text-align: center;
 }
-.homeUser-header p {
+#homeUser .homeUser-header p {
+  display: block;
   font-size: 1.2em;
   margin: 0;
+  text-align: center;
 }
-
-.cards-container {
+#homeUser .card-container {
   display: flex;
-  flex-direction: row;
-  align-items: center;
+  flex-direction: column; /* ✅ colonne par défaut */
   gap: 20px;
 }
-
-.card-article {
+@media (min-width: 768px) {
+  #homeUser .card-container {
+    flex-direction: row; /* ✅ row sur grands formats */
+  }
+}
+#homeUser .card-article {
   width: 100%;
   max-width: 260px;
   margin: 2vh auto;
   border-radius: 20px;
   align-items: center;
 }
-
-.card-color-vert {
+#homeUser .card-color-vert {
   background-color: #3FEB79;
   border-radius: 30px;
   padding: 10px;
@@ -3218,8 +3236,7 @@ main {
   border: 1px solid #000000;
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.6);
 }
-
-.card-color-bleu {
+#homeUser .card-color-bleu {
   background-color: #758BFF;
   border-radius: 30px;
   padding: 10px;
@@ -3234,8 +3251,7 @@ main {
   border: 1px solid #000000;
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.6);
 }
-
-.card-color-jaune {
+#homeUser .card-color-jaune {
   background-color: #F2E554;
   border-radius: 30px;
   padding: 10px;
@@ -3250,8 +3266,7 @@ main {
   border: 1px solid #000000;
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.6);
 }
-
-.card-image-container {
+#homeUser .card-image-container {
   width: 200px;
   height: 200px;
   margin: 0 auto 15px auto;
@@ -3260,20 +3275,16 @@ main {
   background-size: contain;
   border-radius: 20px;
 }
-
-.card-coloring {
+#homeUser .card-coloring {
   background-image: url("../../img/Miaou/ChatColoriages.svg");
 }
-
-.card-story {
+#homeUser .card-story {
   background-image: url("../../img/Miaou/ChatHistoires.svg");
 }
-
-.card-game {
+#homeUser .card-game {
   background-image: url("../../img/Miaou/ChatJeux.svg");
 }
-
-.activite-action-button {
+#homeUser .activite-action-button {
   background-color: #B239ED;
   border: 1px solid #000000;
   box-shadow: 6px 6px 0px #9220CB;
@@ -3289,27 +3300,27 @@ main {
   transition: all 0.3s ease;
   box-sizing: border-box;
 }
-.activite-action-button:focus-visible {
+#homeUser .activite-action-button:focus-visible {
   outline: 3px solid #B239ED;
   outline-offset: 2px;
 }
-.activite-action-button:hover {
+#homeUser .activite-action-button:hover {
   transform: translate(2px, 2px);
   box-shadow: 4px 4px 0px #9220CB;
 }
-.activite-action-button:active {
+#homeUser .activite-action-button:active {
   transform: translate(4px, 4px);
   box-shadow: 2px 2px 0px #9220CB;
 }
-.activite-action-button:disabled, .activite-action-button[aria-disabled=true] {
+#homeUser .activite-action-button:disabled, #homeUser .activite-action-button[aria-disabled=true] {
   opacity: 0.6;
   cursor: not-allowed;
 }
-.activite-action-button:disabled:hover, .activite-action-button:disabled:active, .activite-action-button[aria-disabled=true]:hover, .activite-action-button[aria-disabled=true]:active {
+#homeUser .activite-action-button:disabled:hover, #homeUser .activite-action-button:disabled:active, #homeUser .activite-action-button[aria-disabled=true]:hover, #homeUser .activite-action-button[aria-disabled=true]:active {
   transform: none;
   box-shadow: 6px 6px 0px #9220CB;
 }
-.activite-action-button {
+#homeUser .activite-action-button {
   align-self: center;
   margin-bottom: 2vh;
 }
@@ -5421,6 +5432,202 @@ label {
 #oneuser .message {
   margin-top: 0.5rem;
   font-size: 0.85rem;
+}
+
+#homeGame {
+  /* Espacement haut responsive */
+  margin-top: 12vh;
+}
+@media (min-width: 768px) {
+  #homeGame {
+    margin-top: 15vh;
+  }
+}
+@media (min-width: 850px) {
+  #homeGame {
+    margin-top: 25vh;
+  }
+}
+#homeGame .alert-success,
+#homeGame #session-message,
+#homeGame .alert-error,
+#homeGame #session-error,
+#homeGame #session-alert,
+#homeGame .alert {
+  color: #FF7675;
+}
+#homeGame .homeuser-game-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+@media (min-width: 576px) {
+  #homeGame .homeuser-game-content {
+    flex-direction: row;
+  }
+}
+#homeGame .homepageGame-header {
+  display: block; /* ✅ bloc centré */
+  text-align: center;
+  margin: auto;
+}
+#homeGame .homepageGame-header h1 {
+  display: block;
+  font-size: 2em;
+  margin: 0 auto 1vh auto;
+  text-align: center;
+}
+#homeGame .homepageGame-header p {
+  display: block;
+  font-size: 1.2em;
+  margin: 0;
+  text-align: center;
+}
+#homeGame .card-game-container {
+  display: flex;
+  flex-direction: column; /* ✅ colonne par défaut */
+  gap: 20px;
+}
+@media (min-width: 768px) {
+  #homeGame .card-game-container {
+    flex-direction: row; /* ✅ row sur grands formats */
+  }
+}
+#homeGame .card-game-article {
+  width: 100%;
+  max-width: 260px;
+  margin: 2vh auto;
+  border-radius: 20px;
+  align-items: center;
+}
+#homeGame .card-game-color-vert {
+  background-color: #3FEB79;
+  border-radius: 30px;
+  padding: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  min-height: 250px;
+  border: 1px solid #000000;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.6);
+}
+#homeGame .card-game-color-bleu {
+  background-color: #758BFF;
+  border-radius: 30px;
+  padding: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  min-height: 250px;
+  border: 1px solid #000000;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.6);
+}
+#homeGame .card-game-color-jaune {
+  background-color: #F2E554;
+  border-radius: 30px;
+  padding: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  min-height: 250px;
+  border: 1px solid #000000;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.6);
+}
+#homeGame .card-game-image-container {
+  width: 200px;
+  height: 200px;
+  margin: 0 auto 15px auto;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  border-radius: 20px;
+}
+#homeGame .card-memo {
+  background-image: url("../../img/Miaou/ChatMemo.png");
+}
+#homeGame .card-pixelart {
+  background-image: url("../../img/Miaou/ChatPixelArt.png");
+}
+#homeGame .card-click {
+  background-image: url("../../img/Miaou/ChatAttrapeSouris.png");
+}
+#homeGame .jeu-action-button {
+  background-color: #B239ED;
+  border: 1px solid #000000;
+  box-shadow: 6px 6px 0px #9220CB;
+  border-radius: 500px;
+  padding: 0.8rem 1rem;
+  font-weight: bold;
+  text-decoration: none;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+#homeGame .jeu-action-button:focus-visible {
+  outline: 3px solid #B239ED;
+  outline-offset: 2px;
+}
+#homeGame .jeu-action-button:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 4px 4px 0px #9220CB;
+}
+#homeGame .jeu-action-button:active {
+  transform: translate(4px, 4px);
+  box-shadow: 2px 2px 0px #9220CB;
+}
+#homeGame .jeu-action-button:disabled, #homeGame .jeu-action-button[aria-disabled=true] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+#homeGame .jeu-action-button:disabled:hover, #homeGame .jeu-action-button:disabled:active, #homeGame .jeu-action-button[aria-disabled=true]:hover, #homeGame .jeu-action-button[aria-disabled=true]:active {
+  transform: none;
+  box-shadow: 6px 6px 0px #9220CB;
+}
+#homeGame .jeu-action-button {
+  align-self: center;
+  margin-bottom: 2vh;
+  width: 35vw;
+}
+@media (min-width: 576px) {
+  #homeGame .jeu-action-button {
+    width: 30vw; /* ✅ small */
+  }
+}
+@media (min-width: 768px) {
+  #homeGame .jeu-action-button {
+    width: 21vw; /* ✅ medium */
+  }
+}
+@media (min-width: 992px) {
+  #homeGame .jeu-action-button {
+    width: 15vw; /* ✅ medium-large et + */
+  }
+}
+@media (min-width: 1100px) {
+  #homeGame .jeu-action-button {
+    width: 15vw; /* ✅ medium-large et + */
+  }
+}
+@media (min-width: 1600px) {
+  #homeGame .jeu-action-button {
+    width: 10vw; /* ✅ medium-large et + */
+  }
 }
 
 /*# sourceMappingURL=style.css.map */
