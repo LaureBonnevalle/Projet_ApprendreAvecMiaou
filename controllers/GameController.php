@@ -46,15 +46,7 @@ class GameController extends AbstractController {
     }
 
     
-    public function displayPixelArt() {
     
-         $scripts = $this->addScripts(['public/assets/js/' ]);
-    
-        $this->render("pixelArt.html.twig", [
-            'user' => $_SESSION['user'] ?? null
-            ],$scripts);  
-        
-    }
     
 
     /** ***********jeu Click Souris***************************** */
@@ -274,12 +266,61 @@ public function saveMemoryScore(): void
     exit;
 }
 
-
+/*******************************Pixel Art********************************* */
    
 
-    
-    
-    
-    
-    
+    public function displayPixelArt($level = 'easy') {
+    $am          = new AvatarManager();
+    $timesModels = new TimesModels();
+    $func        = new Utils();
+
+    $elapsedTime = $timesModels->getElapsedTime();
+
+    $avatar = $am->getById($_SESSION['user']['avatar']);
+    $avatar->setUrlMini($func->asset($avatar->getUrlMini()));
+
+    // Scripts communs + PixelArt
+    $scripts = $this->getDefaultScripts();
+    $scripts = $this->addScripts([
+        'assets/js/mess.js',
+        'assets/js/pixelart.js'
+    ], $scripts);
+
+    // Config des niveaux
+    $levels = [
+        'easy' => [
+            'gridSize' => 8,
+            'colors'   => ['#000000','#FFFFFF','#FF5733','#33FF57','#3357FF','#FFFF33']
+        ],
+        'intermediate' => [
+            'gridSize' => 12,
+            'colors'   => ['#000000','#FFFFFF','#3357FF','#FFFF33','#FF33FF','#33FFFF',
+                           '#FF8800','#8800FF','#0088FF','#00FF88','#FF0088','#888888']
+        ],
+        'hard' => [
+            'gridSize' => 16,
+            'colors'   => ['#FF5733','#33FF57','#3357FF','#FFFF33','#FF33FF','#33FFFF',
+                           '#FF8800','#8800FF','#0088FF','#00FF88','#FF0088','#888888',
+                           '#000000','#FFFFFF','#AA5533','#55AA33']
+        ]
+    ];
+
+    $config = $levels[$level] ?? $levels['easy'];
+
+    $this->render("pixelart.html.twig", [
+        'titre'        => 'Pixel Art',
+        'user'         => $_SESSION['user'],
+        'elapsed_time' => $elapsedTime,
+        'session'      => $_SESSION,
+        'connected'    => true,
+        'avatar'       => $avatar,
+        'isUser'       => true,
+        'start_time'   => $_SESSION['start_time'],
+        'colors'       => $config['colors'],
+        'gridSize'     => $config['gridSize'],
+        'level'        => $level,
+        'audio_bg'     => $func->asset('assets/sounds/game/pixelart/backgroundMusicMemory.wav'),
+        'audio_success'=> $func->asset('assets/sounds/game/pixelart/success.mp3')
+    ], $scripts);
+}
 }

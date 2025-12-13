@@ -1,103 +1,83 @@
+{% extends "layout.html.twig" %}
+
 {% block title %}
-Ma page
-{{ parent() }}
+    | Pixel Art
 {% endblock %}
+
+{% block body %}
+
 {% block header %}
-{{ parent() }}
-{% endblock %}
-{% block nav%}
-{{ parent() }}
+    {{ parent() }}
 {% endblock %}
 
 {% block content %}
 
-{% block error %}
-{{ parent() }}
-{% endblock %}   
-      
-<main>
+<section id="pixelart">
+    
+    <header class="header-pixel">
+        <h1>Pixel Art 🎨</h1>
+        <div class="sound-pixel">
+            <button id="mute-pixel" class="mute-btn">
+                <img src="assets/img/game/memory/mute1.png" alt="Muet">
+            </button>
+            <button id="volume-pixel" class="volume-btn">
+                <img src="assets/img/game/memory/Volume.png" alt="Volume">
+            </button>
+        </div>
+    </header>
 
-<h1>Pixel Art</h1>
-<div id="pixelArtContainer"></div>
-<div id="colorPalette"></div>
-<button id="resetButton">Réinitialiser</button>
+    <div class="level-buttons">
+        <button class="btn-level" data-level="easy">
+            <img src="assets/img/game/memory/levelCoeur.png" alt="Facile">
+            <span>Facile (8x8)</span>
+        </button>
+        <button class="btn-level" data-level="intermediate">
+            <img src="assets/img/game/memory/levelCoeur.png" alt="Intermédiaire">
+            <img src="assets/img/game/memory/levelCoeur.png" alt="Intermédiaire">
+            <span>Intermédiaire (12x12)</span>
+        </button>
+        <button class="btn-level" data-level="hard">
+            <img src="assets/img/game/memory/levelCoeur.png" alt="Difficile">
+            <img src="assets/img/game/memory/levelCoeur.png" alt="Difficile">
+            <img src="assets/img/game/memory/levelCoeur.png" alt="Difficile">
+            <span>Difficile (16x16)</span>
+        </button>
+    </div>
 
-<style>
-#pixelArtContainer {
-    display: grid;
-    grid-template-columns: repeat(12, 20px);
-    grid-template-rows: repeat(12, 20px);
-    gap: 1px;
-}
+    <div class="free-draw-section">
+        <button id="free-draw-btn" class="btn-free-draw">
+            🖌️ Dessin Libre
+        </button>
+    </div>
 
-.pixel {
-    width: 20px;
-    height: 20px;
-    background-color: white;
-    border: 1px solid #ddd;
-}
+    <div class="model-selection" style="display: none;">
+        <h2>Choisis un modèle :</h2>
+        <select id="model-select">
+            <option value="">-- Choisis un modèle --</option>
+        </select>
+    </div>
 
-#colorPalette {
-    display: flex;
-    margin-top: 10px;
-}
+    <div class="game-area" style="display: none;">
+        
+        <div class="model-container">
+            <h3>📋 Modèle</h3>
+            <div id="modelPreview"></div>
+        </div>
 
-.color {
-    width: 20px;
-    height: 20px;
-    margin: 2px;
-    cursor: pointer;
-    border: 1px solid #ddd;
-}
+        <div class="canvas-container">
+            <div id="pixelArtContainer"></div>
+        </div>
 
-</style>
-</main>
-<script>
-const colors = [
-    "#FF5733", "#33FF57", "#3357FF", "#FFFF33", "#FF33FF", "#33FFFF",
-    "#FF8800", "#8800FF", "#0088FF", "#00FF88", "#FF0088", "#888888",
-    "#000000", "#FFFFFF", "#FF5733", "#33FF57", "#3357FF", "#FFFF33",
-    "#FF33FF", "#33FFFF"
-];
+        <div id="colorPalette"></div>
+    </div>
 
-const container = document.getElementById('pixelArtContainer');
-const colorPalette = document.getElementById('colorPalette');
-const resetButton = document.getElementById('resetButton');
-let selectedColor = colors[0];
+    <div class="action-buttons">
+        <button id="resetButton">🔄 Réinitialiser</button>
+        <button id="validateButton" style="display: none;">✅ Valider</button>
+    </div>
 
-// Create pixels
-for (let i = 0; i < 12 * 12; i++) {
-    const pixel = document.createElement('div');
-    pixel.classList.add('pixel');
-    pixel.addEventListener('click', () => {
-        pixel.style.backgroundColor = selectedColor;
-    });
-    container.appendChild(pixel);
-}
+</section>
 
-// Create color palette
-colors.forEach(color => {
-    const colorDiv = document.createElement('div');
-    colorDiv.classList.add('color');
-    colorDiv.style.backgroundColor = color;
-    colorDiv.addEventListener('click', () => {
-        selectedColor = color;
-    });
-    colorPalette.appendChild(colorDiv);
-});
+{% endblock %}
 
-// Reset button
-resetButton.addEventListener('click', () => {
-    const pixels = document.querySelectorAll('.pixel');
-    pixels.forEach(pixel => {
-        pixel.style.backgroundColor = 'white';
-    });
-});
-</script>
-{% block footer %}
-{% if app.session.get('connected') %}
-        <p>Temps écoulé:  <span id="time">00:00:00</span></p>
-        {% set elapsed_time = 0 %}
-        {% endif %}
-{{ parent() }}
-{% endblock %}   
+{% endblock %}
