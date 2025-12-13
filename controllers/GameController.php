@@ -56,14 +56,6 @@ class GameController extends AbstractController {
         
     }
     
-    public function displayMemo(){
-    
-     $scripts = $this->addScripts(['public/assets/js/memory.js']);
-      $this->render("memo.html.twig", [
-          'user' => $_SESSION['user'] ?? null
-          ],$scripts);
-    }
-
 
     /** ***********jeu Click Souris***************************** */
 
@@ -170,6 +162,120 @@ class GameController extends AbstractController {
         ]);
     }
 
+    /**********************************************MEMO****************************************************** */
+
+  // Dans GameController.php - Méthode memo()
+
+public function displayMemo(): void
+{   
+    $am = new AvatarManager();
+    $timesModels = new TimesModels();
+    $elapsedTime = $timesModels->getElapsedTime();
+    $func = new Utils();
+    $gm = new GameManager();
+
+    $avatar = $am->getById($_SESSION['user']['avatar']);
+    $avatar->setUrlMini($func->asset($avatar->getUrlMini()));
+
+    // Scripts
+    $scripts = $this->getDefaultScripts();
+    $scripts = $this->addScripts([
+        'assets/js/mess.js',
+        'assets/js/memory.js'
+    ], $scripts);
+
+    // ✅ Récupérer les meilleurs scores PAR UTILISATEUR
+    $userId = $_SESSION['user']['id'];
+    
+    
+    // DEBUG - Afficher l'ID utilisateur
+    error_log("Memory - User ID: " . $userId);
+    
+    $bestScores = [
+        'easy' => $gm->getBestScoresByUserAndLevel($userId, 'easy'),
+        'intermediate' => $gm->getBestScoresByUserAndLevel($userId, 'intermediate'),
+        'hard' => $gm->getBestScoresByUserAndLevel($userId, 'hard'),
+    ];
+
+   
+    
+    // DEBUG - Afficher les scores récupérés
+    error_log("Memory - Best Scores: " . print_r($bestScores, true));
+
+    $this->render('memo.html.twig', [
+        'titre' => 'Jeu Memo',
+        'user' => $_SESSION['user'],
+        'elapsed_time' => $elapsedTime,
+        'session' => $_SESSION,
+        'connected' => true,
+        'success_message' => $_SESSION['success_message'] ?? null,
+        'avatar' => $avatar,
+        'isUser' => true,
+        'start_time' => $_SESSION['start_time'],
+        'bestScores' => $bestScores,
+    ], $scripts);
+}
+
+// ✅ Méthode saveMemoryScore() modifiée
+public function saveMemoryScore(): void
+{
+    header('Content-Type: application/json');
+
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        http_response_code(405);
+        echo json_encode(['success' => false, 'message' => 'Méthode non autorisée']);
+        exit;
+    }
+
+    $userId = $_SESSION['user']['id'] ?? null;
+    if (!$userId) {
+        http_response_code(401);
+        echo json_encode(['success' => false, 'message' => 'Non connecté']);
+        exit;
+    }
+
+    $data = json_decode(file_get_contents('php://input'), true);
+
+    $moves = (int)($data['moves'] ?? 0);
+    $time = (int)($data['time'] ?? 0);
+    $level = $data['level'] ?? '';
+
+    if (!in_array($level, ['easy', 'intermediate', 'hard']) || $moves <= 0 || $time <= 0) {
+        http_response_code(400);
+        echo json_encode(['success' => false, 'message' => 'Données invalides']);
+        exit;
+    }
+
+    try {
+        $gm = new GameManager();
+        
+        // ✅ Sauvegarder uniquement si c'est un meilleur score
+        $isNewRecord = $gm->saveOrUpdateMemoryScore($userId, $moves, $level, $time);
+
+        // Récupérer les meilleurs scores mis à jour
+        $bestScores = $gm->getBestScoresByUserAndLevel($userId, $level);
+
+        echo json_encode([
+            'success' => true,
+            'isNewRecord' => $isNewRecord,
+            'message' => $isNewRecord ? 'Nouveau record !' : 'Score enregistré',
+            'bestScores' => $bestScores
+        ]);
+
+    } catch (Exception $e) {
+        error_log("Erreur saveMemoryScore: " . $e->getMessage());
+        http_response_code(500);
+        echo json_encode([
+            'success' => false,
+            'message' => 'Erreur lors de l\'enregistrement'
+        ]);
+    }
+
+    exit;
+}
+
+
+   
 
     
     

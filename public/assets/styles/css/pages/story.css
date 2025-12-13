@@ -22,7 +22,7 @@ html a:hover, html button:hover, html input:hover, html select:hover, html .acti
 body {
   cursor: url("../../img/Miaou/main.svg") 4 0, pointer;
 }
-body a:hover, body button:hover, body input:hover, body select:hover, body .action-button:hover, body #backToTopButton img, body .retour-haut {
+body a:hover, body button:hover, body input:hover, body select:hover, body .action-button:hover, body #backToTopButton img, body .retour-haut, body .card-memo {
   cursor: url("../../img/Miaou/mainGrande.svg") 5 0, pointer;
 }
 
@@ -67,7 +67,7 @@ body a:hover, body button:hover, body input:hover, body select:hover, body .acti
   align-items: center;
   gap: clamp(0.5rem, 2vw, 1vw);
   height: 10vh;
-  width: 85vw;
+  width: 90vw;
   overflow: hidden;
   margin-bottom: 1rem;
 }
@@ -75,7 +75,7 @@ body a:hover, body button:hover, body input:hover, body select:hover, body .acti
   content: "";
   position: fixed;
   top: 2vh;
-  width: 90vh;
+  width: 70vw;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(178, 57, 237, 0.1) 100%);
   pointer-events: none;
 }
@@ -321,7 +321,7 @@ body a:hover, body button:hover, body input:hover, body select:hover, body .acti
 #nav .nav-links-container li:nth-child(3) a::after,
 #nav #nav-links-container li:nth-child(3) a::after,
 #nav #navUser-links-container li:nth-child(3) a::after {
-  background-color: #77CDFF;
+  background-color: #758BFF;
 }
 #nav .nav-links-container li:nth-child(4) a::after,
 #nav #nav-links-container li:nth-child(4) a::after,
@@ -448,7 +448,7 @@ body a:hover, body button:hover, body input:hover, body select:hover, body .acti
   #nav .nav-links-container li:nth-child(3) a,
   #nav #nav-links-container li:nth-child(3) a,
   #nav #navUser-links-container li:nth-child(3) a {
-    background-color: #77CDFF;
+    background-color: #758BFF;
     box-shadow: 4px 6px 0px #5AA1CA;
   }
   #nav .nav-links-container li:nth-child(3) a:hover,
@@ -570,8 +570,8 @@ body {
 main {
   height: 150vh;
   /* Réserve l’espace du header fixe */
-  padding-top: 13vh; /* hauteur du header en mobile */
-  margin-top: 0;
+  padding-top: 20vh; /* hauteur du header en mobile */
+  margin-top: 10vh;
   /* Réserve l’espace du footer fixe */
   margin-bottom: 25vh; /* hauteur du footer */
   background: transparent;

@@ -36,7 +36,7 @@ class Router {
                 "homepageUser", "profile", "games", "pixelArt", 
                 "memo", "colorings", "coloringsListe", "stories", "getImage", 
                 "getStory", "displayGame", "displayPixelArt" ,"forgottenPassword", "updateProfile", "toggleNewsletter", "contact", 
-                "contactUsForm", 'resetPasswordFromProfile', "displayClick", 'contactFromProfile', 
+                "contactUsForm", 'resetPasswordFromProfile', "displayClick", 'contactFromProfile', "saveMemoryScore",
             ];
 
             // Routes pour administrateurs uniquement (role 2)
@@ -232,6 +232,10 @@ class Router {
                 case "memo":
                     $gc->displayMemo();
                     break;
+
+                case "saveMemoryScore":
+                    $gc->saveMemoryScore(); // ← Nouvelle route pour sauvegarder le score
+                    break;
                     
                 case "colorings":
                     $cc->displayDraw();
@@ -301,7 +305,7 @@ class Router {
             $auc = new AdminUserController();
             $avc= new AvatarController();
             $sc = new StoryController();
-            $gm = new GameController();
+            $gc = new GameController();
             $cc = new ColoringController();
             $ctc= new ContactController();
             $nc = new NewsletterController();

@@ -91,4 +91,95 @@ class GameManager extends AbstractManager
         // 4. Score non amélioré
         return ['success' => true, 'message' => "Score non amélioré en {$level}.", 'newBestScore' => $existingBestScore];
     }
+
+
+
+/***************************************************JEU MEMO****************************************************** */
+
+   public function getBestScoresByLevel(string $level): array
+{
+    $sql = "SELECT MIN(time) AS best_time, MIN(score) AS best_moves
+            FROM memory
+            WHERE level = :level";
+
+    $stmt = $this->db->prepare($sql);
+    $stmt->bindValue(':level', $level, PDO::PARAM_STR);
+    $stmt->execute();
+
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    return [
+        'time'  => $row['best_time'] !== null ? (int)$row['best_time'] : null,
+        'moves' => $row['best_moves'] !== null ? (int)$row['best_moves'] : null,
+    ];
 }
+
+    public function saveScore(int $userId, int $score, string $level, int $time): void
+{
+    $sql = "INSERT INTO memory (user_id, score, level, created_at, time)
+            VALUES (:user_id, :score, :level, NOW(), :time)";
+
+    $stmt = $this->db->prepare($sql);
+    $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
+    $stmt->bindValue(':score', $score, PDO::PARAM_INT);
+    $stmt->bindValue(':level', $level, PDO::PARAM_STR);
+    $stmt->bindValue(':time', $time, PDO::PARAM_INT); // ← INT au lieu de STR
+    $stmt->execute();
+}
+
+
+/**
+ * Récupère les meilleurs scores d'un utilisateur pour un niveau donné
+ */
+public function getBestScoresByUserAndLevel(int $userId, string $level): array
+{
+    $sql = "SELECT MIN(time) AS best_time, MIN(score) AS best_moves
+            FROM memory
+            WHERE user_id = :user_id AND level = :level";
+
+    $stmt = $this->db->prepare($sql);
+    $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
+    $stmt->bindValue(':level', $level, PDO::PARAM_STR);
+    $stmt->execute();
+
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    return [
+        'time'  => $row['best_time'] !== null ? (int)$row['best_time'] : null,
+        'moves' => $row['best_moves'] !== null ? (int)$row['best_moves'] : null,
+    ];
+}
+
+/**
+ * Sauvegarde OU met à jour le meilleur score pour un niveau
+ */
+public function saveOrUpdateMemoryScore(int $userId, int $moves, string $level, int $time): bool
+{
+    // Récupérer le meilleur score actuel
+    $bestScores = $this->getBestScoresByUserAndLevel($userId, $level);
+    
+    $isBetterMoves = $bestScores['moves'] === null || $moves < $bestScores['moves'];
+    $isBetterTime = $bestScores['time'] === null || $time < $bestScores['time'];
+    
+    // Ne sauvegarder que si c'est un meilleur score (moins de coups OU moins de temps)
+    if ($isBetterMoves || $isBetterTime) {
+        // Si pas de score existant OU meilleur score, on insère
+        $sql = "INSERT INTO memory (user_id, score, level, created_at, time)
+                VALUES (:user_id, :score, :level, NOW(), :time)";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
+        $stmt->bindValue(':score', $moves, PDO::PARAM_INT);
+        $stmt->bindValue(':level', $level, PDO::PARAM_STR);
+        $stmt->bindValue(':time', $time, PDO::PARAM_INT);
+        
+        return $stmt->execute();
+    }
+    
+    return false; // Pas de nouveau record
+}
+
+
+}
+
+

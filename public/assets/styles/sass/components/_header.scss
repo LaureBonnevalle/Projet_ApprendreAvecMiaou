@@ -19,7 +19,7 @@ html {
 body {
     cursor: url('../../img/Miaou/main.svg') 4 0, pointer;
 
-  a:hover , button:hover , input:hover , select:hover, .action-button:hover, #backToTopButton img, .retour-haut {
+  a:hover , button:hover , input:hover , select:hover, .action-button:hover, #backToTopButton img, .retour-haut, .card-memo {
     cursor: url('../../img/Miaou/mainGrande.svg') 5 0, pointer;
     
   }
@@ -63,7 +63,7 @@ body {
         align-items: center;
         gap: clamp(0.5rem, 2vw, 1vw);
         height: 10vh;
-        width: 85vw;
+        width:clamp(60vw, 90vw, 100vw);
         overflow: hidden;
         margin-bottom: 1rem;
         
@@ -71,7 +71,7 @@ body {
             content: '';
             position: fixed;
             top: 2vh;
-            width: 90vh;
+            width: 70vw;
          // left: 0;
         //  right: 0;
         //  bottom: 0;
@@ -481,8 +481,8 @@ body {
 main {
    height: 150vh;
   /* Réserve l’espace du header fixe */
-  padding-top: 13vh; /* hauteur du header en mobile */
-  margin-top: 0;
+  padding-top: 20vh; /* hauteur du header en mobile */
+  margin-top: 10vh;
 
   /* Réserve l’espace du footer fixe */
   margin-bottom: 25vh; /* hauteur du footer */

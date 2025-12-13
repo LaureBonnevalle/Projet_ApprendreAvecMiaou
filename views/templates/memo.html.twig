@@ -1,69 +1,80 @@
 {% extends "layout.html.twig" %}
 
-{% block description %}
-    {{ parent() }}
-    {% block title %}
-        |Page Accueil 
-    {% endblock %}
+{# Titre de la page #}
+{% block title %}
+         | Page Activités
 {% endblock %}
-
-
 
 {% block body %}
 
         {% block header %}
             {{ parent() }}
         {% endblock %}
-{% block stylesheets %}
-<link href="games/MemoryGame/memory.css" rel="stylesheet">
-{% endblock %}
 
-        {% block content %}
-       <section id="memory"> 
-    <div class='game-container'   
-        <div class="game-container-easy">
-            {% for i in 1..12 %}
-                <div class="card-memo">
-                    <div class="front"></div>
-                    <div class="back"><img src="" alt=""></div>
-                </div>
-            {% endfor %}
+        
+    
+    {% block content %}
+    
+    {% block error %}
+    {% endblock %}
+<section id="memory">
+
+    <header class="header-memo">
+        <h1>Jeu de mémoire</h1>
+            <div class="sound-memo">
+                <button id="mute" class="mute-btn"><img src="assets/img/game/memory/mute1.png" alt="Muet"></button>
+                
+                <button id="volume" class="volume-range"><img  src="assets/img/game/memory/Volume.png" alt="Volume"></button>
+            </div>
+            <p>Le nombre de coeur reflete le niveau de difficulté</p>
+    </header>
+
+    <!-- Best scores par niveau -->
+    <div class="best-score-memo">
+    
+        <div class="score-level">
+            <h2><img src="assets/img/game/memory/levelCoeur.png" alt="1 coeur"></h2>
+            <p>Temps : <span data-level="easy-time">{{ bestScores.easy.time ?? '—' }}s</span></p>
+            <p>Coups : <span data-level="easy-moves">{{ bestScores.easy.moves ?? '—' }}</span></p>
+            <button id="btn-easy" class="level-buttons">Jouer</button>
         </div>
-
-        <div class="game-container-memo-intermediate">
-            {% for i in 1..12 %}
-                <div class="card-memo">
-                    <div class="front"></div>
-                    <div class="back"><img src="" alt=""></div>
-                </div>
-            {% endfor %}
+        <div class="score-level">
+            <h2><img src="assets/img/game/memory/levelCoeur.png" alt="coeur">
+                <img src="assets/img/game/memory/levelCoeur.png" alt="coeur"></h2>
+            <p>Temps : <span data-level="intermediate-time">{{ bestScores.intermediate.time ?? '—' }}s</span></p>
+            <p>Coups : <span data-level="intermediate-moves">{{ bestScores.intermediate.moves ?? '—' }}</span></p>
+             <button id="btn-intermediate" class="level-buttons">Jouer</button>
         </div>
-    </div>
-    <div class="nav-game">
-        <div class="bar-memo">
-            <div class="moves-memo">
-                <p>Nombre de Mouvements</p>
-                <span>0</span>
-            </div>
-
-            <div class="timer-memo">
-                <p>Temps</p>
-                <span>00:00</span>
-            </div>
-
-            <div class="start-memo">
-                <button>Démarrer</button>
-            </div>
-
-            <div class="best-score-memo">
-                <span>Meilleur Score</span>
-            </div>
-
+        <div class="score-level">
+            <h2><img src="assets/img/game/memory/levelCoeur.png" alt="coeur">
+                <img src="assets/img/game/memory/levelCoeur.png" alt="coeur">
+                <img src="assets/img/game/memory/levelCoeur.png" alt="coeur"></h2>
+            <p>Temps : <span data-level="hard-time">{{ bestScores.hard.time ?? '—' }}s</span></p>
+            <p>Coups : <span data-level="hard-moves">{{ bestScores.hard.moves ?? '—' }}</span></p>
+            <button id="btn-hard" class="level-buttons">Jouer</button>
         </div>
     </div>
 
-    </section>
-   {% block modal %}
+    <!-- Conteneur du jeu -->
+    <div class="game-container"></div>
+
+    <!-- Barre de navigation du jeu -->
+    <div class="bar-memo">
+        <div class="moves-memo">
+            <p>Nombre de Mouvements</p>
+            <span id="moves-count">0</span>
+        </div>
+        <div class="timer-memo">
+            <p>Temps</p>
+            <span id="timer">00:00</span>
+        </div>
+        <div class="start-memo">
+            <button id="start-game">Démarrer</button>
+        </div>
+    </div>
+
+</section>
+{% block modal %}
             {{ parent() }}
          {% endblock %}
 
