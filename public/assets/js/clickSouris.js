@@ -1,312 +1,543 @@
+/**
+ * Jeu Click Souris - Version finale fonctionnelle
+ */
+
 document.addEventListener('DOMContentLoaded', () => {
-    // --- Configuration des Niveaux de Difficulté ---
+    
+    // ========== CONFIGURATION DES NIVEAUX ==========
     const difficultyLevels = {
         'facile': {
             key: 'facile',
-            name: 'Facile (1 Coeur)',
-            clickTolerance: 50,    // Grande zone de clic (facile à attraper)
-            mouseVisibilityMs: 1500, // 1.5 seconde
+            name: 'Facile',
+            mouseSize: 80,
+            chatSize:120,
+            mouseVisibilityMs: 1500,
+            hitboxTolerance: 20,
             gameDurationSeconds: 60
         },
         'intermediaire': {
             key: 'intermediaire',
-            name: 'Intermédiaire (2 Coeurs)',
-            clickTolerance: 20,    // Zone de clic moyenne
-            mouseVisibilityMs: 1000, // 1 seconde
+            name: 'Intermédiaire',
+            mouseSize: 60,
+            chatSize:100,
+            mouseVisibilityMs: 1000,
+            hitboxTolerance: 10,
             gameDurationSeconds: 60
         },
         'difficile': {
             key: 'difficile',
-            name: 'Difficile (3 Coeurs)',
-            clickTolerance: 5,     // Petite zone de clic (précision requise)
-            mouseVisibilityMs: 700,  // 0.7 seconde
-            gameDurationSeconds: 45 // Durée plus courte
+            name: 'Difficile',
+            mouseSize: 45,
+            chatSize:100,
+            mouseVisibilityMs: 700,
+            hitboxTolerance: 5,
+            gameDurationSeconds: 60
         }
     };
 
-    // --- Éléments du DOM ---
+    // ========== ÉLÉMENTS DOM ==========
     const gameContainer = document.getElementById('game-container');
     const mouse = document.getElementById('mouse');
     const chatCursor = document.getElementById('chat-cursor');
     const scoreDisplay = document.getElementById('score');
-    const timeDisplay = document.getElementById('time');
-    const startButtons = document.querySelectorAll('.game-controls button[data-difficulty]');
+    const gameTimeDisplay = document.getElementById('game-time');
     const resultMessage = document.getElementById('result-message');
+    const startButton = document.getElementById('start-game');
+    
+    // Boutons de niveau
+    const levelButtons = document.querySelectorAll('.level-buttons-click');
+    
+    // Boutons audio
+    const muteBtn = document.getElementById('mute');
+    const volumeBtn = document.getElementById('volume');
    
-    // Éléments d'affichage du meilleur score
     const bestScoreDisplays = {
         'facile': document.getElementById('best-score-facile'),
         'intermediaire': document.getElementById('best-score-intermediaire'),
-        'difficile': document.getElementById('best-score-difficile'),
+        'difficile': document.getElementById('best-score-difficile')
     };
 
-    // --- Variables d'État du Jeu ---
-    let currentDifficulty = difficultyLevels['facile']; // Niveau par défaut
+    // ========== AUDIO ==========
+    const baseSnd = "assets/sounds/game/clickSouris/";
+    const bgMusic = new Audio(`${baseSnd}backgroundMusicClick.wav`);
+    const clickSound = new Audio(`${baseSnd}petitDing.mp3`);
+    const winSound = new Audio(`${baseSnd}endgame.mp3`);
+
+    bgMusic.loop = true;
+    bgMusic.volume = 0.4;
+    clickSound.volume = 1;
+    winSound.volume = 1;
+
+    let audioUnlocked = false;
+    let isMuted = false;
+
+    // Unlock audio au premier clic
+    document.addEventListener('click', () => {
+        if (!audioUnlocked) {
+            bgMusic.play().then(() => {
+                console.log('Audio débloqué!');
+            }).catch(() => {});
+            audioUnlocked = true;
+        }
+    }, { once: true });
+
+    // ========== VARIABLES D'ÉTAT ==========
+    let currentDifficulty = difficultyLevels['facile'];
     let score = 0;
-    let timeLeft = currentDifficulty.gameDurationSeconds;
-    let timerInterval = null;
+    let timeLeft = 60;
+    let gameTimerInterval = null;
     let gameRunning = false;
     let mouseTimeout = null;
-    let isMouseHovered = false; // Indicateur de collision
-   
-    // Dimensions (fixées par le CSS)
-    const mouseWidth = 50;
-    const mouseHeight = 50;
-   
-    // ----------------------------------------------------
-    // --- Gestion du Curseur Spécial (Chat) et Collision ---
-    // ----------------------------------------------------
+    let mousePosition = { x: 0, y: 0 };
+    let cursorPosition = { x: 0, y: 0 };
 
-    /**
-     * Calcule si le point touche la zone de clic élargie de la souris, en fonction de la tolérance du niveau actif.
-     */
-    function checkCollision(pointX, pointY) {
-        if (mouse.style.display !== 'block') return false;
-       
-        // La clé du jeu : utiliser la tolérance du niveau ACTIF
-        const tolerance = currentDifficulty.clickTolerance;
-       
-        const mouseObjLeft = parseFloat(mouse.style.left);
-        const mouseObjTop = parseFloat(mouse.style.top);
-
-        // Définition de la zone de clic (souris + tolérance)
-        const clickZoneLeft = mouseObjLeft - tolerance;
-        const clickZoneTop = mouseObjTop - tolerance;
-        const clickZoneRight = mouseObjLeft + mouseWidth + tolerance;
-        const clickZoneBottom = mouseObjTop + mouseHeight + tolerance;
-       
-        return (
-            pointX >= clickZoneLeft &&
-            pointX <= clickZoneRight &&
-            pointY >= clickZoneTop &&
-            pointY <= clickZoneBottom
-        );
-    }
-   
-    /**
-     * Met à jour la position du chat-curseur et l'état de collision.
-     */
-    function updateCursorAndCollision(clientX, clientY) {
-        const rect = gameContainer.getBoundingClientRect();
-       
-        // Coordonnées du curseur dans le conteneur du jeu
-        const cursorX = clientX - rect.left;
-        const cursorY = clientY - rect.top;
-
-        // Limiter le chat à l'intérieur du conteneur pour éviter les artefacts
-        // NOTE: le chatCursor est positionné par son centre (transform: translate(-50%, -50%))
-        chatCursor.style.left = `${Math.min(Math.max(0, cursorX), rect.width)}px`;
-        chatCursor.style.top = `${Math.min(Math.max(0, cursorY), rect.height)}px`;
-
-        isMouseHovered = checkCollision(cursorX, cursorY);
-    }
-
-    /**
-     * Traite l'événement de capture (clic/tap) si la souris est dans la zone de tolérance.
-     */
-    function handleCapture() {
-        if (gameRunning && isMouseHovered && mouse.style.display === 'block') {
-            score++;
-            scoreDisplay.textContent = score;
-            mouse.style.display = 'none';
-            clearTimeout(mouseTimeout);
-            isMouseHovered = false;
-            spawnMouse();
+    // ========== PLUIE D'ÉTOILES ==========
+    function starConfetti() {
+        const count = 50;
+        for (let i = 0; i < count; i++) {
+            const star = document.createElement('div');
+            star.className = 'star-confetti';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.animationDuration = 2 + Math.random() * 2 + 's';
+            star.style.animationDelay = Math.random() * 0.5 + 's';
+            document.body.appendChild(star);
+            setTimeout(() => star.remove(), 5000);
         }
     }
-   
-    // --- Écouteurs pour le Curseur de Jeu ---
-    gameContainer.addEventListener('mousemove', (e) => {
+
+    // ========== OVERLAY DE VICTOIRE ==========
+    function showVictoryOverlay(isNewRecord) {
+        const overlay = document.createElement('div');
+        overlay.className = 'victory-overlay';
+        overlay.innerHTML = `
+            <div class="victory-card">
+                <h2>🎉 Partie terminée ! 🎉</h2>
+                ${isNewRecord ? '<div class="trophy">🏆</div>' : ''}
+                <p class="level-name">Niveau ${currentDifficulty.name}</p>
+                <div class="final-score">
+                    <p>Score final</p>
+                    <span>${score}</span>
+                </div>
+                ${isNewRecord ? '<p class="record-text">✨ Nouveau record ! ✨</p>' : ''}
+                <p class="countdown-text">Retour dans <span id="victory-countdown">8</span>s...</p>
+            </div>
+        `;
+        
+        setTimeout(() => {
+      document.body.appendChild(overlay);
+
+        let countdown = 8;
+        const countdownEl = document.getElementById('victory-countdown');
+        const countdownInterval = setInterval(() => {
+            countdown--;
+            if (countdownEl) countdownEl.textContent = countdown;
+            if (countdown <= 0) {
+                clearInterval(countdownInterval);
+                overlay.remove();
+                resetGame();
+            }
+        }, 1000);
+    }, 3000);
+    }
+
+    function showDefeatOverlay() {
+    const overlay = document.createElement('div');
+    overlay.className = 'victory-overlay';
+    overlay.innerHTML = `
+        <div class="victory-card">
+            <h2>🐭 Belle partie de chasse !</h2>
+            <p class="level-name">Niveau ${currentDifficulty.name}</p>
+            <div class="final-score">
+                <p>Score final</p>
+                <span>${score}</span>
+            </div>
+            <p class="record-text">Mais tu peux faire mieux !</p>
+            <p class="countdown-text">Retour dans <span id="victory-countdown">8</span>s...</p>
+        </div>
+    `;
+
+    document.body.appendChild(overlay);
+
+    let countdown = 8;
+    const countdownEl = document.getElementById('victory-countdown');
+    const countdownInterval = setInterval(() => {
+        countdown--;
+        if (countdownEl) countdownEl.textContent = countdown;
+        if (countdown <= 0) {
+            clearInterval(countdownInterval);
+            overlay.remove();
+            resetGame();
+        }
+    }, 1000);
+}
+
+
+    // ========== GESTION DU CURSEUR CHAT ==========
+    function updateChatCursor(e) {
         if (!gameRunning) return;
-        updateCursorAndCollision(e.clientX, e.clientY);
-    });
-   
-    gameContainer.addEventListener('click', handleCapture);
+        
+        const rect = gameContainer.getBoundingClientRect();
+        cursorPosition.x = e.clientX - rect.left;
+        cursorPosition.y = e.clientY - rect.top;
 
-    gameContainer.addEventListener('touchstart', (e) => {
-        if (!gameRunning) return;
-        e.preventDefault();
-        updateCursorAndCollision(e.touches[0].clientX, e.touches[0].clientY);
-        handleCapture();
-    }, { passive: false });
+        chatCursor.style.left = `${cursorPosition.x}px`;
+        chatCursor.style.top = `${cursorPosition.y}px`;
+    }
 
-    gameContainer.addEventListener('touchmove', (e) => {
-        if (!gameRunning) return;
-        e.preventDefault();
-        updateCursorAndCollision(e.touches[0].clientX, e.touches[0].clientY);
-    }, { passive: false });
+    gameContainer?.addEventListener('mousemove', updateChatCursor);
 
-    // ------------------------------------
-    // --- Logique du Jeu et Contrôleurs ---
-    // ------------------------------------
+    // ========== DÉTECTION DE COLLISION ==========
+    function checkCollision() {
+        const tolerance = currentDifficulty.hitboxTolerance;
+        const mouseSize = currentDifficulty.mouseSize;
 
-    /**
-     * Calcule une position aléatoire pour la souris, en tenant compte de la tolérance de clic
-     * pour que la zone de clic (souris + tolérance) reste dans les limites.
-     */
+        const mouseLeft = mousePosition.x - tolerance;
+        const mouseRight = mousePosition.x + mouseSize + tolerance;
+        const mouseTop = mousePosition.y - tolerance;
+        const mouseBottom = mousePosition.y + mouseSize + tolerance;
+
+        return (
+            cursorPosition.x >= mouseLeft &&
+            cursorPosition.x <= mouseRight &&
+            cursorPosition.y >= mouseTop &&
+            cursorPosition.y <= mouseBottom
+        );
+    }
+
+    // ========== POSITION ALÉATOIRE ==========
     function getRandomPosition() {
         const containerWidth = gameContainer.offsetWidth;
         const containerHeight = gameContainer.offsetHeight;
-       
-        // L'espace doit laisser de la place pour la tolérance de chaque côté
-        const tolerance = currentDifficulty.clickTolerance;
-        const effectiveWidth = containerWidth - (mouseWidth + 2 * tolerance);
-        const effectiveHeight = containerHeight - (mouseHeight + 2 * tolerance);
+        const mouseSize = currentDifficulty.mouseSize;
 
-        // Assurez-vous que les positions X/Y aléatoires restent non négatives
-        const randomX = Math.max(0, Math.floor(Math.random() * effectiveWidth)) + tolerance;
-        const randomY = Math.max(0, Math.floor(Math.random() * effectiveHeight)) + tolerance;
+        const margin = 20;
+        const maxX = containerWidth - mouseSize - margin;
+        const maxY = containerHeight - mouseSize - margin;
+
+        const randomX = Math.max(margin, Math.floor(Math.random() * maxX));
+        const randomY = Math.max(margin, Math.floor(Math.random() * maxY));
 
         return { x: randomX, y: randomY };
     }
 
-    /**
-     * Fait apparaître la souris à une nouvelle position.
-     */
+    // ========== APPARITION DE LA SOURIS ==========
     function spawnMouse() {
         if (!gameRunning) return;
 
         clearTimeout(mouseTimeout);
 
         const pos = getRandomPosition();
+        mousePosition = pos;
+        
         mouse.style.left = `${pos.x}px`;
         mouse.style.top = `${pos.y}px`;
+        mouse.style.width = `${currentDifficulty.mouseSize}px`;
+        mouse.style.height = `${currentDifficulty.mouseSize}px`;
         mouse.style.display = 'block';
-        isMouseHovered = false;
+        mouse.style.opacity = '1';
+        mouse.style.transform = 'scale(1)';
 
-        // Utilisation du temps de visibilité du niveau actif
+        // Disparition automatique après le temps défini
         mouseTimeout = setTimeout(() => {
             if (gameRunning) {
-                mouse.style.display = 'none';
-                spawnMouse();
+                mouse.style.opacity = '0';
+                setTimeout(() => {
+                    spawnMouse(); // Réapparaît immédiatement ailleurs
+                }, 100);
             }
         }, currentDifficulty.mouseVisibilityMs);
     }
 
-    function startTimer() {
-        timerInterval = setInterval(() => {
+    // ========== CLIC SUR LE CONTAINER ==========
+    function handleGameClick(e) {
+        if (!gameRunning || mouse.style.display !== 'block') return;
+
+        updateChatCursor(e);
+        chatCursor.style.width = `${currentDifficulty.chatSize}px`;
+        chatCursor.style.height = `${currentDifficulty.chatSize}px`;
+
+
+        if (checkCollision()) {
+            // ✅ Souris attrapée !
+            score++;
+            scoreDisplay.textContent = score;
+
+            // ✅ Son petitDing
+            clickSound.currentTime = 0;
+            clickSound.play().catch(() => {});
+
+            // Animation de capture
+            mouse.style.transform = 'scale(1.3) rotate(15deg)';
+            mouse.style.opacity = '0';
+
+            clearTimeout(mouseTimeout);
+
+            setTimeout(() => {
+                spawnMouse();
+            }, 100);
+        }
+    }
+
+    gameContainer?.addEventListener('click', handleGameClick);
+
+    // ========== TIMER DU JEU ==========
+    function startGameTimer() {
+        if (gameTimerInterval) {
+            clearInterval(gameTimerInterval);
+            gameTimerInterval = null;
+        }
+
+        gameTimerInterval = setInterval(() => {
             timeLeft--;
-            timeDisplay.textContent = timeLeft;
+            
+            if (gameTimeDisplay) {
+                gameTimeDisplay.textContent = timeLeft;
+
+                // Alerte visuelle à 10s
+                if (timeLeft <= 10) {
+                    gameTimeDisplay.style.color = '#FF5733';
+                    gameTimeDisplay.style.fontWeight = 'bold';
+                }
+            }
 
             if (timeLeft <= 0) {
-                clearInterval(timerInterval);
+                clearInterval(gameTimerInterval);
+                gameTimerInterval = null;
                 endGame();
             }
         }, 1000);
     }
-   
-    /**
-     * Démarre la partie avec la difficulté sélectionnée.
-     */
+
+    // ========== DÉMARRAGE DU JEU ==========
     function startGame() {
         if (gameRunning) return;
-       
-        // Réinitialisation des variables de jeu selon le niveau
+
         gameRunning = true;
         score = 0;
         timeLeft = currentDifficulty.gameDurationSeconds;
-       
+
         scoreDisplay.textContent = score;
-        timeDisplay.textContent = timeLeft;
-        resultMessage.textContent = `Partie en cours : ${currentDifficulty.name}...`;
-       
-        // Désactiver les boutons de niveau pendant le jeu
-        startButtons.forEach(btn => btn.disabled = true);
-       
-        startTimer();
+        
+        if (gameTimeDisplay) {
+            gameTimeDisplay.textContent = timeLeft;
+            gameTimeDisplay.style.color = '';
+            gameTimeDisplay.style.fontWeight = '';
+        }
+        
+        resultMessage.textContent = `🎮 Partie en cours : Niveau ${currentDifficulty.name}`;
+        resultMessage.style.color = '#333';
+
+        // ✅ Afficher le container de jeu
+        gameContainer.style.display = 'block';
+        gameContainer.classList.add('active');
+        chatCursor.style.display = 'block';
+        gameContainer.style.cursor = 'none';
+
+        // Désactiver les boutons
+        levelButtons.forEach(btn => {
+            btn.disabled = true;
+            btn.style.opacity = '0.5';
+        });
+        if (startButton) {
+            startButton.disabled = true;
+            startButton.style.opacity = '0.5';
+            startButton.textContent = 'En cours...';
+        }
+
+        // ✅ Démarrer la musique
+        if (!isMuted) {
+            bgMusic.play().catch(err => console.log('Musique bloquée:', err));
+        }
+
+        startGameTimer();
         spawnMouse();
-        chatCursor.style.display = 'block'; // Affiche le curseur de jeu
     }
 
+    // ========== FIN DU JEU ==========
     function endGame() {
         gameRunning = false;
         mouse.style.display = 'none';
         chatCursor.style.display = 'none';
+        gameContainer.style.cursor = 'default';
+        
         clearTimeout(mouseTimeout);
-        clearInterval(timerInterval);
+        if (gameTimerInterval) {
+            clearInterval(gameTimerInterval);
+            gameTimerInterval = null;
+        }
 
-        resultMessage.textContent = `Partie terminée ! Votre score final en ${currentDifficulty.name} : ${score}.`;
+        // Arrêter la musique
+        bgMusic.pause();
+        bgMusic.currentTime = 0;
 
-        // Réactiver les boutons
-        startButtons.forEach(btn => btn.disabled = false);
+        // ✅ Son endgame
+        winSound.currentTime = 0;
+        winSound.play().catch(() => {});
+        
+        // ✅ Pluie d'étoiles
+        starConfetti();
 
-        // 🚨 Sauvegarde du score avec le niveau
+        resultMessage.textContent = `🎉 Partie terminée ! Score : ${score}`;
+        resultMessage.style.color = '#ed55c0';
+        resultMessage.style.fontWeight = 'bold';
+
+        // Sauvegarder le score
         sendScoreToServer(score, currentDifficulty.key);
     }
 
-    // ------------------------------------
-    // --- Communication Serveur (Ajax) ---
-    // ------------------------------------
-
+    // ========== SAUVEGARDE DU SCORE ==========
     function sendScoreToServer(finalScore, levelKey) {
-        fetch('/api/score/save', { // 🚨 Assurez-vous que cette route est correcte
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest'
-            },
-            body: JSON.stringify({
-                score: finalScore,
-                level: levelKey // Envoi du niveau au contrôleur
-            })
+    fetch('?route=saveClickScore', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: JSON.stringify({
+            score: finalScore,
+            level: levelKey
         })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                resultMessage.textContent += ` ${data.message}`;
-                // Mise à jour de l'affichage du meilleur score si un nouveau est défini
-                if (data.newBestScore !== undefined && data.level) {
-                    const displayElement = bestScoreDisplays[data.level];
-                    if (displayElement) {
-                         displayElement.textContent = data.newBestScore;
-                    }
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Réponse serveur:', data);
+
+        if (data.success) {
+            const isNewRecord = data.isNewRecord === true;
+
+            // Mise à jour du meilleur score affiché
+            if (data.newBestScore !== undefined && data.level) {
+                const displayElement = bestScoreDisplays[data.level];
+                if (displayElement) {
+                    displayElement.textContent = data.newBestScore;
                 }
-            } else {
-                resultMessage.textContent += ` Erreur de sauvegarde : ${data.message}`;
             }
-        })
-        .catch(error => {
-            console.error('Erreur lors de l\'envoi du score :', error);
-            resultMessage.textContent += ' Erreur de communication avec le serveur.';
+
+            // ✅ Overlay dans tous les cas
+            setTimeout(() => {
+                if (isNewRecord) {
+                    showVictoryOverlay(true); // record
+                } else {
+                    showDefeatOverlay(); // pas record
+                }
+            }, 1000);
+        }
+    })
+    .catch(error => {
+        console.error('Erreur:', error);
+        setTimeout(() => {
+            showDefeatOverlay();
+        }, 1000);
+    });
+}
+
+
+    // ========== RÉINITIALISATION ==========
+    function resetGame() {
+        gameContainer.style.display = 'none';
+        gameContainer.classList.remove('active');
+        mouse.style.display = 'none';
+        chatCursor.style.display = 'none';
+        
+        score = 0;
+        timeLeft = 60;
+        
+        scoreDisplay.textContent = '0';
+        if (gameTimeDisplay) {
+            gameTimeDisplay.textContent = '60';
+            gameTimeDisplay.style.color = '';
+            gameTimeDisplay.style.fontWeight = '';
+        }
+        resultMessage.textContent = '';
+
+        // Réactiver les boutons
+        levelButtons.forEach(btn => {
+            btn.disabled = false;
+            btn.style.opacity = '1';
         });
+        if (startButton) {
+            startButton.disabled = false;
+            startButton.style.opacity = '1';
+            //startButton.textContent = 'Démarrer';
+        }
     }
 
-    // ------------------------------------
-    // --- Initialisation et Écouteurs ---
-    // ------------------------------------
-   
-    /**
-     * Met à jour le niveau actif et démarre le jeu.
-     */
+    // ========== SÉLECTION DU NIVEAU ET DÉMARRAGE ==========
     function selectAndStartGame(event) {
-        const selectedDifficultyKey = event.currentTarget.dataset.difficulty;
-       
-        if (difficultyLevels[selectedDifficultyKey]) {
-            // Mettre à jour la variable globale du niveau
-            currentDifficulty = difficultyLevels[selectedDifficultyKey];
-           
-            // Mettre en évidence le bouton sélectionné
-            startButtons.forEach(btn => btn.classList.remove('active'));
+        const selectedKey = event.currentTarget.dataset.difficulty;
+
+        if (difficultyLevels[selectedKey]) {
+            currentDifficulty = difficultyLevels[selectedKey];
+
+            levelButtons.forEach(btn => btn.classList.remove('active'));
             event.currentTarget.classList.add('active');
-           
-            // Assurez-vous que le temps est bien affiché avant de démarrer
-            timeDisplay.textContent = currentDifficulty.gameDurationSeconds;
-           
+
             startGame();
         }
     }
 
-    startButtons.forEach(button => {
+    // Event listeners sur les boutons de niveau
+    levelButtons.forEach(button => {
         button.addEventListener('click', selectAndStartGame);
     });
 
-    // Initialisation : on cache les éléments du jeu au chargement
-    mouse.style.display = 'none';
-    chatCursor.style.display = 'none';
-   
-    // Mettre en évidence le niveau Facile par défaut
-    const defaultButton = document.querySelector('.game-controls button[data-difficulty="facile"]');
-    if(defaultButton) {
-        defaultButton.classList.add('active');
+    // Event listener sur le bouton Démarrer (lance avec le niveau par défaut)
+    startButton?.addEventListener('click', () => {
+        if (!gameRunning) {
+            startGame();
+        }
+    });
+
+    // ========== BOUTONS AUDIO ==========
+    muteBtn?.addEventListener('click', () => {
+        isMuted = !isMuted;
+        bgMusic.muted = isMuted;
+        clickSound.muted = isMuted;
+        winSound.muted = isMuted;
+        
+        const img = muteBtn.querySelector('img');
+        if (img) {
+            img.src = isMuted 
+                ? 'assets/img/game/memory/musicNote.png' 
+                : 'assets/img/game/memory/mute1.png';
+        }
+        
+        console.log('Son:', isMuted ? 'Coupé' : 'Activé');
+    });
+
+    volumeBtn?.addEventListener('click', () => {
+        if (bgMusic.volume === 0.4) {
+            bgMusic.volume = 0.2;
+            clickSound.volume = 0.6;
+            winSound.volume = 0.6;
+            console.log('Volume: Moyen');
+        } else if (bgMusic.volume === 0.2) {
+            bgMusic.volume = 1;
+            clickSound.volume = 1;
+            winSound.volume = 1;
+            console.log('Volume: Fort');
+        } else {
+            bgMusic.volume = 0.4;
+            clickSound.volume = 1;
+            winSound.volume = 1;
+            console.log('Volume: Normal');
+        }
+    });
+
+    // ========== INITIALISATION ==========
+    if (mouse) mouse.style.display = 'none';
+    if (chatCursor) chatCursor.style.display = 'none';
+    if (gameContainer) {
+        gameContainer.style.display = 'none';
+        gameContainer.classList.remove('active');
     }
+
+    console.log('🎮 Jeu Click Souris chargé!');
+    console.log('Éléments trouvés:', {
+        gameContainer: !!gameContainer,
+        mouse: !!mouse,
+        chatCursor: !!chatCursor,
+        levelButtons: levelButtons.length,
+        startButton: !!startButton
+    });
 });

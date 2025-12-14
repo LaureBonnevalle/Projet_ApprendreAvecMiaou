@@ -36,7 +36,7 @@ class Router {
                 "homepageUser", "profile", "games", "pixelArt", 
                 "memo", "colorings", "coloringsListe", "stories", "getImage", 
                 "getStory", "displayGame", "displayPixelArt" ,"forgottenPassword", "updateProfile", "toggleNewsletter", "contact", 
-                "contactUsForm", 'resetPasswordFromProfile', "displayClick", 'contactFromProfile', "saveMemoryScore",
+                "contactUsForm", 'resetPasswordFromProfile', "displayClick","saveClickScore", 'contactFromProfile', "saveMemoryScore",
             ];
 
             // Routes pour administrateurs uniquement (role 2)
@@ -223,6 +223,10 @@ class Router {
 
                 case "displayClick":
                     $gc->displayClick();
+                    break;
+
+                case "saveClickScore":
+                    $gc->saveClickScore(); // ← Nouvelle route pour sauvegarder le score
                     break;
                     
                 case "displayPixelArt":

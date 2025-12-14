@@ -7,7 +7,7 @@ window.onload = () => {
   const gameContainer = document.querySelector('.game-container');
   const startButton = document.getElementById('start-game');
   const movesDisplay = document.getElementById('moves-count');
-  const timerDisplay = document.getElementById('timer');
+  const timerDisplay = document.getElementById('memotimer');
 
   // UI à masquer/afficher pendant la partie
   const levelButtons = document.querySelector('.level-buttons');
@@ -180,7 +180,7 @@ window.onload = () => {
 
     createCards(level);
     boardDisabled = false;
-    startTimer();
+    startMemoTimer();
     startButton.textContent = 'Quitter';
     toggleUI(true);
 
@@ -246,7 +246,7 @@ window.onload = () => {
   }
 
   // Timer
-  function startTimer() {
+  function startMemoTimer() {
     if (!interval) {
       interval = setInterval(() => {
         sec++;
