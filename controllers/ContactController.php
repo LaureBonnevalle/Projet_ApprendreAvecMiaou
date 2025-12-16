@@ -39,7 +39,7 @@ class ContactController extends AbstractController {
             $token = $tm->generateCSRFToken();
             $_SESSION['csrf_token'] = $token;
             
-            $scripts = $this->addScripts(['assets/js/formController.js']);
+            $scripts = $this->addScripts(['assets/js/form/formController.js']);
             
             $this->render('contact.html.twig', [
                 'avatar' => $avatar,
@@ -122,7 +122,7 @@ class ContactController extends AbstractController {
         }
 
         // ✅ Réafficher le formulaire avec erreurs
-        $scripts = $this->addScripts(['assets/js/formController.js']);
+        $scripts = $this->addScripts(['assets/js/form/formController.js']);
         $token = $tm->generateCSRFToken();
 
         $this->render('contact.html.twig', [
@@ -246,7 +246,7 @@ public function displayMessages() {
     $_SESSION['csfr_token'] = $token;
     $scripts = $this->addScripts([
             'https://kit.fontawesome.com/3c515cc4da.js',
-            'assets/js/formController.js',
+            'assets/js/form/formController.js',
             'assets/js/adminjs/ajaxOneUser.js',
             'assets/js/adminjs/ajaxSearchUsers.js',
             'assets/js/adminjs/coloringAdmin.js',
@@ -433,7 +433,7 @@ public function displayMessages() {
                     (new ContactManager())->deleteOne($data['id']);
             
                     $messages = (new ContactManager())->getAll();
-                    $scripts = $this->addScripts(['public/assets/js/common.js','public/assets/js/formController.js']);
+                    $scripts = $this->addScripts(['public/assets/js/common.js','public/assets/js/form/formController.js']);
                     $this->render('messages.html.twig', [
                         'page'      => "Messagerie",
                         'messages'  => $messages,

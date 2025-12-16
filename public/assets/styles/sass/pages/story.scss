@@ -5,22 +5,10 @@
 
 
 #story{
-  margin: 10vh clamp(1vh, 2vh, 5vh) 1vh 2vh  ;
+
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-
-    @include mixins.breakpoint(mobile) {
-    padding: 3vh;
-  }
-
-  @include mixins.breakpoint(small) {
-    padding-top: 10vh;
-  }
-
-  @include mixins.breakpoint(medium) {
-    padding: 0;
-  }
+  gap: 1rem;
 
   h2 {
     font-size: clamp(1.5rem, 3vw, 2rem);
@@ -44,12 +32,10 @@
 
    @include mixins.breakpoint(small) {
     padding-bottom: 25vh;
-    padding-top: 2vh;
   }
 
   @include mixins.breakpoint(medium) {
     padding-bottom: 25vh;
-    padding-top: 10vh;
   }
 
   .entity-form {
@@ -71,7 +57,7 @@
 
       @include mixins.breakpoint(mobile) {
         gap: 2vh;
-        padding: 0 0 0 13vw;
+        //padding: 0 0 0 13vw;
       }
 
       @include mixins.breakpoint(small) {

@@ -3,14 +3,16 @@
 
 #homeUser {
   /* Espacement haut responsive */
-  margin-top: 12vh;
+ 
 
-  @include mixins.breakpoint(medium) {
-    margin-top: 15vh;
+  h1, p {
+    text-align: center;
+    margin: auto;
+    padding: 1vh;
   }
 
-  @include mixins.breakpoint(medium-large) {
-    margin-top: 25vh;
+  p {
+    font-size: 2vh;
   }
 
   .alert-success,

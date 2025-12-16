@@ -14,7 +14,7 @@ class NewsletterController extends AbstractController
     {
         // Scripts JS nécessaires (validation côté client)
         $scripts = $this->addScripts([
-            'assets/js/formController.js',
+            'assets/js/form/formController.js',
         ]);
 
         $tm = new CSRFTokenManager();

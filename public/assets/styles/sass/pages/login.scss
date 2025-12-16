@@ -1,41 +1,32 @@
 @use '../abstracts/varcolors';
 @use '../abstracts/mixins';
 
-main {
-  padding-top :10vh;
 
-  
-}
 // =================================
 // CONTENEUR PRINCIPAL LOGIN
 // =================================
 
-.login-content {
+main {
+
+  padding-top: 13vh;
+
+  
+}
+
+#login {
+
+
+  
+
+  .login-content{
+  
   display: flex;
   flex-direction: column;
   justify-content: center; // ✅ Centre verticalement
   align-items: center; // ✅ Centre horizontalement
-  min-height: calc(100vh - 30vh); // ✅ Hauteur minimale (viewport - marges)
-  padding: clamp(2rem, 5vh, 4rem) clamp(1rem, 3vw, 2rem); // ✅ Padding responsive
-  padding-top: 0;
-  margin-top :0;
   width: 100%;
   box-sizing: border-box;
   position: relative;
-
-  @include mixins.breakpoint(small) {
-    margin-top :5vh;
-    
-  }
-
-  @include mixins.breakpoint(medium) {
-    margin-top:5vh;
-  }
-  
-  @include mixins.breakpoint(mediumLarge) {
-    padding-top: 10vh;
-    margin-top: 20vh;
-  }
 
 
   // ✅ Classe sr-only pour accessibilité
@@ -51,13 +42,15 @@ main {
     border: 0;
   }
 
+}
+
 
 // =================================
 // FORMULAIRE LOGIN
 // =================================
 #login-form {
   width: 100%;
-  max-width: clamp(320px, 90vw, 450px); // ✅ Largeur responsive
+  max-width: clamp(300px, 70vw, 350px); // ✅ Largeur responsive
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -124,7 +117,7 @@ main {
     background-position: top;
     background-repeat: no-repeat;
     width: 100%;
-    min-height: clamp(400px, 55vh, 500px); // ✅ Hauteur responsive
+    //min-height: clamp(400px, 55vh, 500px); // ✅ Hauteur responsive
     padding: clamp(1.5rem, 4vh, 3rem) clamp(1rem, 3vw, 2rem);
     border: 2px solid #5C5454;
     border-radius: 0 0 15px 15px;
@@ -368,6 +361,7 @@ main {
       transition: all varcolors.$transition-normal;
       text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
       font-family: 'Comic Sans MS', 'Raleway', cursive;
+      
 
       &:hover {
         color: varcolors.$violet-main;
@@ -384,7 +378,13 @@ main {
 
     .forgot-password-link {
       font-style: italic;
+      margin: auto;
+
     }
+
+
+   
+
 
     .register-link {
       font-weight: bold;
@@ -455,7 +455,7 @@ main {
 @include mixins.breakpoint(medium-large) {
   .login-content {
     min-height: calc(100vh - 35vh); // ✅ Ajusté pour header + nav desktop
-    padding-top: 3rem;
+    //padding-top: 3rem;
   }
 
   #login-form {
@@ -510,4 +510,9 @@ main {
     }
   }
 }
+}
+
+.forgotten-password p {
+  margin:auto;
+  text-align: center;
 }

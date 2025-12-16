@@ -28,6 +28,7 @@ class DefaultController extends AbstractController {
         $avatar = $am->getByName("Miaou");
 
         $this->render("homepage.html.twig", [
+            'success_message' => $_SESSION['success_message'] ?? null,
             'titre'        => 'Accueil',
             'elapsed_time' => 0,
             'avatar'       => $avatar,

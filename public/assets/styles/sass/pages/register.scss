@@ -1,521 +1,637 @@
+/**
+ * =====================================================
+ * STYLES - PAGE D'INSCRIPTION
+ * STYLES - REGISTRATION PAGE
+ * =====================================================
+ * 
+ * @author Miaou Team
+ * @version 2.1
+ * @description Formulaire d'inscription avec sélection d'avatar
+ *              et validation en temps réel
+ */
+
 @use '../abstracts/varcolors';
 @use '../abstracts/mixins';
 
-
-
-// =================================
-// CONTENEUR PRINCIPAL register
-// =================================
+// =====================================================
+// CONTENEUR PRINCIPAL
+// MAIN CONTAINER
+// =====================================================
 #register {
+    
+    // =================================================
+    // LAYOUT PRINCIPAL DE LA PAGE
+    // MAIN PAGE LAYOUT
+    // =================================================
+    // Centrage vertical et horizontal du formulaire
+    // Vertical and horizontal centering of the form
     .register-content {
-      display: flex;
-      flex-direction: column;
-      justify-content: center; // ✅ Centre verticalement
-      align-items: center; // ✅ Centre horizontalement
-      min-height: calc(100vh - 20vh); // ✅ Hauteur minimale (viewport - marges)
-      padding: clamp(2rem, 5vh, 4rem) clamp(1rem, 3vw, 2rem); // ✅ Padding responsive
-      width: 100%;
-      box-sizing: border-box;
-      position: relative;
-
-      // ✅ Classe sr-only pour accessibilité
-      .sr-only {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip: rect(0, 0, 0, 0);
-        white-space: nowrap;
-        border: 0;
-      }
-    }
-
-    // =================================
-    // FORMULAIRE register
-    // =================================
-    #register-form {
-      width: 100%;
-      max-width: clamp(320px, 90vw, 450px); // ✅ Largeur responsive
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-      margin: 0 auto; // ✅ Centre horizontalement
-
-      // ✅ Titre du formulaire
-      h3 {
-        background-color: #5C5454;
-        color: varcolors.$blanc;
-        text-align: center;
-        border-radius: 15px 15px 0 0;
-        font-size: clamp(1rem, 2.5vw, 1.3rem);
-        font-family: 'Comic Sans MS', 'Raleway', cursive;
-        font-weight: bold;
-        width: 100%;
-        min-height: clamp(50px, 8vh, 70px);
-        margin: 0;
-        padding: clamp(0.8rem, 2vh, 1.2rem) clamp(1rem, 3vw, 1.5rem);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-sizing: border-box;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        line-height: 1.3;
-
-        // ✅ Gestion du <br> dans le titre
-        br {
-          @include mixins.breakpoint(mobile) {
-            display: inline; // Garde le retour à la ligne sur mobile
-          }
-          
-          @include mixins.breakpoint(medium-large) {
-            display: none; // Supprime sur grand écran
-            
-            &::before {
-              content: " "; // Ajoute un espace
-            }
-          }
-        }
-      }
-
-      // ✅ Container du formulaire avec image de fond
-      .container-register {
-        background-color:antiquewhite;
-        background-image: url('../../img/Miaou/chatAuth.png');
-        background-size: contain;
-        background-position: top;
-        background-repeat: no-repeat;
-        width: 100%;
-        min-height: clamp(400px, 55vh, 500px); // ✅ Hauteur responsive
-        padding: clamp(1.5rem, 4vh, 3rem) clamp(1rem, 3vw, 2rem);
-        border: 5px solid #5C5454;
-        border-radius: 0 0 15px 15px;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        gap: clamp(0.8rem, 2vh, 1.2rem);
-        box-sizing: border-box;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-
-        @include mixins.breakpoint(custom) {
-          background-position: top;
-          //padding-top: 2vh;
-        }
-
-        // ✅ Améliore la lisibilité sur l'image
-        &::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: rgba(255, 255, 255, 0.1);
-          border-radius: 0 0 15px 15px;
-          pointer-events: none;
-        }
-      }
-
-      // ✅ Legend caché mais accessible
-      legend {
-        @include mixins.sr-only;
-      }
-
-      // ✅ Labels
-      label {
-        font-size: clamp(0.9rem, 2vw, 1rem);
-        font-weight: bold;
-        color: #333;
-        margin-bottom: 0.3rem;
-        align-self: flex-start;
+        min-height: calc(100vh - 20vh);
+        padding: clamp(2rem, 5vh, 4rem) clamp(1rem, 3vw, 2rem);
         width: 100%;
-        max-width: clamp(280px, 85vw, 350px);
-        text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
-        font-family: 'Comic Sans MS', 'Raleway', cursive;
-      }
-
-      // ✅ Inputs text et email
-      input[type="email"],
-      input[type="text"],
-      input[type="number"]
-      {
-        width: 100%;
-        max-width: clamp(280px, 85vw, 350px);
-        height: clamp(40px, 6vh, 50px);
-        border-radius: 25px;
-        background-color: rgba(255, 255, 255, 0.65);
-        border: 2px solid #5C5454;
-        padding: 0 clamp(1rem, 3vw, 1.5rem);
-        font-size: clamp(0.9rem, 2vw, 1rem);
-        font-family: 'Comic Sans MS', 'Raleway', cursive;
         box-sizing: border-box;
-        transition: all varcolors.$transition-normal;
         position: relative;
-        z-index: 1;
-        
-        &:hover {
-          outline: 2px solid varcolors.$violet-main;
-          outline-offset: 2px;
-          background-color: varcolors.$blanc;
-          box-shadow: 0 2px 8px rgba(178, 57, 237, 0.3);
-        }
-        // ✅ Focus visible
-        &:focus {
-          outline: 3px solid varcolors.$violet-main;
-          outline-offset: 2px;
-          background-color: varcolors.$blanc;
-          box-shadow: 0 2px 8px rgba(178, 57, 237, 0.3);
-        }
 
-        // ✅ Placeholder
-        &::placeholder {
-          color: #999;
-          font-style: italic;
-        }
-      }
-
-      .avatar {
-        width: 100%;
-        background-color: rgba(255, 255, 255, 0.65);
-        border: 1px solid black;
-        border-radius: 30px;
-        padding: 2vh;
-        margin-top: 0vh;
-
-        &:hover {
-          outline: 2px solid varcolors.$violet-main;
-          outline-offset: 2px;
-          background-color: varcolors.$blanc;
-          box-shadow: 0 2px 8px rgba(178, 57, 237, 0.3);
-        }
-        
-        
-          ul {
-            list-style: none;
-            padding: 0;
-            margin: clamp(0.8rem, 2vh, 1.2rem) 0 0 0;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-            gap: clamp(0.8rem, 2vw, 1.2rem);
-            justify-items: center;
-
-            li {
-              margin: 0;
-            }
-          }
-        
-
-        .avatars {
-          position: relative;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-
-          input[type="radio"] {
+        // ==============================================
+        // CLASSE D'ACCESSIBILITÉ SR-ONLY
+        // SR-ONLY ACCESSIBILITY CLASS
+        // ==============================================
+        // Masque visuellement mais reste accessible aux lecteurs d'écran
+        // Visually hides but remains accessible to screen readers
+        .sr-only {
             position: absolute;
-            opacity: 0;
-            width: 0;
-            height: 0;
-
-            // ✅ Avatar sélectionné
-            &:checked + label {
-              img {
-                border: 4px solid varcolors.$violet-main;
-                box-shadow: 
-                  0 0 0 2px varcolors.$blanc,
-                  0 0 15px rgba(178, 57, 237, 0.6);
-                transform: scale(1.1);
-              }
-            }
-
-            // ✅ Focus visible
-            &:focus-visible + label {
-              img {
-                outline: 3px solid varcolors.$violet-main;
-                outline-offset: 4px;
-              }
-            }
-          }
-
-          label {
-            ;
-            margin: 0;
-            display: block;
-
-            img {
-              width: clamp(65px, 15vw, 85px);
-              height: clamp(65px, 15vw, 85px);
-              border-radius: 50%;
-              border: 3px solid #5C5454;
-              object-fit: cover;
-              transition: all varcolors.$transition-normal;
-              background-color: varcolors.$blanc;
-              box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-
-              &:hover {
-                transform: scale(1.05);
-                border-color: varcolors.$violet-light;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-              }
-            }
-          }
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
         }
-      }
+    }
 
-
-      // ✅ Messages d'erreur
-      .error-message {
-        color: #d32f2f;
-        font-size: clamp(0.8rem, 1.8vw, 0.9rem);
-        font-weight: bold;
-        margin-top: 0.3rem;
-        min-height: 1.2em;
+    // =================================================
+    // FORMULAIRE PRINCIPAL
+    // MAIN FORM
+    // =================================================
+    #register-form {
         width: 100%;
-        max-width: clamp(280px, 85vw, 350px);
-        text-align: left;
-        background-color: rgba(255, 255, 255, 0.9);
-        padding: 0.3rem 0.5rem;
-        border-radius: 8px;
-        text-shadow: none;
-        display: none; // ✅ Caché par défaut
-
-        &:not(:empty) {
-          display: block; // ✅ Visible uniquement si contenu
-        }
-      }
-
-      .submit-button {
-
-        display: block;
-        align: center;
-        width: 100%;
-        margin: auto;
-        
-        margin-left: 5vh;
-
-        @include mixins.breakpoint(mobile) {
-            margin-left: 6vh;
-        }
-
-        @include mixins.breakpoint(small) {
-            margin-left: 7vh;
-        }
-
-        // ✅ Bouton submit
-        input[type="submit"] {
-          width: 100%;
-          max-width: clamp(220px, 70vw, 300px);
-          height: clamp(45px, 7vh, 55px);
-          margin-top: clamp(1rem, 3vh, 2rem);
-          border-radius: 25px;
-          font-size: clamp(1rem, 2.2vw, 1.2rem);
-          font-weight: bold;
-          font-family: 'Comic Sans MS', 'Raleway', cursive;
-          background-color: #5C5454;
-          color: varcolors.$blanc;
-          ;
-          border: 2px solid #3d3434;
-          box-sizing: border-box;
-          transition: all varcolors.$transition-normal;
-          box-shadow: 4px 6px 0px #3d3434;
-          position: relative;
-          z-index: 1;
-
-          &:hover {
-            background-color: #6d6060;
-            transform: translate(2px, 2px);
-            box-shadow: 2px 4px 0px #3d3434;
-          }
-
-          &:active {
-            transform: translate(4px, 4px);
-            box-shadow: 1px 2px 0px #3d3434;
-          }
-
-          // ✅ Focus visible
-          &:focus-visible {
-            outline: 3px solid varcolors.$violet-main;
-            outline-offset: 3px;
-          }
-
-          // ✅ État désactivé
-          &:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            
-            &:hover {
-              transform: none;
-              box-shadow: 4px 6px 0px #3d3434;
-            }
-          }
-        }
-      }
-
-      // ✅ Input caché (CSRF)
-      input[type="hidden"] {
-        display: none;
-      }
-
-      // ✅ Liens supplémentaires (optionnel)
-      .register-links {
+        max-width: clamp(320px, 90vw, 450px);
         display: flex;
         flex-direction: column;
-        gap: clamp(0.5rem, 1.5vh, 0.8rem);
-        width: 100%;
-        max-width: clamp(280px, 85vw, 350px);
-        margin-top: clamp(1rem, 2vh, 1.5rem);
-        align-items: center;
+        align-items: stretch;
+        margin: 0 auto;
 
-        a {
-          font-size: clamp(0.85rem, 1.8vw, 0.95rem);
-          color: #5C5454;
-          text-decoration: none;
-          font-weight: 600;
-          transition: all varcolors.$transition-normal;
-          text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
-          font-family: 'Comic Sans MS', 'Raleway', cursive;
-
-          &:hover {
-            color: varcolors.$violet-main;
-            text-decoration: underline;
-          }
-
-          &:focus-visible {
-            outline: 2px solid varcolors.$violet-main;
-            outline-offset: 2px;
-            border-radius: 4px;
-            padding: 0.2rem 0.4rem;
-          }
-        }
-
-        .forgot-password-link {
-          font-style: italic;
-        }
-
-        .register-link {
-          font-weight: bold;
-          color: varcolors.$orange-main;
-
-          &:hover {
-            color: varcolors.$rouge-main;
-          }
-        }
-      }
-
-      // ✅ Indicateur de champ requis
-      .required {
-        color: #d32f2f;
-        font-weight: bold;
-        margin-left: 0.2rem;
-      }
-    }
-
-    // =================================
-    // RESPONSIVE - AJUSTEMENTS FINS
-    // =================================
-
-    // ✅ Très petits écrans (< 375px)
-    @media (max-width: 374px) {
-      #register-form {
+        // ==============================================
+        // EN-TÊTE DU FORMULAIRE
+        // FORM HEADER
+        // ==============================================
         h3 {
-          font-size: 0.95rem;
-          padding: 0.7rem 0.8rem;
+            background-color: #5C5454;
+            color: varcolors.$blanc;
+            text-align: center;
+            border-radius: 15px 15px 0 0;
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            font-family: 'Comic Sans MS', 'Raleway', cursive;
+            font-weight: bold;
+            width: 100%;
+            min-height: clamp(50px, 8vh, 70px);
+            margin: 0;
+            padding: clamp(0.8rem, 2vh, 1.2rem) clamp(1rem, 3vw, 1.5rem);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            line-height: 1.3;
+
+            // Gestion du retour à la ligne selon la taille d'écran
+            // Line break management based on screen size
+            br {
+                // Sur mobile: garde le retour à la ligne
+                // On mobile: keeps line break
+                @include mixins.breakpoint(mobile) {
+                    display: inline;
+                }
+                
+                // Sur grand écran: supprime le <br> et ajoute un espace
+                // On large screen: removes <br> and adds a space
+                @include mixins.breakpoint(medium-large) {
+                    display: none;
+                    
+                    &::before {
+                        content: " ";
+                    }
+                }
+            }
         }
 
+        // ==============================================
+        // CONTENEUR AVEC IMAGE DE FOND
+        // CONTAINER WITH BACKGROUND IMAGE
+        // ==============================================
         .container-register {
-          min-height: 380px;
-          padding: 1.2rem 0.8rem;
+            background-color: antiquewhite;
+            background-image: url('../../img/Miaou/chatAuth.png');
+            background-size: contain;
+            background-position: top;
+            background-repeat: no-repeat;
+            width: 100%;
+            min-height: clamp(400px, 55vh, 500px);
+            padding: clamp(1.5rem, 4vh, 3rem) clamp(1rem, 3vw, 2rem);
+            border: 5px solid #5C5454;
+            border-radius: 0 0 15px 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: clamp(0.8rem, 2vh, 1.2rem);
+            box-sizing: border-box;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+
+            // Ajustement position image sur écrans personnalisés
+            // Image position adjustment on custom screens
+            @include mixins.breakpoint(custom) {
+                background-position: top;
+            }
+
+            // Overlay pour améliorer la lisibilité du texte
+            // Overlay to improve text readability
+            &::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(255, 255, 255, 0.1);
+                border-radius: 0 0 15px 15px;
+                pointer-events: none;
+            }
         }
 
-        input[type="submit"] {
-          font-size: 0.95rem;
-        }
-      }
-    }
-
-    // ✅ Mobile (375px - 767px)
-    @include mixins.breakpoint(mobile) {
-      .register-content {
-        min-height: calc(100vh - 25vh); // ✅ Ajusté pour header + nav mobile
-        padding-top: 2rem;
-        padding-bottom: 2rem;
-      }
-    }
-
-    // ✅ Tablette portrait (768px - 1023px)
-    @include mixins.breakpoint(medium) {
-      .register-content {
-        min-height: calc(100vh - 30vh); // ✅ Ajusté pour header + nav tablette
-      }
-
-      #register-form {
-        max-width: 450px;
-
-        .container-register {
-          min-height: 450px;
-        }
-      }
-    }
-
-    // ✅ Desktop (1024px+)
-    @include mixins.breakpoint(medium-large) {
-      .register-content {
-        min-height: calc(100vh - 35vh); // ✅ Ajusté pour header + nav desktop
-        padding-top: 3rem;
-      }
-
-      #register-form {
-        max-width: 480px;
-
-        h3 {
-          font-size: 1.3rem;
+        // ==============================================
+        // LÉGENDE (CACHÉE MAIS ACCESSIBLE)
+        // LEGEND (HIDDEN BUT ACCESSIBLE)
+        // ==============================================
+        legend {
+            @include mixins.sr-only;
         }
 
-        .container-register {
-          min-height: 500px;
+        // ==============================================
+        // LABELS DES CHAMPS
+        // FIELD LABELS
+        // ==============================================
+        label {
+            font-size: clamp(0.9rem, 2vw, 1rem);
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 0.3rem;
+            align-self: flex-start;
+            width: 100%;
+            max-width: clamp(280px, 85vw, 350px);
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+            font-family: 'Comic Sans MS', 'Raleway', cursive;
         }
-      }
-    }
 
-    // ✅ Grands écrans (1440px+)
-    @include mixins.breakpoint(large) {
-      #register-form {
-        max-width: 500px;
-
-        .container-register {
-          min-height: 520px;
-        }
-      }
-    }
-
-    // =================================
-    // ACCESSIBILITÉ
-    // =================================
-
-    // ✅ Mode High Contrast
-    @media (prefers-contrast: high) {
-      #register-form {
+        // ==============================================
+        // CHAMPS DE SAISIE
+        // INPUT FIELDS
+        // ==============================================
+        // Champs email, text et number
+        // Email, text and number fields
         input[type="email"],
         input[type="text"],
-        input[type="password"] {
-          border-width: 3px;
+        input[type="number"] {
+            width: 100%;
+            max-width: clamp(280px, 85vw, 350px);
+            height: clamp(40px, 6vh, 50px);
+            border-radius: 25px;
+            background-color: rgba(255, 255, 255, 0.65);
+            border: 2px solid #5C5454;
+            padding: 0 clamp(1rem, 3vw, 1.5rem);
+            font-size: clamp(0.9rem, 2vw, 1rem);
+            font-family: 'Comic Sans MS', 'Raleway', cursive;
+            box-sizing: border-box;
+            transition: all varcolors.$transition-normal;
+            position: relative;
+            z-index: 1;
+            
+            // État au survol / Hover state
+            &:hover {
+                outline: 2px solid varcolors.$violet-main;
+                outline-offset: 2px;
+                background-color: varcolors.$blanc;
+                box-shadow: 0 2px 8px rgba(178, 57, 237, 0.3);
+            }
+
+            // État focus (clic dans le champ) / Focus state
+            &:focus {
+                outline: 3px solid varcolors.$violet-main;
+                outline-offset: 2px;
+                background-color: varcolors.$blanc;
+                box-shadow: 0 2px 8px rgba(178, 57, 237, 0.3);
+            }
+
+            // Texte de placeholder / Placeholder text
+            &::placeholder {
+                color: #999;
+                font-style: italic;
+            }
         }
 
-        input[type="submit"] {
-          border-width: 3px;
+        // ==============================================
+        // SECTION SÉLECTION D'AVATAR
+        // AVATAR SELECTION SECTION
+        // ==============================================
+        .avatar {
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.65);
+            border: 1px solid black;
+            border-radius: 30px;
+            padding: 2vh;
+            margin-top: 0;
+
+            // État au survol du conteneur / Container hover state
+            &:hover {
+                outline: 2px solid varcolors.$violet-main;
+                outline-offset: 2px;
+                background-color: varcolors.$blanc;
+                box-shadow: 0 2px 8px rgba(178, 57, 237, 0.3);
+            }
+            
+            // Liste des avatars en grille responsive
+            // Avatar list in responsive grid
+            ul {
+                list-style: none;
+                padding: 0;
+                margin: clamp(0.8rem, 2vh, 1.2rem) 0 0 0;
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+                gap: clamp(0.8rem, 2vw, 1.2rem);
+                justify-items: center;
+
+                li {
+                    margin: 0;
+                }
+            }
+
+            // Conteneur individuel d'avatar / Individual avatar container
+            .avatars {
+                position: relative;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                // ==========================================
+                // RADIO BUTTON D'AVATAR (CACHÉ)
+                // AVATAR RADIO BUTTON (HIDDEN)
+                // ==========================================
+                input[type="radio"] {
+                    position: absolute;
+                    opacity: 0;
+                    width: 0;
+                    height: 0;
+
+                    // État sélectionné / Checked state
+                    &:checked + label {
+                        img {
+                            border: 4px solid varcolors.$violet-main;
+                            box-shadow: 
+                                0 0 0 2px varcolors.$blanc,
+                                0 0 15px rgba(178, 57, 237, 0.6);
+                            transform: scale(1.1);
+                        }
+                    }
+
+                    // Focus visible pour navigation au clavier
+                    // Visible focus for keyboard navigation
+                    &:focus-visible + label {
+                        img {
+                            outline: 3px solid varcolors.$violet-main;
+                            outline-offset: 4px;
+                        }
+                    }
+                }
+
+                // Label cliquable de l'avatar / Clickable avatar label
+                label {
+                    cursor: pointer;
+                    margin: 0;
+                    display: block;
+
+                    // Image de l'avatar / Avatar image
+                    img {
+                        width: clamp(65px, 15vw, 85px);
+                        height: clamp(65px, 15vw, 85px);
+                        border-radius: 50%;
+                        border: 3px solid #5C5454;
+                        object-fit: cover;
+                        transition: all varcolors.$transition-normal;
+                        background-color: varcolors.$blanc;
+                        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+
+                        // Effet au survol / Hover effect
+                        &:hover {
+                            transform: scale(1.05);
+                            border-color: varcolors.$violet-light;
+                            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+                        }
+                    }
+                }
+            }
         }
-      }
+
+        // ==============================================
+        // MESSAGES D'ERREUR
+        // ERROR MESSAGES
+        // ==============================================
+        .error-message {
+            color: #d32f2f;
+            font-size: clamp(0.8rem, 1.8vw, 0.9rem);
+            font-weight: bold;
+            margin-top: 0.3rem;
+            min-height: 1.2em;
+            width: 100%;
+            max-width: clamp(280px, 85vw, 350px);
+            text-align: left;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 0.3rem 0.5rem;
+            border-radius: 8px;
+            text-shadow: none;
+            display: none;
+
+            // Affiche uniquement si le message contient du texte
+            // Only displays if message contains text
+            &:not(:empty) {
+                display: block;
+            }
+        }
+
+        // ==============================================
+        // CONTENEUR DU BOUTON DE SOUMISSION
+        // SUBMIT BUTTON CONTAINER
+        // ==============================================
+        .submit-button {
+            display: block;
+            width: 100%;
+            margin: auto;
+            margin-left: 5vh;
+
+            // Ajustements responsive de la marge / Responsive margin adjustments
+            @include mixins.breakpoint(mobile) {
+                margin-left: 6vh;
+            }
+
+            @include mixins.breakpoint(small) {
+                margin-left: 7vh;
+            }
+
+            // Bouton de soumission / Submit button
+            input[type="submit"] {
+                width: 100%;
+                max-width: clamp(220px, 70vw, 300px);
+                height: clamp(45px, 7vh, 55px);
+                margin-top: clamp(1rem, 3vh, 2rem);
+                border-radius: 25px;
+                font-size: clamp(1rem, 2.2vw, 1.2rem);
+                font-weight: bold;
+                font-family: 'Comic Sans MS', 'Raleway', cursive;
+                background-color: #5C5454;
+                color: varcolors.$blanc;
+                border: 2px solid #3d3434;
+                box-sizing: border-box;
+                transition: all varcolors.$transition-normal;
+                // Effet d'ombre portée pour un aspect 3D
+                // Drop shadow effect for 3D appearance
+                box-shadow: 4px 6px 0px #3d3434;
+                position: relative;
+                z-index: 1;
+                cursor: pointer;
+
+                // État au survol - animation de pression
+                // Hover state - press animation
+                &:hover {
+                    background-color: #6d6060;
+                    transform: translate(2px, 2px);
+                    box-shadow: 2px 4px 0px #3d3434;
+                }
+
+                // État actif - effet de clic
+                // Active state - click effect
+                &:active {
+                    transform: translate(4px, 4px);
+                    box-shadow: 1px 2px 0px #3d3434;
+                }
+
+                // Focus visible pour navigation au clavier
+                // Visible focus for keyboard navigation
+                &:focus-visible {
+                    outline: 3px solid varcolors.$violet-main;
+                    outline-offset: 3px;
+                }
+
+                // État désactivé / Disabled state
+                &:disabled {
+                    opacity: 0.6;
+                    cursor: not-allowed;
+                    
+                    // Annule les animations si désactivé
+                    // Cancels animations when disabled
+                    &:hover {
+                        transform: none;
+                        box-shadow: 4px 6px 0px #3d3434;
+                    }
+                }
+            }
+        }
+
+        // ==============================================
+        // CHAMPS CACHÉS
+        // HIDDEN FIELDS
+        // ==============================================
+        // Pour les tokens CSRF et autres données cachées
+        // For CSRF tokens and other hidden data
+        input[type="hidden"] {
+            display: none;
+        }
+
+        // ==============================================
+        // LIENS ADDITIONNELS
+        // ADDITIONAL LINKS
+        // ==============================================
+        // Liens vers connexion, mot de passe oublié, etc.
+        // Links to login, forgot password, etc.
+        .register-links {
+            display: flex;
+            flex-direction: column;
+            gap: clamp(0.5rem, 1.5vh, 0.8rem);
+            width: 100%;
+            max-width: clamp(280px, 85vw, 350px);
+            margin-top: clamp(1rem, 2vh, 1.5rem);
+            align-items: center;
+
+            a {
+                font-size: clamp(0.85rem, 1.8vw, 0.95rem);
+                color: #5C5454;
+                text-decoration: none;
+                font-weight: 600;
+                transition: all varcolors.$transition-normal;
+                text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+                font-family: 'Comic Sans MS', 'Raleway', cursive;
+
+                // État au survol / Hover state
+                &:hover {
+                    color: varcolors.$violet-main;
+                    text-decoration: underline;
+                }
+
+                // Focus visible / Visible focus
+                &:focus-visible {
+                    outline: 2px solid varcolors.$violet-main;
+                    outline-offset: 2px;
+                    border-radius: 4px;
+                    padding: 0.2rem 0.4rem;
+                }
+            }
+
+            // Lien mot de passe oublié / Forgot password link
+            .forgot-password-link {
+                font-style: italic;
+            }
+
+            // Lien vers inscription / Registration link
+            .register-link {
+                font-weight: bold;
+                color: varcolors.$orange-main;
+
+                &:hover {
+                    color: varcolors.$rouge-main;
+                }
+            }
+        }
+
+        // ==============================================
+        // INDICATEUR DE CHAMP REQUIS
+        // REQUIRED FIELD INDICATOR
+        // ==============================================
+        // Astérisque rouge pour les champs obligatoires
+        // Red asterisk for required fields
+        .required {
+            color: #d32f2f;
+            font-weight: bold;
+            margin-left: 0.2rem;
+        }
     }
 
-    // ✅ Réduction des animations
-    @media (prefers-reduced-motion: reduce) {
-      #register-form {
-        input,
-        .eyes {
-          transition: none !important;
+    // =================================================
+    // RESPONSIVE DESIGN
+    // RESPONSIVE DESIGN
+    // =================================================
+
+    // Très petits écrans (< 375px)
+    // Very small screens (< 375px)
+    @media (max-width: 374px) {
+        #register-form {
+            h3 {
+                font-size: 0.95rem;
+                padding: 0.7rem 0.8rem;
+            }
+
+            .container-register {
+                min-height: 380px;
+                padding: 1.2rem 0.8rem;
+            }
+
+            input[type="submit"] {
+                font-size: 0.95rem;
+            }
         }
-      }
+    }
+
+    // Mobile (375px - 767px)
+    @include mixins.breakpoint(mobile) {
+        .register-content {
+            // Ajusté pour header + navigation mobile
+            // Adjusted for header + mobile navigation
+            min-height: calc(100vh - 25vh);
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+    }
+
+    // Tablette portrait (768px - 1023px)
+    // Portrait tablet (768px - 1023px)
+    @include mixins.breakpoint(medium) {
+        .register-content {
+            // Ajusté pour header + navigation tablette
+            // Adjusted for header + tablet navigation
+            min-height: calc(100vh - 30vh);
+        }
+
+        #register-form {
+            max-width: 450px;
+
+            .container-register {
+                min-height: 450px;
+            }
+        }
+    }
+
+    // Desktop (1024px+)
+    @include mixins.breakpoint(medium-large) {
+        .register-content {
+            // Ajusté pour header + navigation desktop
+            // Adjusted for header + desktop navigation
+            min-height: calc(100vh - 35vh);
+            padding-top: 3rem;
+        }
+
+        #register-form {
+            max-width: 480px;
+
+            h3 {
+                font-size: 1.3rem;
+            }
+
+            .container-register {
+                min-height: 500px;
+            }
+        }
+    }
+
+    // Grands écrans (1440px+)
+    // Large screens (1440px+)
+    @include mixins.breakpoint(large) {
+        #register-form {
+            max-width: 500px;
+
+            .container-register {
+                min-height: 520px;
+            }
+        }
+    }
+
+    // =================================================
+    // ACCESSIBILITÉ
+    // ACCESSIBILITY
+    // =================================================
+
+    // Mode contraste élevé pour malvoyants
+    // High contrast mode for visually impaired users
+    @media (prefers-contrast: high) {
+        #register-form {
+            input[type="email"],
+            input[type="text"],
+            input[type="password"],
+            input[type="number"] {
+                border-width: 3px;
+            }
+
+            input[type="submit"] {
+                border-width: 3px;
+            }
+        }
+    }
+
+    // Réduction des animations pour utilisateurs sensibles
+    // Reduced motion for users sensitive to animations
+    @media (prefers-reduced-motion: reduce) {
+        #register-form {
+            input,
+            .eyes,
+            .avatars label img {
+                transition: none !important;
+            }
+
+            input[type="submit"] {
+                transition: none !important;
+            }
+        }
     }
 }

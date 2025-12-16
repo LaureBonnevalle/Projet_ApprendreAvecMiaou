@@ -104,7 +104,7 @@ class ColoringController extends AbstractController
         foreach ($categories as $categorie) {
             $ColoringsParCategorie[$categorie['id']] = $cm->getAllColoringsByCategorie($categorie['id']);
         }
-        $scripts = $this->addScripts(['assets/js/formController.js', 'assets/js/adminjs/ColoringAdmin.js', 'assets/js/mess.js']);
+        $scripts = $this->addScripts(['assets/js/form/formController.js', 'assets/js/adminjs/ColoringAdmin.js', 'assets/js/mess.js']);
         // Affichage de la vue
         $this->render('coloringsAdmin.html.twig', [
             'titre' => 'Gestion Admin des coloriages',

@@ -35,7 +35,7 @@ class AvatarController extends AbstractController {
     $scripts = $this->addScripts([
          'https://kit.fontawesome.com/3c515cc4da.js',
             'assets/js/common.js', 
-            'assets/js/formController.js',
+            'assets/js/form/formController.js',
             'assets/js/formFunction.js',
             'assets/js/adminjs/ajaxOneUser.js',
             'assets/js/adminjs/ajaxSearchUsers.js',
@@ -217,7 +217,7 @@ if ($existing2 !== null) {
     
         $scripts = $this->addScripts([
             'https://kit.fontawesome.com/3c515cc4da.js',
-            'assets/js/formController.js',
+            'assets/js/form/formController.js',
             'assets/js/adminjs/ajaxOneUser.js',
             'assets/js/adminjs/ajaxSearchUsers.js',
             'assets/js/adminjs/coloringAdmin.js',

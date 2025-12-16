@@ -1,3 +1,15 @@
+@charset "UTF-8";
+/**
+ * =====================================================
+ * STYLES - PAGE D'INSCRIPTION
+ * STYLES - REGISTRATION PAGE
+ * =====================================================
+ * 
+ * @author Miaou Team
+ * @version 2.1
+ * @description Formulaire d'inscription avec sélection d'avatar
+ *              et validation en temps réel
+ */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -174,7 +186,7 @@
   border: 1px solid black;
   border-radius: 30px;
   padding: 2vh;
-  margin-top: 0vh;
+  margin-top: 0;
 }
 #register #register-form .avatar:hover {
   outline: 2px solid #B239ED;
@@ -216,6 +228,7 @@
   outline-offset: 4px;
 }
 #register #register-form .avatar .avatars label {
+  cursor: pointer;
   margin: 0;
   display: block;
 }
@@ -254,7 +267,6 @@
 }
 #register #register-form .submit-button {
   display: block;
-  align: center;
   width: 100%;
   margin: auto;
   margin-left: 5vh;
@@ -286,6 +298,7 @@
   box-shadow: 4px 6px 0px #3d3434;
   position: relative;
   z-index: 1;
+  cursor: pointer;
 }
 #register #register-form .submit-button input[type=submit]:hover {
   background-color: #6d6060;
@@ -411,7 +424,8 @@
 @media (prefers-contrast: high) {
   #register #register-form input[type=email],
   #register #register-form input[type=text],
-  #register #register-form input[type=password] {
+  #register #register-form input[type=password],
+  #register #register-form input[type=number] {
     border-width: 3px;
   }
   #register #register-form input[type=submit] {
@@ -420,7 +434,11 @@
 }
 @media (prefers-reduced-motion: reduce) {
   #register #register-form input,
-  #register #register-form .eyes {
+  #register #register-form .eyes,
+  #register #register-form .avatars label img {
+    transition: none !important;
+  }
+  #register #register-form input[type=submit] {
     transition: none !important;
   }
 }

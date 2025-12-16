@@ -81,10 +81,10 @@ abstract class AbstractController
     protected function getDefaultScripts(): array {
         
         return [
-            'assets/js/common.js',
-            //'public/assets/js/home.js',
-            'assets/js/header.js',
-            'assets/js/footer.js'
+            'assets/js/global/common.js',
+            'assets/js/global/header.js',
+            'assets/js/global/footer.js',
+            'assets/js/global/mess.js',
         ];
         
     }

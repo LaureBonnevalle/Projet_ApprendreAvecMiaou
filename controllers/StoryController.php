@@ -26,7 +26,7 @@ class StoryController extends AbstractController {
         $func = new Utils();
         
         
-    $scripts = $this->addScripts(['assets/js/ajaxStory.js']);
+    $scripts = $this->addScripts(['assets/js/pages/ajaxStory.js']);
 
         $characters = $pm->getAllCharacters();
         $locations = $lm->getAllLocations();
@@ -152,7 +152,7 @@ public function ManageStories(): void {
     $viewData = $this->manageStoriesLogic();
     $categorieManager = new StoryCategorieManager();
 $categories = $categorieManager->getAllCategories(); 
-    //$scripts = $this->addScripts(['public/assets/js/storyAdmin.js']);
+    //$scripts = $this->addScripts(['public/assets/js/pages/storyAdmin.js']);
     
     $csrfToken = new CSRFTokenManager();
     $token = $csrfToken->generateCSRFToken();
@@ -165,7 +165,7 @@ $categories = $categorieManager->getAllCategories();
         'csrf_token' => $token,
         'categories' => $categories,
     ]);
-    $scripts = $this->addScripts(['public/assets/js/formController.js', 'public/assets/js/common.js', 'public/assets/js/global.js', 'public/assets/js/home.js', 'public/assets/js/storyAdmin.js']);
+    $scripts = $this->addScripts(['public/assets/js/form/formController.js', 'public/assets/js/common.js', 'public/assets/js/global.js', 'public/assets/js/home.js', 'public/assets/js/pages/storyAdmin.js']);
     
     $this->render('storiesAdmin.html.twig', $templateData, $scripts);
     

@@ -51,7 +51,7 @@ public function displayProfile(): void
     
     // Scripts JS nécessaires
     $scripts = $this->addScripts([
-        'assets/js/formController.js',
+        'assets/js/form/formController.js',
         'assets/js/profile.js'
     ]);
 
@@ -155,7 +155,7 @@ public function updateProfile(): void
         }
         // Scripts JS nécessaires
         $scripts = $this->addScripts([
-        'assets/js/formController.js',
+        'assets/js/form/formController.js',
         'assets/js/profile.js',
         'assets/js/mess.js',
     ]);

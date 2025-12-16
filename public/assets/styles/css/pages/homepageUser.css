@@ -13,17 +13,14 @@
 
 #homeUser {
   /* Espacement haut responsive */
-  margin-top: 12vh;
 }
-@media (min-width: 768px) {
-  #homeUser {
-    margin-top: 15vh;
-  }
+#homeUser h1, #homeUser p {
+  text-align: center;
+  margin: auto;
+  padding: 1vh;
 }
-@media (min-width: 850px) {
-  #homeUser {
-    margin-top: 25vh;
-  }
+#homeUser p {
+  font-size: 2vh;
 }
 #homeUser .alert-success,
 #homeUser #session-message,

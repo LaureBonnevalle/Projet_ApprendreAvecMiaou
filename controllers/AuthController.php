@@ -8,7 +8,7 @@ class AuthController extends AbstractController {
 
     public function login() : void
     {  
-         $scripts = $this->addScripts(['assets/js/formController.js', 'assets/mess.js']);
+         $scripts = $this->addScripts(['assets/js/form/formController.js', 'assets/js/form/formFunction.js']);
         
         //($avatars);
         // Générer le token pour le mettre dans le vue, dans l'input de type hidden
@@ -192,14 +192,14 @@ $this->redirectTo('homepage');
 
     
 
-        //$scripts = $this->addScripts(['assets/js/formController.js','assets/js/formFunction.js']);
+        //$scripts = $this->addScripts(['assets/js/form/formController.js','assets/js/formFunction.js']);
          $timesModels = new TimesModels();
         $elapsedTime = $timesModels->getElapsedTime();
         //($avatars);
         // Générer le token pour le mettre dans le vue, dans l'input de type hidden
         $tm = new CSRFTokenManager();
         $scripts= $this->addScripts([
-            'assets/js/formController.js', 'assets/js/mess.js',
+            'assets/js/form/formController.js',
             ]);
         
         $_SESSION['error_mesage'] = "";      
@@ -300,7 +300,7 @@ $this->redirectTo('homepage');
 
                     $_SESSION['success_message'] = "Un email de validation vient de vous être envoyé";
                     
-                    $scripts= $this->addScripts(['assets/js/formController.js', 'assets/js/mess.js']);
+                    $scripts= $this->addScripts(['assets/js/form/formController.js']);
 
                     $this->render("homepage.html.twig", ['elapsed_time' => $elapsedTime, 'success_message'=> $_SESSION['success_message']], $scripts);
                     exit();
@@ -316,7 +316,7 @@ $this->redirectTo('homepage');
                 $_SESSION['error_message'] = "Le jeton CSRF est invalide.";
                 $timesModels = new TimesModels();
                 $elapsedTime = $timesModels->getElapsedTime();
-                $scripts= $this->addScripts(['public/assets/js/formController.js',]);
+                $scripts= $this->addScripts(['assets/js/form/formController.js',]);
                 $this->render("homepage.html.twig", ['elapsed_time' => $elapsedTime, 'error_message'=> $_SESSION['error_message']], $scripts);
                 exit();
             }
@@ -349,7 +349,7 @@ $this->redirectTo('homepage');
         }
         
         
-        $scripts = $this->addScripts(['assets/js/formController.js', 'assets/js/mess.js']);
+        $scripts = $this->addScripts(['assets/js/form/formController.js']);
         $timesModels = new TimesModels();
                                 $elapsedTime = $timesModels->getElapsedTime();
         //($avatars);
@@ -439,9 +439,12 @@ public function displayForgottenPassword()
 {
     $func = new Utils();
 
+    $func->clearSessionMessages();
+
     // Si le formulaire est soumis
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && $func->checkPostKeys(['email', 'csrf_token'])) {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && $func->checkPostKeys(['firstname','email', 'csrf_token'])) {
         $data = [
+            'firstname' => trim($_POST['firstname']),
             'email'      => trim($_POST['email']),
             'csrf_token' => $_POST['csrf_token']
         ];
@@ -483,7 +486,7 @@ public function displayForgottenPassword()
     }
 
     // Affichage du formulaire (toujours exécuté)
-    $scripts = $this->addScripts(['assets/js/formController.js', 'assets/js/mess.js']);
+    $scripts = $this->addScripts(['assets/js/form/formController.js']);
     $this->render("forgottenPassword.html.twig", [
         'error_message'   => $_SESSION['error_message'] ?? null,
         'success_message' => $_SESSION['success_message'] ?? null,

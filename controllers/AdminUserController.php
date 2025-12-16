@@ -21,7 +21,7 @@ class AdminUserController extends AbstractController {
         $scripts = $this->addScripts([
           'https://kit.fontawesome.com/3c515cc4da.js',
             'assets/js/common.js', 
-            'assets/js/formController.js',
+            'assets/js/form/formController.js',
             'assets/js/formFunction.js',
             'assets/js/adminjs/ajaxOneUser.js',
             'assets/js/adminjs/ajaxSearchUsers.js',
@@ -102,7 +102,7 @@ class AdminUserController extends AbstractController {
         $scripts = $this->addScripts([
              'https://kit.fontawesome.com/3c515cc4da.js',
             'assets/js/common.js', 
-            'assets/js/formController.js',
+            'assets/js/form/formController.js',
             'assets/js/formFunction.js',
             'assets/js/adminjs/ajaxOneUser.js',
             'assets/js/adminjs/ajaxSearchUsers.js',
